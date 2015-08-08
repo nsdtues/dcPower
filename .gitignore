@@ -1,0 +1,9 @@
+
+
+Debug/*.*
+.xdchelp
+.config/
+.launches
+
+*.log
+
