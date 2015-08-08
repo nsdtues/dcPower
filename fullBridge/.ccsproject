@@ -7,4 +7,6 @@
 	<codegenToolVersion value="6.4.2"/>
 	<isElfFormat value="false"/>
 	<rts value=""/>
+	<connection value="common/targetdb/connections/TIXDS100usb_Connection.xml"/>
+	<isTargetManual value="false"/>
 </projectOptions>
