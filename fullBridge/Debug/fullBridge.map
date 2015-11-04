@@ -1,10 +1,10 @@
 ******************************************************************************
-        TMS320C2000 COFF Linker PC v5.0.1                      
+             TMS320C2000 Linker Unix v6.4.6                    
 ******************************************************************************
->> Linked Thu Oct 16 23:28:12 2014
+>> Linked Wed Nov  4 20:54:40 2015
 
-OUTPUT FILE NAME:   <./Debug/fullBridge.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 00318000
+OUTPUT FILE NAME:   <fullBridge.out>
+ENTRY POINT SYMBOL: "_c_int00"  address: 0031d81f
 
 
 MEMORY CONFIGURATION
@@ -13,7 +13,7 @@ MEMORY CONFIGURATION
 ----------------------  --------  ---------  --------  --------  ----  --------
 PAGE 0:
   ZONE0                 00004000   00001000  00000100  00000f00  RWIX
-  RAML0                 00008000   00001000  00000027  00000fd9  RWIX
+  RAML0                 00008000   00001000  0000001f  00000fe1  RWIX
   RAML1                 00009000   00001000  00000000  00001000  RWIX
   RAML2                 0000a000   00001000  00000000  00001000  RWIX
   RAML3                 0000b000   00001000  00000000  00001000  RWIX
@@ -22,9 +22,9 @@ PAGE 0:
   FLASHH                00300000   00008000  00000000  00008000  RWIX
   FLASHG                00308000   00008000  00000000  00008000  RWIX
   FLASHF                00310000   00008000  00000000  00008000  RWIX
-  FLASHD                00318000   00010000  00005a57  0000a5a9  RWIX
+  FLASHD                00318000   00010000  00005c2e  0000a3d2  RWIX
   FLASHC                00328000   00008000  00000000  00008000  RWIX
-  FLASHA                00338000   00007f80  0000142c  00006b54  RWIX
+  FLASHA                00338000   00007f80  00001434  00006b4c  RWIX
   CSM_RSVD              0033ff80   00000076  00000000  00000076  RWIX
   BEGIN                 0033fff6   00000002  00000002  00000000  RWIX
   CSM_PWL               0033fff8   00000008  00000000  00000008  RWIX
@@ -39,7 +39,7 @@ PAGE 0:
 
 PAGE 1:
   BOOT_RSVD             00000000   00000050  00000000  00000050  RWIX
-  RAMM0                 00000050   000003b0  00000300  000000b0  RWIX
+  RAMM0                 00000050   000003b0  00000000  000003b0  RWIX
   RAMM1                 00000400   00000400  00000300  00000100  RWIX
   DEV_EMU               00000880   00000180  000000d0  000000b0  RWIX
   FLASH_REGS            00000a80   00000060  00000008  00000058  RWIX
@@ -89,7 +89,7 @@ PAGE 1:
   SCIB                  00007750   00000010  00000010  00000000  RWIX
   SCIC                  00007770   00000010  00000010  00000000  RWIX
   I2CA                  00007900   00000040  00000022  0000001e  RWIX
-  RAML4                 0000c000   00001000  00000718  000008e8  RWIX
+  RAML4                 0000c000   00001000  00000a18  000005e8  RWIX
   RAML5                 0000d000   00001000  00000000  00001000  RWIX
   RAML6                 0000e000   00001000  00000000  00001000  RWIX
   RAML7                 0000f000   00001000  00000000  00001000  RWIX
@@ -103,7 +103,165 @@ SECTION ALLOCATION MAP
  output                                  attributes/
 section   page    origin      length       input sections
 --------  ----  ----------  ----------   ----------------
-.data      0    00000000    00000000     UNINITIALIZED
+.cinit     0    003391db    000001b1     
+                  003391db    00000116     main.obj (.cinit)
+                  003392f1    0000002a     scib.obj (.cinit)
+                  0033931b    0000002a     scic.obj (.cinit)
+                  00339345    0000000c     fullBridegTrip.obj (.cinit)
+                  00339351    0000000a     low_pass_filter.obj (.cinit)
+                  0033935b    0000000a     rts2800_fpu32.lib : exit.obj (.cinit)
+                  00339365    00000009     switching_irq.obj (.cinit)
+                  0033936e    00000005     MonitorProc.obj (.cinit)
+                  00339373    00000005     rts2800_fpu32.lib : _lock.obj (.cinit:__lock)
+                  00339378    00000005                       : _lock.obj (.cinit:__unlock)
+                  0033937d    00000005     common_module.obj (.cinit)
+                  00339382    00000004     rts2800_fpu32.lib : errno.obj (.cinit)
+                  00339386    00000004                       : memory.obj (.cinit)
+                  0033938a    00000002     --HOLE-- [fill = 0]
+
+.pinit     0    00328000    00000000     UNINITIALIZED
+
+.text      0    00318000    00005c0f     
+                  00318000    00000eef     code_group_all.obj (.text)
+                  00318eef    00000001     --HOLE-- [fill = 0]
+                  00318ef0    00000bfd     rts2800_fpu32.lib : _printfi.obj (.text)
+                  00319aed    000006f3     fullBridgeCtrl.obj (.text)
+                  0031a1e0    00000579     scic.obj (.text)
+                  0031a759    00000568     fullBridegTrip.obj (.text)
+                  0031acc1    0000051c     scib.obj (.text)
+                  0031b1dd    000003f1     code_proc.obj (.text)
+                  0031b5ce    000003b3     switching_irq.obj (.text:retain)
+                  0031b981    0000036b     common_module.obj (.text)
+                  0031bcec    0000033e     udd_eeprom.obj (.text)
+                  0031c02a    00000316     DSP2833x_DefaultIsr.obj (.text:retain)
+                  0031c340    00000238     set_gpio.obj (.text)
+                  0031c578    000001f3     main.obj (.text)
+                  0031c76b    000001e2     rts2800_fpu32.lib : memory.obj (.text)
+                  0031c94d    000001b3     analog.obj (.text:retain)
+                  0031cb00    00000122     rts2800_fpu32.lib : strtod.obj (.text)
+                  0031cc22    0000011f     low_pass_filter.obj (.text)
+                  0031cd41    0000011d     DS1307.obj (.text)
+                  0031ce5e    00000107     rts2800_fpu32.lib : ll_div.obj (.text)
+                  0031cf65    000000f8     DSP2833x_SysCtrl.obj (.text)
+                  0031d05d    000000f7     MonitorProc.obj (.text)
+                  0031d154    000000db     serial_com.obj (.text)
+                  0031d22f    000000d8     scib.obj (.text:retain)
+                  0031d307    000000d8     scic.obj (.text:retain)
+                  0031d3df    000000b0     refFunc.obj (.text)
+                  0031d48f    0000009c     rts2800_fpu32.lib : fd_add.obj (.text)
+                  0031d52b    0000008b                       : fd_div.obj (.text)
+                  0031d5b6    00000088                       : fs_div.obj (.text)
+                  0031d63e    00000086     udd_timer_irq.obj (.text:retain)
+                  0031d6c4    00000083     rts2800_fpu32.lib : fd_mpy.obj (.text)
+                  0031d747    0000007b     DSP2833x_CpuTimers.obj (.text)
+                  0031d7c2    0000005d     rts2800_fpu32.lib : snprintf.obj (.text)
+                  0031d81f    00000046                       : boot.obj (.text)
+                  0031d865    0000003f     analog.obj (.text)
+                  0031d8a4    00000034     rts2800_fpu32.lib : ldexp.obj (.text)
+                  0031d8d8    00000031                       : atoi.obj (.text)
+                  0031d909    0000002e                       : ltoa.obj (.text)
+                  0031d937    0000002a                       : fd_cmp.obj (.text)
+                  0031d961    0000002a                       : l_div.obj (.text)
+                  0031d98b    00000028     DSP2833x_PieCtrl.obj (.text)
+                  0031d9b3    00000023     digital_inout_bb.obj (.text)
+                  0031d9d6    00000023     rts2800_fpu32.lib : fd_tofs.obj (.text)
+                  0031d9f9    00000022                       : i_div.obj (.text)
+                  0031da1b    00000021                       : fd_toi.obj (.text)
+                  0031da3c    0000001f                       : fd_tol.obj (.text)
+                  0031da5b    0000001f                       : strncpy.obj (.text)
+                  0031da7a    0000001e                       : ll_cmp.obj (.text)
+                  0031da98    0000001e                       : memcpy.obj (.text)
+                  0031dab6    0000001d                       : i_tofd.obj (.text)
+                  0031dad3    0000001c                       : fs_tofd.obj (.text)
+                  0031daef    0000001c                       : l_tofd.obj (.text)
+                  0031db0b    0000001c                       : modf.obj (.text)
+                  0031db27    00000019                       : args_main.obj (.text)
+                  0031db40    00000019                       : exit.obj (.text)
+                  0031db59    00000018                       : ll_aox.obj (.text)
+                  0031db71    00000016                       : frexp.obj (.text)
+                  0031db87    00000015     DSP2833x_MemCopy.obj (.text)
+                  0031db9c    00000014     main.obj (.text:retain)
+                  0031dbb0    0000000e     rts2800_fpu32.lib : fd_sub.obj (.text)
+                  0031dbbe    0000000e                       : memccpy.obj (.text)
+                  0031dbcc    0000000c                       : memset.obj (.text)
+                  0031dbd8    0000000c                       : strchr.obj (.text)
+                  0031dbe4    00000009                       : _lock.obj (.text)
+                  0031dbed    00000009                       : fd_neg.obj (.text)
+                  0031dbf6    00000008     DSP2833x_CodeStartBranch.obj (.text)
+                  0031dbfe    00000008     rts2800_fpu32.lib : strlen.obj (.text)
+                  0031dc06    00000005                       : strcpy.obj (.text)
+                  0031dc0b    00000004                       : atof.obj (.text)
+
+ramfuncs   0    0031dc0f    0000001f     RUN ADDR = 00008000
+                  0031dc0f    0000001b     DSP2833x_SysCtrl.obj (ramfuncs)
+                  0031dc2a    00000004     DSP2833x_usDelay.obj (ramfuncs)
+
+codestart 
+*          0    0033fff6    00000002     
+                  0033fff6    00000002     DSP2833x_CodeStartBranch.obj (codestart)
+
+.econst    0    00338000    000011db     
+                  00338000    00000713     code_group_all.obj (.econst:.string)
+                  00338713    00000001     --HOLE-- [fill = 0]
+                  00338714    000001bf     scic.obj (.econst:.string)
+                  003388d3    00000001     --HOLE-- [fill = 0]
+                  003388d4    000001a9     scib.obj (.econst:.string)
+                  00338a7d    00000001     --HOLE-- [fill = 0]
+                  00338a7e    00000173     fullBridegTrip.obj (.econst:.string)
+                  00338bf1    00000001     --HOLE-- [fill = 0]
+                  00338bf2    00000102     code_proc.obj (.econst:.string)
+                  00338cf4    00000101     rts2800_fpu32.lib : ctype.obj (.econst:.string:__ctypes_)
+                  00338df5    00000001     --HOLE-- [fill = 0]
+                  00338df6    00000100     DSP2833x_PieVect.obj (.econst)
+                  00338ef6    000000bc     common_module.obj (.econst:.string)
+                  00338fb2    000000b5     udd_eeprom.obj (.econst:.string)
+                  00339067    00000001     --HOLE-- [fill = 0]
+                  00339068    00000074     serial_com.obj (.econst:.string)
+                  003390dc    00000067     fullBridgeCtrl.obj (.econst:.string)
+                  00339143    00000001     --HOLE-- [fill = 0]
+                  00339144    00000026     rts2800_fpu32.lib : _printfi.obj (.econst:.string)
+                  0033916a    0000001c                       : _printfi.obj (.econst)
+                  00339186    00000019     main.obj (.econst:.string)
+                  0033919f    00000001     --HOLE-- [fill = 0]
+                  003391a0    00000014     rts2800_fpu32.lib : strtod.obj (.econst:_digits)
+                  003391b4    0000000f     MonitorProc.obj (.econst:.string)
+                  003391c3    00000001     --HOLE-- [fill = 0]
+                  003391c4    0000000c     rts2800_fpu32.lib : strtod.obj (.econst:_powerof10)
+                  003391d0    0000000b     switching_irq.obj (.econst:.string)
+
+.switch    0    0033938c    000000a8     
+                  0033938c    0000003e     code_group_all.obj (.switch:_get_code_group7)
+                  003393ca    0000002c     code_group_all.obj (.switch:_get_code_group0)
+                  003393f6    00000022     code_group_all.obj (.switch:_get_code_group2)
+                  00339418    0000001c     code_group_all.obj (.switch:_get_code_group4)
+
+.stack     1    00000400    00000300     UNINITIALIZED
+                  00000400    00000300     --HOLE--
+
+.ebss      1    0000c000    00000718     UNINITIALIZED
+                  0000c000    00000510     main.obj (.ebss)
+                  0000c510    00000018     DSP2833x_CpuTimers.obj (.ebss)
+                  0000c528    00000008     rts2800_fpu32.lib : memory.obj (.ebss)
+                  0000c530    00000004                       : exit.obj (.ebss)
+                  0000c534    00000004     switching_irq.obj (.ebss)
+                  0000c538    00000003     fullBridegTrip.obj (.ebss)
+                  0000c53b    00000001     DSP2833x_GlobalVariableDefs.obj (.ebss)
+                  0000c53c    00000002     MonitorProc.obj (.ebss)
+                  0000c53e    00000002     rts2800_fpu32.lib : _lock.obj (.ebss:__lock)
+                  0000c540    000000a4     scib.obj (.ebss)
+                  0000c5e4    00000002     rts2800_fpu32.lib : _lock.obj (.ebss:__unlock)
+                  0000c5e6    00000002     analog.obj (.ebss)
+                  0000c5e8    00000002     common_module.obj (.ebss)
+                  0000c5ea    00000002     refFunc.obj (.ebss)
+                  0000c5ec    00000001     rts2800_fpu32.lib : errno.obj (.ebss)
+                  0000c5ed    00000013     --HOLE--
+                  0000c600    000000a4     scic.obj (.ebss)
+                  0000c6a4    0000001c     --HOLE--
+                  0000c6c0    00000058     low_pass_filter.obj (.ebss)
+
+.esysmem   1    0000c718    00000300     UNINITIALIZED
+                  0000c718    00000001     rts2800_fpu32.lib : memory.obj (.esysmem)
+                  0000c719    000002ff     --HOLE--
 
 ZONE0DATA 
 *          0    00004000    00000100     UNINITIALIZED
@@ -117,154 +275,13 @@ ZONE7DATA
 *          0    00200000    00000100     UNINITIALIZED
                   00200000    00000100     main.obj (ZONE7DATA)
 
-.text      0    00318000    00005a30     
-                  00318000    00000046     rts2800_fpu32.lib : boot.obj (.text)
-                  00318046    00000018                       : exit.obj (.text)
-                  0031805e    00000009                       : _lock.obj (.text)
-                  00318067    00000015                       : args_main.obj (.text)
-                  0031807c    00000207     analog.obj (.text)
-                  00318283    00000e23     code_group_all.obj (.text)
-                  003190a6    000003c7     code_proc.obj (.text)
-                  0031946d    0000034e     common_module.obj (.text)
-                  003197bb    00000025     digital_inout_bb.obj (.text)
-                  003197e0    00000118     DS1307.obj (.text)
-                  003198f8    00000008     DSP2833x_CodeStartBranch.obj (.text)
-                  00319900    00000093     DSP2833x_CpuTimers.obj (.text)
-                  00319993    00000316     DSP2833x_DefaultIsr.obj (.text)
-                  00319ca9    00000017     DSP2833x_MemCopy.obj (.text)
-                  00319cc0    0000002a     DSP2833x_PieCtrl.obj (.text)
-                  00319cea    00000022     DSP2833x_PieVect.obj (.text)
-                  00319d0c    0000014f     DSP2833x_SysCtrl.obj (.text)
-                  00319e5b    00000559     fullBridegTrip.obj (.text)
-                  0031a3b4    000006fc     fullBridgeCtrl.obj (.text)
-                  0031aab0    00000128     low_pass_filter.obj (.text)
-                  0031abd8    00000221     main.obj (.text)
-                  0031adf9    000000ea     MonitorProc.obj (.text)
-                  0031aee3    000000a8     refFunc.obj (.text)
-                  0031af8b    000005e2     scib.obj (.text)
-                  0031b56d    0000063c     scic.obj (.text)
-                  0031bba9    000000d6     serial_com.obj (.text)
-                  0031bc7f    00000012     set_dac_point.obj (.text)
-                  0031bc91    0000038d     set_gpio.obj (.text)
-                  0031c01e    000003f8     switching_irq.obj (.text)
-                  0031c416    0000032b     udd_eeprom.obj (.text)
-                  0031c741    00000085     udd_timer_irq.obj (.text)
-                  0031c7c6    00000088     rts2800_fpu32.lib : fs_div.obj (.text)
-                  0031c84e    00000022                       : i_div.obj (.text)
-                  0031c870    00000021                       : memcpy_ff.obj (.text)
-                  0031c891    000001f4                       : memory.obj (.text)
-                  0031ca85    0000001a                       : modf.obj (.text)
-                  0031ca9f    00000007                       : memset.obj (.text)
-                  0031caa6    00000058                       : snprintf.obj (.text)
-                  0031cafe    00000009                       : strcpy.obj (.text)
-                  0031cb07    0000000a                       : strlen.obj (.text)
-                  0031cb11    00000020                       : strncpy.obj (.text)
-                  0031cb31    00000138                       : strtod.obj (.text)
-                  0031cc69    00000990                       : _printfi.obj (.text)
-                  0031d5f9    00000031                       : atoi.obj (.text)
-                  0031d62a    0000002e                       : ltoa.obj (.text)
-                  0031d658    00000012                       : memccpy.obj (.text)
-                  0031d66a    0000002a                       : fd_cmp.obj (.text)
-                  0031d694    0000008b                       : fd_div.obj (.text)
-                  0031d71f    00000083                       : fd_mpy.obj (.text)
-                  0031d7a2    00000009                       : fd_neg.obj (.text)
-                  0031d7ab    0000000e                       : fd_sub.obj (.text)
-                  0031d7b9    00000021                       : fd_toi.obj (.text)
-                  0031d7da    0000001f                       : fd_tol.obj (.text)
-                  0031d7f9    0000001c                       : fs_tofd.obj (.text)
-                  0031d815    0000002a                       : l_div.obj (.text)
-                  0031d83f    0000001c                       : l_tofd.obj (.text)
-                  0031d85b    0000001e                       : ll_cmp.obj (.text)
-                  0031d879    00000107                       : ll_div.obj (.text)
-                  0031d980    00000014                       : ll_mpy.obj (.text)
-                  0031d994    0000009c                       : fd_add.obj (.text)
-
-ramfuncs   0    0031da30    00000027     RUN ADDR = 00008000
-                  0031da30    00000023     DSP2833x_SysCtrl.obj (ramfuncs)
-                  0031da53    00000004     DSP2833x_usDelay.obj (ramfuncs)
-
-.pinit     0    00328000    00000000     UNINITIALIZED
-
-IQmath     0    00328000    00000000     UNINITIALIZED
-
-.econst    0    00338000    000011d4     
-                  00338000    00000713     code_group_all.obj (.econst)
-                  00338713    00000001     --HOLE-- [fill = 0]
-                  00338714    000001bf     scic.obj (.econst)
-                  003388d3    00000001     --HOLE-- [fill = 0]
-                  003388d4    000001a9     scib.obj (.econst)
-                  00338a7d    00000001     --HOLE-- [fill = 0]
-                  00338a7e    00000173     fullBridegTrip.obj (.econst)
-                  00338bf1    00000001     --HOLE-- [fill = 0]
-                  00338bf2    00000102     code_proc.obj (.econst)
-                  00338cf4    00000100     DSP2833x_PieVect.obj (.econst)
-                  00338df4    000000bc     common_module.obj (.econst)
-                  00338eb0    000000b5     udd_eeprom.obj (.econst)
-                  00338f65    00000001     --HOLE-- [fill = 0]
-                  00338f66    00000074     serial_com.obj (.econst)
-                  00338fda    00000067     fullBridgeCtrl.obj (.econst)
-                  00339041    00000001     --HOLE-- [fill = 0]
-                  00339042    0000003c     rts2800_fpu32.lib : _printfi.obj (.econst)
-                  0033907e    00000019     main.obj (.econst)
-                  00339097    00000001     --HOLE-- [fill = 0]
-                  00339098    00000014     rts2800_fpu32.lib : strtod.obj (.econst:_digits)
-                  003390ac    0000000f     MonitorProc.obj (.econst)
-                  003390bb    00000001     --HOLE-- [fill = 0]
-                  003390bc    0000000c     rts2800_fpu32.lib : strtod.obj (.econst:_powerof10)
-                  003390c8    0000000b     switching_irq.obj (.econst)
-                  003390d3    00000101     rts2800_fpu32.lib : ctype.obj (.econst:__ctypes_)
-
-.cinit     0    003391d4    000001b0     
-                  003391d4    0000000a     rts2800_fpu32.lib : exit.obj (.cinit)
-                  003391de    0000000a                       : _lock.obj (.cinit)
-                  003391e8    00000005     common_module.obj (.cinit)
-                  003391ed    0000000c     fullBridegTrip.obj (.cinit)
-                  003391f9    0000000a     low_pass_filter.obj (.cinit)
-                  00339203    00000116     main.obj (.cinit)
-                  00339319    00000005     MonitorProc.obj (.cinit)
-                  0033931e    0000002a     scib.obj (.cinit)
-                  00339348    0000002a     scic.obj (.cinit)
-                  00339372    00000009     switching_irq.obj (.cinit)
-                  0033937b    00000004     rts2800_fpu32.lib : memory.obj (.cinit)
-                  0033937f    00000004                       : errno.obj (.cinit)
-                  00339383    00000001     --HOLE-- [fill = 0]
-
-.switch    0    00339384    000000a8     
-                  00339384    000000a8     code_group_all.obj (.switch)
-
-csm_rsvd   0    0033ff80    00000000     UNINITIALIZED
-
-codestart 
-*          0    0033fff6    00000002     
-                  0033fff6    00000002     DSP2833x_CodeStartBranch.obj (codestart)
-
-csmpasswds 
-*          0    0033fff8    00000000     UNINITIALIZED
-
-.adc_cal   0    00380080    00000007     NOLOAD SECTION
-                  00380080    00000007     DSP2833x_ADC_cal.obj (.adc_cal)
-
-IQmathTables 
-*          0    003fe000    00000000     NOLOAD SECTION
-
-IQmathTables2 
-*          0    003feb50    00000000     NOLOAD SECTION
-
-FPUmathTables 
-*          0    003febdc    00000000     NOLOAD SECTION
-
 .reset     0    003fffc0    00000002     DSECT
                   003fffc0    00000002     rts2800_fpu32.lib : boot.obj (.reset)
 
 vectors    0    003fffc2    00000000     DSECT
 
-.bss       1    00000000    00000000     UNINITIALIZED
-
-.sysmem    1    00000050    00000300     UNINITIALIZED
-
-.esysmem   1    00000400    00000000     UNINITIALIZED
-
-.stack     1    00000400    00000300     UNINITIALIZED
+.adc_cal   0    00380080    00000007     NOLOAD SECTION
+                  00380080    00000007     DSP2833x_ADC_cal.obj (.adc_cal)
 
 DevEmuRegsFile 
 *          1    00000880    000000d0     UNINITIALIZED
@@ -458,1214 +475,1552 @@ I2caRegsFile
 *          1    00007900    00000022     UNINITIALIZED
                   00007900    00000022     DSP2833x_GlobalVariableDefs.obj (I2caRegsFile)
 
-DMARAML4   1    0000c000    00000000     UNINITIALIZED
-
-.ebss      1    0000c000    00000718     UNINITIALIZED
-                  0000c000    00000510     main.obj (.ebss)
-                  0000c510    00000018     DSP2833x_CpuTimers.obj (.ebss)
-                  0000c528    00000008     rts2800_fpu32.lib : memory.obj (.ebss)
-                  0000c530    00000004                       : exit.obj (.ebss)
-                  0000c534    00000004                       : _lock.obj (.ebss)
-                  0000c538    00000004     switching_irq.obj (.ebss)
-                  0000c53c    00000002     MonitorProc.obj (.ebss)
-                  0000c53e    00000002     analog.obj (.ebss)
-                  0000c540    000000a4     scib.obj (.ebss)
-                  0000c5e4    00000002     common_module.obj (.ebss)
-                  0000c5e6    00000002     refFunc.obj (.ebss)
-                  0000c5e8    00000003     fullBridegTrip.obj (.ebss)
-                  0000c5eb    00000001     rts2800_fpu32.lib : errno.obj (.ebss)
-                  0000c5ec    00000001     DSP2833x_GlobalVariableDefs.obj (.ebss)
-                  0000c600    000000a4     scic.obj (.ebss)
-                  0000c6c0    00000058     low_pass_filter.obj (.ebss)
-
-DMARAML5   1    0000d000    00000000     UNINITIALIZED
-
-DMARAML6   1    0000e000    00000000     UNINITIALIZED
-
-DMARAML7   1    0000f000    00000000     UNINITIALIZED
-
 CsmPwlFile 
 *          1    0033fff8    00000008     UNINITIALIZED
                   0033fff8    00000008     DSP2833x_GlobalVariableDefs.obj (CsmPwlFile)
 
 
+GLOBAL DATA SYMBOLS: SORTED BY DATA PAGE
+
+address     data page           name
+--------    ----------------    ----
+00000400      10 (00000400)     __stack
+
+00000880      22 (00000880)     _DevEmuRegs
+
+00000a80      2a (00000a80)     _FlashRegs
+
+00000ae0      2b (00000ac0)     _CsmRegs
+
+00000b00      2c (00000b00)     _AdcMirror
+00000b20      2c (00000b00)     _XintfRegs
+
+00000c00      30 (00000c00)     _CpuTimer0Regs
+00000c08      30 (00000c00)     _CpuTimer1Regs
+00000c10      30 (00000c00)     _CpuTimer2Regs
+
+00000ce0      33 (00000cc0)     _PieCtrlRegs
+
+00000d00      34 (00000d00)     _PieVectTable
+
+00001000      40 (00001000)     _DmaRegs
+
+00004000     100 (00004000)     _ZONE0_BUF
+
+00005000     140 (00005000)     _McbspaRegs
+
+00005040     141 (00005040)     _McbspbRegs
+
+00006000     180 (00006000)     _ECanaRegs
+
+00006040     181 (00006040)     _ECanaLAMRegs
+
+00006080     182 (00006080)     _ECanaMOTSRegs
+
+000060c0     183 (000060c0)     _ECanaMOTORegs
+
+00006100     184 (00006100)     _ECanaMboxes
+
+00006200     188 (00006200)     _ECanbRegs
+
+00006240     189 (00006240)     _ECanbLAMRegs
+
+00006280     18a (00006280)     _ECanbMOTSRegs
+
+000062c0     18b (000062c0)     _ECanbMOTORegs
+
+00006300     18c (00006300)     _ECanbMboxes
+
+00006800     1a0 (00006800)     _EPwm1Regs
+
+00006840     1a1 (00006840)     _EPwm2Regs
+
+00006880     1a2 (00006880)     _EPwm3Regs
+
+000068c0     1a3 (000068c0)     _EPwm4Regs
+
+00006900     1a4 (00006900)     _EPwm5Regs
+
+00006940     1a5 (00006940)     _EPwm6Regs
+
+00006a00     1a8 (00006a00)     _ECap1Regs
+00006a20     1a8 (00006a00)     _ECap2Regs
+
+00006a40     1a9 (00006a40)     _ECap3Regs
+00006a60     1a9 (00006a40)     _ECap4Regs
+
+00006a80     1aa (00006a80)     _ECap5Regs
+00006aa0     1aa (00006a80)     _ECap6Regs
+
+00006b00     1ac (00006b00)     _EQep1Regs
+
+00006b40     1ad (00006b40)     _EQep2Regs
+
+00006f80     1be (00006f80)     _GpioCtrlRegs
+
+00006fc0     1bf (00006fc0)     _GpioDataRegs
+00006fe0     1bf (00006fc0)     _GpioIntRegs
+
+00007010     1c0 (00007000)     _SysCtrlRegs
+
+00007040     1c1 (00007040)     _SpiaRegs
+00007050     1c1 (00007040)     _SciaRegs
+00007070     1c1 (00007040)     _XIntruptRegs
+
+00007100     1c4 (00007100)     _AdcRegs
+
+00007750     1dd (00007740)     _ScibRegs
+00007770     1dd (00007740)     _ScicRegs
+
+00007900     1e4 (00007900)     _I2caRegs
+
+0000c000     300 (0000c000)     _adcI3rd
+0000c001     300 (0000c000)     _adcI2nd
+0000c002     300 (0000c000)     _gSciInFlag
+0000c003     300 (0000c000)     _digital_input
+0000c004     300 (0000c000)     _timer0_count
+0000c005     300 (0000c000)     _igbt_fault_input
+0000c006     300 (0000c000)     _debug_count
+0000c007     300 (0000c000)     _test_pulse_count
+0000c008     300 (0000c000)     _code_run_input_select
+0000c009     300 (0000c000)     _gMachineState
+0000c00a     300 (0000c000)     _giAdcVdc
+0000c00b     300 (0000c000)     _gPWMTripCode
+0000c00c     300 (0000c000)     _adcI_out
+0000c00d     300 (0000c000)     _code_dac_select_ch3
+0000c00e     300 (0000c000)     _code_dac_select_ch4
+0000c00f     300 (0000c000)     _adcI_pri
+0000c010     300 (0000c000)     _code_protect_Iadc_off
+0000c011     300 (0000c000)     _code_protect_over_I_off
+0000c012     300 (0000c000)     _code_protect_uv_off
+0000c013     300 (0000c000)     _code_protect_ov_off
+0000c014     300 (0000c000)     _protect_reg
+0000c015     300 (0000c000)     _code_protect_ex_trip_off
+0000c016     300 (0000c000)     _code_protect_IGBT_off
+0000c017     300 (0000c000)     _terminal_input_state
+0000c018     300 (0000c000)     _xcon_data
+0000c019     300 (0000c000)     _code_dac_select_ch2
+0000c01a     300 (0000c000)     _debug1
+0000c01b     300 (0000c000)     _init_charge_flag
+0000c01c     300 (0000c000)     _code_dac_select_ch1
+0000c01d     300 (0000c000)     _code_protect_inhibit_on
+0000c01e     300 (0000c000)     _scib_rx_msg_flag
+0000c01f     300 (0000c000)     _scic_rx_msg_flag
+0000c020     300 (0000c000)     _relay_flag
+0000c022     300 (0000c000)     _code_ctrl_mode
+0000c023     300 (0000c000)     _codeSetPulseNumber
+0000c024     300 (0000c000)     _code_set_Vdc_on
+0000c025     300 (0000c000)     _gTripFlag
+0000c026     300 (0000c000)     _MAX_PWM_CNT
+0000c027     300 (0000c000)     _gTripSaveFlag
+0000c028     300 (0000c000)     _EepromSaveFlag
+0000c029     300 (0000c000)     _gRunFlag
+0000c02a     300 (0000c000)     _Flag_TripDataBackup
+0000c02c     300 (0000c000)     _code_under_volt_set
+0000c02e     300 (0000c000)     _over_volt_set
+0000c030     300 (0000c000)     _codeOCLevel3rd
+0000c032     300 (0000c000)     _code_rate_hz
+0000c034     300 (0000c000)     _code_rate_current
+0000c036     300 (0000c000)     _code_rate_power
+0000c038     300 (0000c000)     _code_decel_time1
+0000c03a     300 (0000c000)     _code_rate_volt
+0000c03c     300 (0000c000)     _Is_Max_Coeff
+0000c03e     300 (0000c000)     _codeOCLevelOut
+
+0000c040     301 (0000c040)     _code_accel_time1
+0000c042     301 (0000c040)     _analog_cmd_in_zero2
+0000c044     301 (0000c040)     _codeAnalogSelect2
+0000c046     301 (0000c040)     _analog_cmd_in_span1
+0000c048     301 (0000c040)     _codeAnalogOutZero2
+0000c04a     301 (0000c040)     _codeAnalogOutSpan2
+0000c04c     301 (0000c040)     _codeAnalogOutSpan1
+0000c04e     301 (0000c040)     _codeAnalogOutZero1
+0000c050     301 (0000c040)     _codeAnalogOutOffset1
+0000c052     301 (0000c040)     _codeAnalogSelect1
+0000c054     301 (0000c040)     _analog_cmd_in_span2
+0000c056     301 (0000c040)     _code_accel_time2
+0000c058     301 (0000c040)     _code_decel_time2
+0000c05a     301 (0000c040)     _codeOCLevel2nd
+0000c05c     301 (0000c040)     _codeOCLevel1st
+0000c05e     301 (0000c040)     _code_OC_time
+0000c060     301 (0000c040)     _analog_cmd_in_zero1
+0000c062     301 (0000c040)     _codeAnalogOutOffset2
+0000c064     301 (0000c040)     _rDeadTime
+0000c066     301 (0000c040)     _allDeadTime
+0000c068     301 (0000c040)     _code_speed2
+0000c06a     301 (0000c040)     _code_adc_Vout_high
+0000c06c     301 (0000c040)     _code_Vout_calc_low
+0000c06e     301 (0000c040)     _code_Vdc_calc_high
+0000c070     301 (0000c040)     _code_adcIout1st
+0000c072     301 (0000c040)     _code_adcIout2nd
+0000c074     301 (0000c040)     _code_adc_Vout_low
+0000c076     301 (0000c040)     _codeIValueOut
+0000c078     301 (0000c040)     _code_adc_vdc_low
+0000c07a     301 (0000c040)     _codeIValue2nd
+0000c07c     301 (0000c040)     _code_Vdc_calc_low
+0000c07e     301 (0000c040)     _code_Vout_calc_high
+
+0000c080     302 (0000c080)     _codeIValue3rd
+0000c082     302 (0000c080)     _code_adc_vdc_high
+0000c084     302 (0000c080)     _Data_Check
+0000c086     302 (0000c080)     _Data_Backup
+0000c088     302 (0000c080)     _code_calIout4th
+0000c08a     302 (0000c080)     _Data_Init
+0000c08c     302 (0000c080)     _time_t
+0000c08e     302 (0000c080)     _code_calIout5th
+0000c090     302 (0000c080)     _code_adcIout5th
+0000c092     302 (0000c080)     _code_calIout1st
+0000c094     302 (0000c080)     _code_adcIout3rd
+0000c096     302 (0000c080)     _code_calIout3rd
+0000c098     302 (0000c080)     _Data_Load
+0000c09a     302 (0000c080)     _code_adcIout4th
+0000c09c     302 (0000c080)     _code_calIout2nd
+0000c09e     302 (0000c080)     _codeVdcOffset
+0000c0a0     302 (0000c080)     _codeVdcSpan
+0000c0a2     302 (0000c080)     _codeIAdcOffset3rd
+0000c0a4     302 (0000c080)     _codeVoutSpan
+0000c0a6     302 (0000c080)     _codeSwitFreq
+0000c0a8     302 (0000c080)     _codeIAdcOffsetOut
+0000c0aa     302 (0000c080)     _codeISpan3rd
+0000c0ac     302 (0000c080)     _codeISpanOut
+0000c0ae     302 (0000c080)     _codeISpan1st
+0000c0b0     302 (0000c080)     _codeIAdcOffset2nd
+0000c0b2     302 (0000c080)     _codeVoutOffset
+0000c0b4     302 (0000c080)     _codeISpan2nd
+0000c0b6     302 (0000c080)     _codeIAdcOffset1st
+0000c0b8     302 (0000c080)     _code_dac_scale_ch3
+0000c0ba     302 (0000c080)     _code_dac_offset_ch3
+0000c0bc     302 (0000c080)     _code_dac_scale_ch2
+0000c0be     302 (0000c080)     _code_dac_offset_ch4
+
+0000c0c0     303 (0000c0c0)     _codeIValue1st
+0000c0c2     303 (0000c0c0)     _code_dac_offset_ch2
+0000c0c4     303 (0000c0c0)     _code_integLimit
+0000c0c6     303 (0000c0c0)     _code_phaseMax
+0000c0c8     303 (0000c0c0)     _code_Ki
+0000c0ca     303 (0000c0c0)     _code_dac_offset_ch1
+0000c0cc     303 (0000c0c0)     _code_dac_scale_ch4
+0000c0ce     303 (0000c0c0)     _code_Kp
+0000c0d0     303 (0000c0c0)     _analog_ref_b
+0000c0d2     303 (0000c0c0)     _analog_ref_a
+0000c0d4     303 (0000c0c0)     _dac_ch0_unit_count_value
+0000c0d6     303 (0000c0c0)     _dac_ch2_unit_count_value
+0000c0d8     303 (0000c0c0)     _dac_ch1_unit_count_value
+0000c0da     303 (0000c0c0)     _I_pri
+0000c0dc     303 (0000c0c0)     _Vout
+0000c0de     303 (0000c0c0)     _I_out
+0000c0e0     303 (0000c0c0)     _I3rd
+0000c0e2     303 (0000c0c0)     _I2nd
+0000c0e4     303 (0000c0c0)     _VdcScale
+0000c0e6     303 (0000c0c0)     _phaseVref
+0000c0e8     303 (0000c0c0)     _VdcOffset
+0000c0ea     303 (0000c0c0)     _VoutOffset
+0000c0ec     303 (0000c0c0)     _VoutScale
+0000c0ee     303 (0000c0c0)     _inv_code_dac_scale_ch1
+0000c0f0     303 (0000c0c0)     _dac_ch3_unit_count_value
+0000c0f2     303 (0000c0c0)     _inv_code_dac_scale_ch2
+0000c0f4     303 (0000c0c0)     _inv_code_dac_scale_ch4
+0000c0f6     303 (0000c0c0)     _inv_code_dac_scale_ch3
+0000c0f8     303 (0000c0c0)     _IoutOffset3rd
+0000c0fa     303 (0000c0c0)     _IoutScale3rd
+0000c0fc     303 (0000c0c0)     _IoutScale4th
+0000c0fe     303 (0000c0c0)     _nativeI_out
+
+0000c100     304 (0000c100)     _IoutOffset4th
+0000c102     304 (0000c100)     _IoutScale1st
+0000c104     304 (0000c100)     _IoutOffset1st
+0000c106     304 (0000c100)     _IoutOffset2nd
+0000c108     304 (0000c100)     _IoutScale2nd
+0000c10a     304 (0000c100)     _phaseShiftRatio
+0000c10c     304 (0000c100)     _preIntegral
+0000c10e     304 (0000c100)     _Power_out
+0000c110     304 (0000c100)     _ovpTimer
+0000c112     304 (0000c100)     _OC_Timer
+0000c114     304 (0000c100)     _nativeI2nd
+0000c116     304 (0000c100)     _nativeI_pri
+0000c118     304 (0000c100)     _nativeI3rd
+0000c11a     304 (0000c100)     _ctrlIntegral
+0000c11c     304 (0000c100)     _ctrlError
+0000c11e     304 (0000c100)     _ref_time
+0000c120     304 (0000c100)     _CosTheta
+0000c122     304 (0000c100)     _SinTheta
+0000c124     304 (0000c100)     _code_testPwmPhase
+0000c126     304 (0000c100)     _code_Vdc_set_value
+0000c128     304 (0000c100)     _reference_out
+0000c12a     304 (0000c100)     _reference_in
+0000c12c     304 (0000c100)     _theta
+0000c12e     304 (0000c100)     _frequency
+0000c130     304 (0000c100)     _code_I_out_ref
+0000c132     304 (0000c100)     _OverCurLimit
+0000c134     304 (0000c100)     _code_VoutLimit
+0000c136     304 (0000c100)     _code_Vout
+0000c138     304 (0000c100)     _codeInitTime
+0000c13a     304 (0000c100)     _func_flag
+0000c13c     304 (0000c100)     _code_ovpTime
+0000c13e     304 (0000c100)     _codePwmPhaseInit
+
+0000c140     305 (0000c140)     _refer_in0
+0000c142     305 (0000c140)     _RMS_Ia
+0000c144     305 (0000c140)     _gfRunTime
+0000c146     305 (0000c140)     _Is_mag
+0000c148     305 (0000c140)     _Ts
+0000c14a     305 (0000c140)     _code_dac_scale_ch1
+0000c14c     305 (0000c140)     _RMS_Ib
+0000c14e     305 (0000c140)     _inv_Ts
+0000c150     305 (0000c140)     _Vdc
+0000c152     305 (0000c140)     _Vs_max
+0000c154     305 (0000c140)     _Is_max
+0000c156     305 (0000c140)     _Is_mag_rms
+0000c158     305 (0000c140)     _DutyCount
+0000c15c     305 (0000c140)     _Is_dq
+0000c160     305 (0000c140)     _DutyRatio
+0000c166     305 (0000c140)     _Is_abc
+0000c16c     305 (0000c140)     _gStr2
+0000c176     305 (0000c140)     _monitor
+
+0000c180     306 (0000c180)     _TimeInput
+0000c18d     306 (0000c180)     _adc_result
+0000c19d     306 (0000c180)     _gSciaRxBuf
+
+0000c1c0     307 (0000c1c0)     _gSciaTxBuf
+0000c1d8     307 (0000c1c0)     _MonitorMsg
+
+0000c200     308 (0000c200)     _code_inform
+
+0000c240     309 (0000c240)     _gStr1
+
+0000c280     30a (0000c280)     _TripInfo
+
+0000c300     30c (0000c300)     _TripInfoNow
+
+0000c380     30e (0000c380)     _dac_point
+
+0000c510     314 (0000c500)     _CpuTimer1
+0000c518     314 (0000c500)     _CpuTimer2
+0000c520     314 (0000c500)     _CpuTimer0
+0000c530     314 (0000c500)     ___TI_cleanup_ptr
+0000c532     314 (0000c500)     ___TI_dtors_ptr
+0000c536     314 (0000c500)     _phase_ratio
+0000c53b     314 (0000c500)     _PartIdRegs
+0000c53e     314 (0000c500)     __lock
+
+0000c540     315 (0000c540)     _scib_rx_start_addr
+0000c541     315 (0000c540)     _scib_rx_end_addr
+0000c544     315 (0000c540)     _scib_tx_end_addr
+0000c545     315 (0000c540)     _scib_tx_start_addr
+0000c55b     315 (0000c540)     _scib_rx_msg_box
+
+0000c580     316 (0000c580)     _scib_tx_msg_box
+
+0000c5e4     317 (0000c5c0)     __unlock
+0000c5e6     317 (0000c5c0)     _lpfI_out
+0000c5ec     317 (0000c5c0)     _errno
+
+0000c600     318 (0000c600)     _scic_tx_end_addr
+0000c603     318 (0000c600)     _scic_rx_start_addr
+0000c604     318 (0000c600)     _scic_rx_end_addr
+0000c605     318 (0000c600)     _scic_tx_start_addr
+0000c61b     318 (0000c600)     _scic_rx_msg_box
+
+0000c640     319 (0000c640)     _scic_tx_msg_box
+
+0000c6c0     31b (0000c6c0)     _LPF_I_uvw_cutoff_freq
+0000c6c2     31b (0000c6c0)     _LPF_Vdc_cutoff_freq
+0000c6c4     31b (0000c6c0)     _LPF_I_v_in
+0000c6ca     31b (0000c6c0)     _LPF_I_w_in
+0000c6d0     31b (0000c6c0)     _LPF_I_v_out
+0000c6d6     31b (0000c6c0)     _LPF_I_u_out
+0000c6dc     31b (0000c6c0)     _LPF_Vdc_out
+0000c6e2     31b (0000c6c0)     _LPF_Vdc_in
+0000c6e8     31b (0000c6c0)     _LPF_I_u_in
+0000c6ee     31b (0000c6c0)     _LPF_I_w_out
+0000c6f4     31b (0000c6c0)     _LPF_I_v_K
+
+0000c700     31c (0000c700)     _LPF_I_w_K
+0000c708     31c (0000c700)     _LPF_Vdc_K
+0000c710     31c (0000c700)     _LPF_I_u_K
+0000c718     31c (0000c700)     __sys_memory
+
+00100000    4000 (00100000)     _ZONE6_BUF
+
+00200000    8000 (00200000)     _ZONE7_BUF
+
+00338cf4    ce33 (00338cc0)     __ctypes_
+
+00338df6    ce37 (00338dc0)     _PieVectTableInit
+
+0033fff8    cfff (0033ffc0)     _CsmPwl
+
+
 GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
 
-address    name
---------   ----
-00000000   .bss
-00000000   .data
-00318000   .text
-00318046   C$$EXIT
-0031d994   FD$$ADD
-0031d66a   FD$$CMP
-0031d694   FD$$DIV
-0031d71f   FD$$MPY
-0031d7a2   FD$$NEG
-0031d7ab   FD$$SUB
-0031d7b9   FD$$TOI
-0031d7da   FD$$TOL
-0031c7c6   FS$$DIV
-0031d7f9   FS$$TOFD
-0031c84e   I$$DIV
-0031c85f   I$$MOD
-0031d815   L$$DIV
-0031d824   L$$MOD
-0031d83f   L$$TOFD
-0031d85b   LL$$CMP
-0031d879   LL$$DIV
-0031d8b5   LL$$MOD
-0031d980   LL$$MPY
-0031d832   UL$$DIV
-0031d839   UL$$MOD
-0031d86d   ULL$$CMP
-0031d8ef   ULL$$DIV
-0031d91e   ULL$$MOD
-00319a79   _ADCINT_ISR
-00380080   _ADC_cal
-00000b00   _AdcMirror
-00007100   _AdcRegs
-003180c1   _Adc_Isr
-0031a02f   _CheckIGBTFault
-00319fb5   _CheckOVP
-00319e8d   _CheckOverCurrent
-0031a094   _CheckOverHeat
-00319f91   _CheckOverVolt
-0031920e   _CheckSum
-00319210   _CheckSum_bk
-00319ffa   _CheckUndeVolt
-0031a348   _ClearTripDataToEeprom
-0031994c   _ConfigCpuTimer
-0000c120   _CosTheta
-0000c520   _CpuTimer0
-00000c00   _CpuTimer0Regs
-0000c510   _CpuTimer1
-00000c08   _CpuTimer1Regs
-0000c518   _CpuTimer2
-00000c10   _CpuTimer2Regs
-0033fff8   _CsmPwl
-00000ae0   _CsmRegs
-00319e2a   _CsmUnlock
-003199a7   _DATALOG_ISR
-00319b9b   _DINTCH1_ISR
-00319ba5   _DINTCH2_ISR
-00319baf   _DINTCH3_ISR
-00319bb9   _DINTCH4_ISR
-00319bc3   _DINTCH5_ISR
-00319bcd   _DINTCH6_ISR
-00319809   _DS1307ReadData
-003197e0   _DS1307WriteData
-00008023   _DSP28x_usDelay
-0000c086   _Data_Backup
-0000c084   _Data_Check
-0000c08a   _Data_Init
-0000c098   _Data_Load
-00000880   _DevEmuRegs
-00319d1f   _DisableDog
-00001000   _DmaRegs
-0000c158   _DutyCount
-0000c160   _DutyRatio
-00319c27   _ECAN0INTA_ISR
-00319c3b   _ECAN0INTB_ISR
-00319c31   _ECAN1INTA_ISR
-00319c45   _ECAN1INTB_ISR
-00319b0f   _ECAP1_INT_ISR
-00319b19   _ECAP2_INT_ISR
-00319b23   _ECAP3_INT_ISR
-00319b2d   _ECAP4_INT_ISR
-00319b37   _ECAP5_INT_ISR
-00319b41   _ECAP6_INT_ISR
-00006040   _ECanaLAMRegs
-000060c0   _ECanaMOTORegs
-00006080   _ECanaMOTSRegs
-00006100   _ECanaMboxes
-00006000   _ECanaRegs
-00006240   _ECanbLAMRegs
-000062c0   _ECanbMOTORegs
-00006280   _ECanbMOTSRegs
-00006300   _ECanbMboxes
-00006200   _ECanbRegs
-00006a00   _ECap1Regs
-00006a20   _ECap2Regs
-00006a40   _ECap3Regs
-00006a60   _ECap4Regs
-00006a80   _ECap5Regs
-00006aa0   _ECap6Regs
-003199bb   _EMUINT_ISR
-00319ad3   _EPWM1_INT_ISR
-00319a97   _EPWM1_TZINT_ISR
-00319add   _EPWM2_INT_ISR
-00319aa1   _EPWM2_TZINT_ISR
-00319ae7   _EPWM3_INT_ISR
-00319aab   _EPWM3_TZINT_ISR
-00319af1   _EPWM4_INT_ISR
-00319ab5   _EPWM4_TZINT_ISR
-00319afb   _EPWM5_INT_ISR
-00319abf   _EPWM5_TZINT_ISR
-00319b05   _EPWM6_INT_ISR
-00319ac9   _EPWM6_TZINT_ISR
-00006800   _EPwm1Regs
-00006840   _EPwm2Regs
-00006880   _EPwm3Regs
-000068c0   _EPwm4Regs
-00006900   _EPwm5Regs
-00006940   _EPwm6Regs
-00319b4b   _EQEP1_INT_ISR
-00319b55   _EQEP2_INT_ISR
-00006b00   _EQep1Regs
-00006b40   _EQep2Regs
-0000c028   _EepromSaveFlag
-00319cdf   _EnableInterrupts
-0000c02a   _Flag_TripDataBackup
-00000a80   _FlashRegs
-0031aed9   _GetInputMark
-00319835   _GetTimeAndDateStr
-0031a1b9   _GetTripInfo
-00006f80   _GpioCtrlRegs
-00006fc0   _GpioDataRegs
-00006fe0   _GpioIntRegs
-0031c416   _I2CA_Init
-0031c485   _I2CA_ReadData
-0031c428   _I2CA_WriteData
-00319bd7   _I2CINT1A_ISR
-00319be1   _I2CINT2A_ISR
-00007900   _I2caRegs
-0000c0e2   _I2nd
-0000c0e0   _I3rd
-003199cf   _ILLEGAL_ISR
-00319993   _INT13_ISR
-0031999d   _INT14_ISR
-0000c0de   _I_out
-0000c0da   _I_pri
-0031807c   _InitAdc
-00319900   _InitCpuTimers
-00008000   _InitFlash
-0031bc91   _InitGpio
-00319d7a   _InitPeripheralClocks
-00319cc0   _InitPieCtrl
-00319cea   _InitPieVectTable
-00319d27   _InitPll
-00319d0c   _InitSysCtrl
-0031addb   _InitWatchDog
-0031bf8a   _InitXintf
-0031aba2   _Init_Filters
-0000c104   _IoutOffset1st
-0000c106   _IoutOffset2nd
-0000c0f8   _IoutOffset3rd
-0000c100   _IoutOffset4th
-0000c102   _IoutScale1st
-0000c108   _IoutScale2nd
-0000c0fa   _IoutScale3rd
-0000c0fc   _IoutScale4th
-0000c03c   _Is_Max_Coeff
-0000c166   _Is_abc
-0000c15c   _Is_dq
-0000c146   _Is_mag
-0000c156   _Is_mag_rms
-0000c154   _Is_max
-003194a8   _LPF1
-0031ab40   _LPF_2nd
-0031aab0   _LPF_2nd_INIT
-0000c710   _LPF_I_u_K
-0000c6e8   _LPF_I_u_in
-0000c6d6   _LPF_I_u_out
-0000c6c0   _LPF_I_uvw_cutoff_freq
-0000c6f4   _LPF_I_v_K
-0000c6c4   _LPF_I_v_in
-0000c6d0   _LPF_I_v_out
-0000c700   _LPF_I_w_K
-0000c6ca   _LPF_I_w_in
-0000c6ee   _LPF_I_w_out
-0000c708   _LPF_Vdc_K
-0000c6c2   _LPF_Vdc_cutoff_freq
-0000c6e2   _LPF_Vdc_in
-0000c6dc   _LPF_Vdc_out
-00319c8b   _LUF_ISR
-00319c81   _LVF_ISR
-0000c026   _MAX_PWM_CNT
-00319b87   _MRINTA_ISR
-00319b73   _MRINTB_ISR
-00319b91   _MXINTA_ISR
-00319b7d   _MXINTB_ISR
-0031c01e   _MainPWM
-00005000   _McbspaRegs
-00005040   _McbspbRegs
-00319ca9   _MemCopy
-0000c1d8   _MonitorMsg
-003199c5   _NMI_ISR
-003194c7   _Nop
-0000c112   _OC_Timer
-0000c132   _OverCurLimit
-00319c95   _PIE_RESERVED
-003194ca   _PI_Damp_Controller
-0000c5ec   _PartIdRegs
-00000ce0   _PieCtrlRegs
-00000d00   _PieVectTable
-00338cf4   _PieVectTableInit
-00319531   _PowerOnReset
-0000c10e   _Power_out
-0000c142   _RMS_Ia
-0000c14c   _RMS_Ib
-003199b1   _RTOSINT_ISR
-0031da57   _RamfuncsLoadEnd
-0031da30   _RamfuncsLoadStart
-00008000   _RamfuncsRunStart
-0031a2a7   _ReadTripString
-00319bff   _SCIRXINTA_ISR
-00319c13   _SCIRXINTB_ISR
-00319beb   _SCIRXINTC_ISR
-00319c09   _SCITXINTA_ISR
-00319c1d   _SCITXINTB_ISR
-00319bf5   _SCITXINTC_ISR
-00319a51   _SEQ1INT_ISR
-00319a5b   _SEQ2INT_ISR
-00319b5f   _SPIRXINTA_ISR
-00319b69   _SPITXINTA_ISR
-00319247   _SaveDataProc
-0031a2cb   _SaveTripDataToEeprom
-00007050   _SciaRegs
-00007750   _ScibRegs
-00007770   _ScicRegs
-00319d15   _ServiceDog
-00319530   _SetSensorOffset
-0000c122   _SinTheta
-00007040   _SpiaRegs
-00007010   _SysCtrlRegs
-00319a83   _TINT0_ISR
-0000c180   _TimeInput
-0000c280   _TripInfo
-0000c300   _TripInfoNow
-0031a0d3   _TripProc
-0000c148   _Ts
-00319a33   _USER10_ISR
-00319a3d   _USER11_ISR
-00319a47   _USER12_ISR
-003199d9   _USER1_ISR
-003199e3   _USER2_ISR
-003199ed   _USER3_ISR
-003199f7   _USER4_ISR
-00319a01   _USER5_ISR
-00319a0b   _USER6_ISR
-00319a15   _USER7_ISR
-00319a1f   _USER8_ISR
-00319a29   _USER9_ISR
-0000c150   _Vdc
-0000c0e8   _VdcOffset
-0000c0e4   _VdcScale
-0000c0dc   _Vout
-0000c0ea   _VoutOffset
-0000c0ec   _VoutScale
-0000c152   _Vs_max
-00319a8d   _WAKEINT_ISR
-003198a6   _WriteTimeToDS1307
-0031a272   _WriteTripString
-00319a65   _XINT1_ISR
-00319a6f   _XINT2_ISR
-00319c4f   _XINT3_ISR
-00319c59   _XINT4_ISR
-00319c63   _XINT5_ISR
-00319c6d   _XINT6_ISR
-00319c77   _XINT7_ISR
-00007070   _XIntruptRegs
-00000b20   _XintfRegs
-00004000   _ZONE0_BUF
-00100000   _ZONE6_BUF
-00200000   _ZONE7_BUF
-00000300   __STACK_SIZE
-00000300   __SYSMEM_SIZE
-ffffffff   ___TI_pprof_out_hndl
-ffffffff   ___TI_prof_var_size
-ffffffff   ___TI_prof_var_start
-ffffffff   ___binit__
-00000000   ___bss__
-ffffffff   ___c_args__
-003391d4   ___cinit__
-00000000   ___data__
-00000000   ___edata__
-00000000   ___end__
-0031da30   ___etext__
-0031c870   ___memcpy_ff
-ffffffff   ___pinit__
-00318000   ___text__
-00318067   __args_main
-0000c530   __cleanup_ptr
-003390d3   __ctypes_
-0000c532   __dtors_ptr
-0000c536   __lock
-00318066   __nop
-0031d4f3   __printfi
-00318062   __register_lock
-0031805e   __register_unlock
-00000400   __stack
-00000050   __sys_memory
-0000c534   __unlock
-00318046   _abort
-0000c001   _adcI2nd
-0000c000   _adcI3rd
-0000c00c   _adcI_out
-0000c00f   _adcI_pri
-0000c18d   _adc_result
-0000c066   _allDeadTime
-0000c046   _analog_cmd_in_span1
-0000c054   _analog_cmd_in_span2
-0000c060   _analog_cmd_in_zero1
-0000c042   _analog_cmd_in_zero2
-00319581   _analog_cmd_proc
-00318282   _analog_out_proc
-0000c0d2   _analog_ref_a
-0000c0d0   _analog_ref_b
-0031d5f9   _atoi
-003191bd   _backup_data_load
-00318000   _c_int00
-0031ca6a   _calloc
-0031913c   _check_backup_data
-0031c679   _check_code_data
-0031ca68   _chkheap
-0000c050   _codeAnalogOutOffset1
-0000c062   _codeAnalogOutOffset2
-0000c04c   _codeAnalogOutSpan1
-0000c04a   _codeAnalogOutSpan2
-0000c04e   _codeAnalogOutZero1
-0000c048   _codeAnalogOutZero2
-0000c052   _codeAnalogSelect1
-0000c044   _codeAnalogSelect2
-0000c0b6   _codeIAdcOffset1st
-0000c0b0   _codeIAdcOffset2nd
-0000c0a2   _codeIAdcOffset3rd
-0000c0a8   _codeIAdcOffsetOut
-0000c0ae   _codeISpan1st
-0000c0b4   _codeISpan2nd
-0000c0aa   _codeISpan3rd
-0000c0ac   _codeISpanOut
-0000c0c0   _codeIValue1st
-0000c07a   _codeIValue2nd
-0000c080   _codeIValue3rd
-0000c076   _codeIValueOut
-0000c138   _codeInitTime
-0000c05c   _codeOCLevel1st
-0000c05a   _codeOCLevel2nd
-0000c030   _codeOCLevel3rd
-0000c03e   _codeOCLevelOut
-0000c13e   _codePwmPhaseInit
-0000c023   _codeSetPulseNumber
-0000c0a6   _codeSwitFreq
-0000c09e   _codeVdcOffset
-0000c0a0   _codeVdcSpan
-0000c0b2   _codeVoutOffset
-0000c0a4   _codeVoutSpan
-0000c130   _code_I_out_ref
-0000c0c8   _code_Ki
-0000c0ce   _code_Kp
-0000c05e   _code_OC_time
-0000c06e   _code_Vdc_calc_high
-0000c07c   _code_Vdc_calc_low
-0000c126   _code_Vdc_set_value
-0000c136   _code_Vout
-0000c134   _code_VoutLimit
-0000c07e   _code_Vout_calc_high
-0000c06c   _code_Vout_calc_low
-0000c040   _code_accel_time1
-0000c056   _code_accel_time2
-0000c070   _code_adcIout1st
-0000c072   _code_adcIout2nd
-0000c094   _code_adcIout3rd
-0000c09a   _code_adcIout4th
-0000c090   _code_adcIout5th
-0000c06a   _code_adc_Vout_high
-0000c074   _code_adc_Vout_low
-0000c082   _code_adc_vdc_high
-0000c078   _code_adc_vdc_low
-0000c092   _code_calIout1st
-0000c09c   _code_calIout2nd
-0000c096   _code_calIout3rd
-0000c088   _code_calIout4th
-0000c08e   _code_calIout5th
-0000c022   _code_ctrl_mode
-0000c0ca   _code_dac_offset_ch1
-0000c0c2   _code_dac_offset_ch2
-0000c0ba   _code_dac_offset_ch3
-0000c0be   _code_dac_offset_ch4
-0000c14a   _code_dac_scale_ch1
-0000c0bc   _code_dac_scale_ch2
-0000c0b8   _code_dac_scale_ch3
-0000c0cc   _code_dac_scale_ch4
-0000c01c   _code_dac_select_ch1
-0000c019   _code_dac_select_ch2
-0000c00d   _code_dac_select_ch3
-0000c00e   _code_dac_select_ch4
-0000c038   _code_decel_time1
-0000c058   _code_decel_time2
-0000c200   _code_inform
-0000c0c4   _code_integLimit
-0000c13c   _code_ovpTime
-0000c0c6   _code_phaseMax
-0000c016   _code_protect_IGBT_off
-0000c010   _code_protect_Iadc_off
-0000c015   _code_protect_ex_trip_off
-0000c01d   _code_protect_inhibit_on
-0000c013   _code_protect_ov_off
-0000c011   _code_protect_over_I_off
-0000c012   _code_protect_uv_off
-0000c034   _code_rate_current
-0000c032   _code_rate_hz
-0000c036   _code_rate_power
-0000c03a   _code_rate_volt
-0000c008   _code_run_input_select
-0000c024   _code_set_Vdc_on
-0000c068   _code_speed2
-0000c124   _code_testPwmPhase
-0000c02c   _code_under_volt_set
-0031c741   _cpu_timer0_isr
-0000c11c   _ctrlError
-0000c11a   _ctrlIntegral
-0000c0d4   _dac_ch0_unit_count_value
-0000c0d8   _dac_ch1_unit_count_value
-0000c0d6   _dac_ch2_unit_count_value
-0000c0f0   _dac_ch3_unit_count_value
-0000c380   _dac_point
-0031c60c   _data_over_proc
-0031c5c8   _data_under_proc
-0000c01a   _debug1
-0000c006   _debug_count
-0031954d   _delay_msecs
-0000c003   _digital_input
-003197bb   _digital_input_proc
-0031a3ca   _epwmFullBridgeDisable
-0031a3b4   _epwmFullBridgeEnable
-0000c5eb   _errno
-00318048   _exit
-0031c891   _free
-0031ca4a   _free_memory
-0000c12e   _frequency
-0000c13a   _func_flag
-0000c009   _gMachineState
-0000c00b   _gPWMTripCode
-0000c029   _gRunFlag
-0000c002   _gSciInFlag
-0000c19d   _gSciaRxBuf
-0000c1c0   _gSciaTxBuf
-0000c240   _gStr1
-0000c16c   _gStr2
-0000c025   _gTripFlag
-0000c027   _gTripSaveFlag
-003195fb   _get_adc_offset
-0031975f   _get_adc_vdc_high
-00319707   _get_adc_vdc_low
-00318283   _get_code_group0
-003184ef   _get_code_group1
-00318675   _get_code_group2
-00318842   _get_code_group3
-003188e8   _get_code_group4
-00318aac   _get_code_group5
-00318b7a   _get_code_group6
-00318d4a   _get_code_group7
-00319044   _get_code_group8
-003190a6   _get_code_information
-00319598   _get_command
-0031c4ee   _get_eprom_address
-0000c144   _gfRunTime
-0000c00a   _giAdcVdc
-00319574   _iGetAinCmd
-0000c005   _igbt_fault_input
-0031a601   _initEpwmFullBridge
-0031a3f1   _initVariFullbridgeCtrl
-0000c01b   _init_charge_flag
-003193f3   _init_eprom_data
-0000c14e   _inv_Ts
-0000c0ee   _inv_code_dac_scale_ch1
-0000c0f2   _inv_code_dac_scale_ch2
-0000c0f6   _inv_code_dac_scale_ch3
-0000c0f4   _inv_code_dac_scale_ch4
-0031c650   _invalid_address_proc
-0031946d   _linear_eq
-0031c6c8   _load_code2ram
-0031bba9   _load_sci_tx_mail_box
-0031b036   _load_scib_tx_mail_box
-0031b013   _load_scib_tx_mail_box_char
-0031b618   _load_scic_tx_mail_box
-0031b5f5   _load_scic_tx_mail_box_char
-0000c53e   _lpfI_out
-0031d62a   _ltoa
-0031abd8   _main
-0031c905   _malloc
-0031ca28   _max_free
-0031d658   _memccpy
-0031ca9f   _memset
-0031c8da   _minit
-0031a723   _mode3Current_P_I_LoopCtrl
-0031a847   _mode8LoopCtrl
-0031ca85   _modf
-0000c176   _monitor
-0031ae0c   _monitorPrint
-0031aea1   _monitor_proc
-0000c114   _nativeI2nd
-0000c118   _nativeI3rd
-0000c0fe   _nativeI_out
-0000c116   _nativeI_pri
-0000c02e   _over_volt_set
-0000c110   _ovpTimer
-00319560   _periodic_check
-0000c10a   _phaseShiftRatio
-0000c0e6   _phaseVref
-0000c53a   _phase_ratio
-0000c10c   _preIntegral
-0000c014   _protect_reg
-0031a714   _pwmPulseTest
-0031aa28   _pwmPulseTestLoopCtrl
-0000c064   _rDeadTime
-0031aee3   _ramp_proc
-0031c586   _read_eprom_data
-0031c960   _realloc
-0000c11e   _ref_time
-0000c140   _refer_in0
-0000c12a   _reference_in
-0000c128   _reference_out
-0000c020   _relay_flag
-00319c9f   _rsvd_ISR
-00319186   _save_backup_data
-0031b0b6   _scibRxFifoIsr
-0031b05a   _scibTxFifoIsr
-0031b135   _scib_cmd_proc
-0031afa6   _scib_fifo_init
-0000c545   _scib_rx_end_addr
-0000c55b   _scib_rx_msg_box
-0000c01e   _scib_rx_msg_flag
-0000c540   _scib_rx_start_addr
-0000c541   _scib_tx_end_addr
-0031affd   _scib_tx_msg
-0000c580   _scib_tx_msg_box
-0000c542   _scib_tx_start_addr
-0031b692   _scicRxFifoIsr
-0031b636   _scicTxFifoIsr
-0031b711   _scic_cmd_proc
-0031b588   _scic_fifo_init
-0000c605   _scic_rx_end_addr
-0000c61b   _scic_rx_msg_box
-0000c01f   _scic_rx_msg_flag
-0000c600   _scic_rx_start_addr
-0000c601   _scic_tx_end_addr
-0031b5df   _scic_tx_msg
-0000c640   _scic_tx_msg_box
-0000c602   _scic_tx_start_addr
-0031bbdb   _sendAllCodeData
-0031bbb6   _serial_com_proc
-0031911c   _set_code_default_double
-00319101   _set_code_default_int
-0031bc7f   _set_dac_point
-0031caa6   _snprintf
-0031cafe   _strcpy
-0031cb07   _strlen
-0031cb11   _strncpy
-0031cb31   _strtod
-0000c017   _terminal_input_state
-0031a95f   _testFullBridgeLoopCtrl1
-0000c007   _test_pulse_count
-0000c12c   _theta
-0000c08c   _time_t
-0000c004   _timer0_count
-0031a0b2   _trip_check
-00319e5b   _trip_recording
-00319549   _ulGetNow_mSec
-00319532   _ulGetTime_mSec
-0031adc7   _wakeint_isr
-0031c551   _write_code_2_eeprom
-0000c018   _xcon_data
-ffffffff   binit
-003391d4   cinit
-0033fff6   code_start
-00000000   edata
-00000000   end
-0031da30   etext
-ffffffff   pinit
+page  address   name                       
+----  -------   ----                       
+0     00318000  .text                      
+0     0031db40  C$$EXIT                    
+0     0031d48f  FD$$ADD                    
+0     0031d937  FD$$CMP                    
+0     0031d52b  FD$$DIV                    
+0     0031d6c4  FD$$MPY                    
+0     0031dbed  FD$$NEG                    
+0     0031dbb0  FD$$SUB                    
+0     0031d9d6  FD$$TOFS                   
+0     0031da1b  FD$$TOI                    
+0     0031da3c  FD$$TOL                    
+0     0031d5b6  FS$$DIV                    
+0     0031dad3  FS$$TOFD                   
+0     0031d9f9  I$$DIV                     
+0     0031da0a  I$$MOD                     
+0     0031dab6  I$$TOFD                    
+0     0031d961  L$$DIV                     
+0     0031d970  L$$MOD                     
+0     0031daef  L$$TOFD                    
+0     0031db59  LL$$AND                    
+0     0031da7a  LL$$CMP                    
+0     0031ce5e  LL$$DIV                    
+0     0031ce9a  LL$$MOD                    
+0     0031db61  LL$$OR                     
+0     0031db69  LL$$XOR                    
+0     0031d97e  UL$$DIV                    
+0     0031d985  UL$$MOD                    
+0     0031da8c  ULL$$CMP                   
+0     0031ced4  ULL$$DIV                   
+0     0031cf03  ULL$$MOD                   
+0     0031c110  _ADCINT_ISR                
+0     00380080  _ADC_cal                   
+1     00000b00  _AdcMirror                 
+1     00007100  _AdcRegs                   
+0     0031c94d  _Adc_Isr                   
+0     0031a938  _CheckIGBTFault            
+0     0031a8b6  _CheckOVP                  
+0     0031a78e  _CheckOverCurrent          
+0     0031a99f  _CheckOverHeat             
+0     0031a88d  _CheckOverVolt             
+0     0031b348  _CheckSum                  
+0     0031b34a  _CheckSum_bk               
+0     0031a900  _CheckUndeVolt             
+0     0031ac48  _ClearTripDataToEeprom     
+0     0031d788  _ConfigCpuTimer            
+1     0000c120  _CosTheta                  
+1     0000c520  _CpuTimer0                 
+1     00000c00  _CpuTimer0Regs             
+1     0000c510  _CpuTimer1                 
+1     00000c08  _CpuTimer1Regs             
+1     0000c518  _CpuTimer2                 
+1     00000c10  _CpuTimer2Regs             
+1     0033fff8  _CsmPwl                    
+1     00000ae0  _CsmRegs                   
+0     0031d02c  _CsmUnlock                 
+0     0031c03e  _DATALOG_ISR               
+0     0031c232  _DINTCH1_ISR               
+0     0031c23c  _DINTCH2_ISR               
+0     0031c246  _DINTCH3_ISR               
+0     0031c250  _DINTCH4_ISR               
+0     0031c25a  _DINTCH5_ISR               
+0     0031c264  _DINTCH6_ISR               
+0     0031cd65  _DS1307ReadData            
+0     0031cd41  _DS1307WriteData           
+0     0000801b  _DSP28x_usDelay            
+1     0000c086  _Data_Backup               
+1     0000c084  _Data_Check                
+1     0000c08a  _Data_Init                 
+1     0000c098  _Data_Load                 
+1     00000880  _DevEmuRegs                
+0     0031cf78  _DisableDog                
+1     00001000  _DmaRegs                   
+1     0000c158  _DutyCount                 
+1     0000c160  _DutyRatio                 
+0     0031c2be  _ECAN0INTA_ISR             
+0     0031c2d2  _ECAN0INTB_ISR             
+0     0031c2c8  _ECAN1INTA_ISR             
+0     0031c2dc  _ECAN1INTB_ISR             
+0     0031c1a6  _ECAP1_INT_ISR             
+0     0031c1b0  _ECAP2_INT_ISR             
+0     0031c1ba  _ECAP3_INT_ISR             
+0     0031c1c4  _ECAP4_INT_ISR             
+0     0031c1ce  _ECAP5_INT_ISR             
+0     0031c1d8  _ECAP6_INT_ISR             
+1     00006040  _ECanaLAMRegs              
+1     000060c0  _ECanaMOTORegs             
+1     00006080  _ECanaMOTSRegs             
+1     00006100  _ECanaMboxes               
+1     00006000  _ECanaRegs                 
+1     00006240  _ECanbLAMRegs              
+1     000062c0  _ECanbMOTORegs             
+1     00006280  _ECanbMOTSRegs             
+1     00006300  _ECanbMboxes               
+1     00006200  _ECanbRegs                 
+1     00006a00  _ECap1Regs                 
+1     00006a20  _ECap2Regs                 
+1     00006a40  _ECap3Regs                 
+1     00006a60  _ECap4Regs                 
+1     00006a80  _ECap5Regs                 
+1     00006aa0  _ECap6Regs                 
+0     0031c052  _EMUINT_ISR                
+0     0031c16a  _EPWM1_INT_ISR             
+0     0031c12e  _EPWM1_TZINT_ISR           
+0     0031c174  _EPWM2_INT_ISR             
+0     0031c138  _EPWM2_TZINT_ISR           
+0     0031c17e  _EPWM3_INT_ISR             
+0     0031c142  _EPWM3_TZINT_ISR           
+0     0031c188  _EPWM4_INT_ISR             
+0     0031c14c  _EPWM4_TZINT_ISR           
+0     0031c192  _EPWM5_INT_ISR             
+0     0031c156  _EPWM5_TZINT_ISR           
+0     0031c19c  _EPWM6_INT_ISR             
+0     0031c160  _EPWM6_TZINT_ISR           
+1     00006800  _EPwm1Regs                 
+1     00006840  _EPwm2Regs                 
+1     00006880  _EPwm3Regs                 
+1     000068c0  _EPwm4Regs                 
+1     00006900  _EPwm5Regs                 
+1     00006940  _EPwm6Regs                 
+0     0031c1e2  _EQEP1_INT_ISR             
+0     0031c1ec  _EQEP2_INT_ISR             
+1     00006b00  _EQep1Regs                 
+1     00006b40  _EQep2Regs                 
+1     0000c028  _EepromSaveFlag            
+0     0031d9aa  _EnableInterrupts          
+1     0000c02a  _Flag_TripDataBackup       
+1     00000a80  _FlashRegs                 
+0     0031d14b  _GetInputMark              
+0     0031cd8f  _GetTimeAndDateStr         
+0     0031aa8b  _GetTripInfo               
+1     00006f80  _GpioCtrlRegs              
+1     00006fc0  _GpioDataRegs              
+1     00006fe0  _GpioIntRegs               
+0     0031bcec  _I2CA_Init                 
+0     0031bd54  _I2CA_ReadData             
+0     0031bcfe  _I2CA_WriteData            
+0     0031c26e  _I2CINT1A_ISR              
+0     0031c278  _I2CINT2A_ISR              
+1     00007900  _I2caRegs                  
+1     0000c0e2  _I2nd                      
+1     0000c0e0  _I3rd                      
+0     0031c066  _ILLEGAL_ISR               
+0     0031c02a  _INT13_ISR                 
+0     0031c034  _INT14_ISR                 
+1     0000c0de  _I_out                     
+1     0000c0da  _I_pri                     
+0     0031d865  _InitAdc                   
+0     0031d747  _InitCpuTimers             
+0     00008000  _InitFlash                 
+0     0031c340  _InitGpio                  
+0     0031cfd1  _InitPeripheralClocks      
+0     0031d98b  _InitPieCtrl               
+0     0031cf80  _InitPll                   
+0     0031cf65  _InitSysCtrl               
+0     0031c751  _InitWatchDog              
+0     0031c526  _InitXintf                 
+0     0031cd0b  _Init_Filters              
+1     0000c104  _IoutOffset1st             
+1     0000c106  _IoutOffset2nd             
+1     0000c0f8  _IoutOffset3rd             
+1     0000c100  _IoutOffset4th             
+1     0000c102  _IoutScale1st              
+1     0000c108  _IoutScale2nd              
+1     0000c0fa  _IoutScale3rd              
+1     0000c0fc  _IoutScale4th              
+1     0000c03c  _Is_Max_Coeff              
+1     0000c166  _Is_abc                    
+1     0000c15c  _Is_dq                     
+1     0000c146  _Is_mag                    
+1     0000c156  _Is_mag_rms                
+1     0000c154  _Is_max                    
+0     0031b9c2  _LPF1                      
+0     0031ccae  _LPF_2nd                   
+0     0031cc22  _LPF_2nd_INIT              
+1     0000c710  _LPF_I_u_K                 
+1     0000c6e8  _LPF_I_u_in                
+1     0000c6d6  _LPF_I_u_out               
+1     0000c6c0  _LPF_I_uvw_cutoff_freq     
+1     0000c6f4  _LPF_I_v_K                 
+1     0000c6c4  _LPF_I_v_in                
+1     0000c6d0  _LPF_I_v_out               
+1     0000c700  _LPF_I_w_K                 
+1     0000c6ca  _LPF_I_w_in                
+1     0000c6ee  _LPF_I_w_out               
+1     0000c708  _LPF_Vdc_K                 
+1     0000c6c2  _LPF_Vdc_cutoff_freq       
+1     0000c6e2  _LPF_Vdc_in                
+1     0000c6dc  _LPF_Vdc_out               
+0     0031c322  _LUF_ISR                   
+0     0031c318  _LVF_ISR                   
+1     0000c026  _MAX_PWM_CNT               
+0     0031c21e  _MRINTA_ISR                
+0     0031c20a  _MRINTB_ISR                
+0     0031c228  _MXINTA_ISR                
+0     0031c214  _MXINTB_ISR                
+0     0031b5ce  _MainPWM                   
+1     00005000  _McbspaRegs                
+1     00005040  _McbspbRegs                
+0     0031db87  _MemCopy                   
+1     0000c1d8  _MonitorMsg                
+0     0031c05c  _NMI_ISR                   
+0     0031b9df  _Nop                       
+1     0000c112  _OC_Timer                  
+1     0000c132  _OverCurLimit              
+0     0031c32c  _PIE_RESERVED              
+0     0031b9e2  _PI_Damp_Controller        
+1     0000c53b  _PartIdRegs                
+1     00000ce0  _PieCtrlRegs               
+1     00000d00  _PieVectTable              
+0     00338df6  _PieVectTableInit          
+0     0031ba43  _PowerOnReset              
+1     0000c10e  _Power_out                 
+1     0000c142  _RMS_Ia                    
+1     0000c14c  _RMS_Ib                    
+0     0031c048  _RTOSINT_ISR               
+0     0031dc2e  _RamfuncsLoadEnd           
+0     0031dc0f  _RamfuncsLoadStart         
+0     00008000  _RamfuncsRunStart          
+0     0031ab95  _ReadTripString            
+0     0031c296  _SCIRXINTA_ISR             
+0     0031c2aa  _SCIRXINTB_ISR             
+0     0031c282  _SCIRXINTC_ISR             
+0     0031c2a0  _SCITXINTA_ISR             
+0     0031c2b4  _SCITXINTB_ISR             
+0     0031c28c  _SCITXINTC_ISR             
+0     0031c0e8  _SEQ1INT_ISR               
+0     0031c0f2  _SEQ2INT_ISR               
+0     0031c1f6  _SPIRXINTA_ISR             
+0     0031c200  _SPITXINTA_ISR             
+0     0031b386  _SaveDataProc              
+0     0031abbd  _SaveTripDataToEeprom      
+1     00007050  _SciaRegs                  
+1     00007750  _ScibRegs                  
+1     00007770  _ScicRegs                  
+0     0031cf6e  _ServiceDog                
+0     0031ba42  _SetSensorOffset           
+1     0000c122  _SinTheta                  
+1     00007040  _SpiaRegs                  
+1     00007010  _SysCtrlRegs               
+0     0031c11a  _TINT0_ISR                 
+1     0000c180  _TimeInput                 
+1     0000c280  _TripInfo                  
+1     0000c300  _TripInfoNow               
+0     0031a9de  _TripProc                  
+1     0000c148  _Ts                        
+0     0031c0ca  _USER10_ISR                
+0     0031c0d4  _USER11_ISR                
+0     0031c0de  _USER12_ISR                
+0     0031c070  _USER1_ISR                 
+0     0031c07a  _USER2_ISR                 
+0     0031c084  _USER3_ISR                 
+0     0031c08e  _USER4_ISR                 
+0     0031c098  _USER5_ISR                 
+0     0031c0a2  _USER6_ISR                 
+0     0031c0ac  _USER7_ISR                 
+0     0031c0b6  _USER8_ISR                 
+0     0031c0c0  _USER9_ISR                 
+1     0000c150  _Vdc                       
+1     0000c0e8  _VdcOffset                 
+1     0000c0e4  _VdcScale                  
+1     0000c0dc  _Vout                      
+1     0000c0ea  _VoutOffset                
+1     0000c0ec  _VoutScale                 
+1     0000c152  _Vs_max                    
+0     0031c124  _WAKEINT_ISR               
+0     0031ce07  _WriteTimeToDS1307         
+0     0031ab5d  _WriteTripString           
+0     0031c0fc  _XINT1_ISR                 
+0     0031c106  _XINT2_ISR                 
+0     0031c2e6  _XINT3_ISR                 
+0     0031c2f0  _XINT4_ISR                 
+0     0031c2fa  _XINT5_ISR                 
+0     0031c304  _XINT6_ISR                 
+0     0031c30e  _XINT7_ISR                 
+1     00007070  _XIntruptRegs              
+1     00000b20  _XintfRegs                 
+0     00004000  _ZONE0_BUF                 
+0     00100000  _ZONE6_BUF                 
+0     00200000  _ZONE7_BUF                 
+1     00000700  __STACK_END                
+abs   00000300  __STACK_SIZE               
+abs   00000300  __SYSMEM_SIZE              
+1     0000c530  ___TI_cleanup_ptr          
+1     0000c532  ___TI_dtors_ptr            
+0     003199e8  ___TI_printfi              
+abs   ffffffff  ___binit__                 
+abs   ffffffff  ___c_args__                
+0     003391db  ___cinit__                 
+0     0031dc0f  ___etext__                 
+abs   ffffffff  ___pinit__                 
+0     00318000  ___text__                  
+0     0031db27  __args_main                
+0     00338cf4  __ctypes_                  
+1     0000c53e  __lock                     
+0     0031dbec  __nop                      
+0     0031dbe8  __register_lock            
+0     0031dbe4  __register_unlock          
+1     00000400  __stack                    
+1     0000c718  __sys_memory               
+1     0000c5e4  __unlock                   
+0     0031db40  _abort                     
+1     0000c001  _adcI2nd                   
+1     0000c000  _adcI3rd                   
+1     0000c00c  _adcI_out                  
+1     0000c00f  _adcI_pri                  
+1     0000c18d  _adc_result                
+1     0000c066  _allDeadTime               
+1     0000c046  _analog_cmd_in_span1       
+1     0000c054  _analog_cmd_in_span2       
+1     0000c060  _analog_cmd_in_zero1       
+1     0000c042  _analog_cmd_in_zero2       
+0     0031ba95  _analog_cmd_proc           
+0     0031d8a3  _analog_out_proc           
+1     0000c0d2  _analog_ref_a              
+1     0000c0d0  _analog_ref_b              
+0     0031dc0b  _atof                      
+0     0031d8d8  _atoi                      
+0     0031b2f1  _backup_data_load          
+0     0031d81f  _c_int00                   
+0     0031c936  _calloc                    
+0     0031b266  _check_backup_data         
+0     0031bf5b  _check_code_data           
+0     0031c934  _chkheap                   
+1     0000c050  _codeAnalogOutOffset1      
+1     0000c062  _codeAnalogOutOffset2      
+1     0000c04c  _codeAnalogOutSpan1        
+1     0000c04a  _codeAnalogOutSpan2        
+1     0000c04e  _codeAnalogOutZero1        
+1     0000c048  _codeAnalogOutZero2        
+1     0000c052  _codeAnalogSelect1         
+1     0000c044  _codeAnalogSelect2         
+1     0000c0b6  _codeIAdcOffset1st         
+1     0000c0b0  _codeIAdcOffset2nd         
+1     0000c0a2  _codeIAdcOffset3rd         
+1     0000c0a8  _codeIAdcOffsetOut         
+1     0000c0ae  _codeISpan1st              
+1     0000c0b4  _codeISpan2nd              
+1     0000c0aa  _codeISpan3rd              
+1     0000c0ac  _codeISpanOut              
+1     0000c0c0  _codeIValue1st             
+1     0000c07a  _codeIValue2nd             
+1     0000c080  _codeIValue3rd             
+1     0000c076  _codeIValueOut             
+1     0000c138  _codeInitTime              
+1     0000c05c  _codeOCLevel1st            
+1     0000c05a  _codeOCLevel2nd            
+1     0000c030  _codeOCLevel3rd            
+1     0000c03e  _codeOCLevelOut            
+1     0000c13e  _codePwmPhaseInit          
+1     0000c023  _codeSetPulseNumber        
+1     0000c0a6  _codeSwitFreq              
+1     0000c09e  _codeVdcOffset             
+1     0000c0a0  _codeVdcSpan               
+1     0000c0b2  _codeVoutOffset            
+1     0000c0a4  _codeVoutSpan              
+1     0000c130  _code_I_out_ref            
+1     0000c0c8  _code_Ki                   
+1     0000c0ce  _code_Kp                   
+1     0000c05e  _code_OC_time              
+1     0000c06e  _code_Vdc_calc_high        
+1     0000c07c  _code_Vdc_calc_low         
+1     0000c126  _code_Vdc_set_value        
+1     0000c136  _code_Vout                 
+1     0000c134  _code_VoutLimit            
+1     0000c07e  _code_Vout_calc_high       
+1     0000c06c  _code_Vout_calc_low        
+1     0000c040  _code_accel_time1          
+1     0000c056  _code_accel_time2          
+1     0000c070  _code_adcIout1st           
+1     0000c072  _code_adcIout2nd           
+1     0000c094  _code_adcIout3rd           
+1     0000c09a  _code_adcIout4th           
+1     0000c090  _code_adcIout5th           
+1     0000c06a  _code_adc_Vout_high        
+1     0000c074  _code_adc_Vout_low         
+1     0000c082  _code_adc_vdc_high         
+1     0000c078  _code_adc_vdc_low          
+1     0000c092  _code_calIout1st           
+1     0000c09c  _code_calIout2nd           
+1     0000c096  _code_calIout3rd           
+1     0000c088  _code_calIout4th           
+1     0000c08e  _code_calIout5th           
+1     0000c022  _code_ctrl_mode            
+1     0000c0ca  _code_dac_offset_ch1       
+1     0000c0c2  _code_dac_offset_ch2       
+1     0000c0ba  _code_dac_offset_ch3       
+1     0000c0be  _code_dac_offset_ch4       
+1     0000c14a  _code_dac_scale_ch1        
+1     0000c0bc  _code_dac_scale_ch2        
+1     0000c0b8  _code_dac_scale_ch3        
+1     0000c0cc  _code_dac_scale_ch4        
+1     0000c01c  _code_dac_select_ch1       
+1     0000c019  _code_dac_select_ch2       
+1     0000c00d  _code_dac_select_ch3       
+1     0000c00e  _code_dac_select_ch4       
+1     0000c038  _code_decel_time1          
+1     0000c058  _code_decel_time2          
+1     0000c200  _code_inform               
+1     0000c0c4  _code_integLimit           
+1     0000c13c  _code_ovpTime              
+1     0000c0c6  _code_phaseMax             
+1     0000c016  _code_protect_IGBT_off     
+1     0000c010  _code_protect_Iadc_off     
+1     0000c015  _code_protect_ex_trip_off  
+1     0000c01d  _code_protect_inhibit_on   
+1     0000c013  _code_protect_ov_off       
+1     0000c011  _code_protect_over_I_off   
+1     0000c012  _code_protect_uv_off       
+1     0000c034  _code_rate_current         
+1     0000c032  _code_rate_hz              
+1     0000c036  _code_rate_power           
+1     0000c03a  _code_rate_volt            
+1     0000c008  _code_run_input_select     
+1     0000c024  _code_set_Vdc_on           
+1     0000c068  _code_speed2               
+1     0000c124  _code_testPwmPhase         
+1     0000c02c  _code_under_volt_set       
+0     0031d63e  _cpu_timer0_isr            
+1     0000c11c  _ctrlError                 
+1     0000c11a  _ctrlIntegral              
+1     0000c0d4  _dac_ch0_unit_count_value  
+1     0000c0d8  _dac_ch1_unit_count_value  
+1     0000c0d6  _dac_ch2_unit_count_value  
+1     0000c0f0  _dac_ch3_unit_count_value  
+1     0000c380  _dac_point                 
+0     0031bee8  _data_over_proc            
+0     0031be9e  _data_under_proc           
+1     0000c01a  _debug1                    
+1     0000c006  _debug_count               
+0     0031ba5f  _delay_msecs               
+1     0000c003  _digital_input             
+0     0031d9b3  _digital_input_proc        
+0     00319b03  _epwmFullBridgeDisable     
+0     00319aed  _epwmFullBridgeEnable      
+1     0000c5ec  _errno                     
+0     0031db42  _exit                      
+0     0031c76b  _free                      
+0     0031c916  _free_memory               
+1     0000c12e  _frequency                 
+0     0031db71  _frexp                     
+1     0000c13a  _func_flag                 
+1     0000c009  _gMachineState             
+1     0000c00b  _gPWMTripCode              
+1     0000c029  _gRunFlag                  
+1     0000c002  _gSciInFlag                
+1     0000c19d  _gSciaRxBuf                
+1     0000c1c0  _gSciaTxBuf                
+1     0000c240  _gStr1                     
+1     0000c16c  _gStr2                     
+1     0000c025  _gTripFlag                 
+1     0000c027  _gTripSaveFlag             
+0     0031bb1a  _get_adc_offset            
+0     0031bc8c  _get_adc_vdc_high          
+0     0031bc30  _get_adc_vdc_low           
+0     00318000  _get_code_group0           
+0     0031828e  _get_code_group1           
+0     0031842b  _get_code_group2           
+0     00318612  _get_code_group3           
+0     003186c2  _get_code_group4           
+0     0031889c  _get_code_group5           
+0     00318976  _get_code_group6           
+0     00318b61  _get_code_group7           
+0     00318e85  _get_code_group8           
+0     0031b1dd  _get_code_information      
+0     0031baac  _get_command               
+0     0031bdb9  _get_eprom_address         
+1     0000c144  _gfRunTime                 
+1     0000c00a  _giAdcVdc                  
+0     0031ba89  _iGetAinCmd                
+1     0000c005  _igbt_fault_input          
+0     00319d47  _initEpwmFullBridge        
+0     00319b1f  _initVariFullbridgeCtrl    
+1     0000c01b  _init_charge_flag          
+0     0031b552  _init_eprom_data           
+1     0000c14e  _inv_Ts                    
+1     0000c0ee  _inv_code_dac_scale_ch1    
+1     0000c0f2  _inv_code_dac_scale_ch2    
+1     0000c0f6  _inv_code_dac_scale_ch3    
+1     0000c0f4  _inv_code_dac_scale_ch4    
+0     0031bf32  _invalid_address_proc      
+0     0031d8a4  _ldexp                     
+0     0031b981  _linear_eq                 
+0     0031bfad  _load_code2ram             
+0     0031d154  _load_sci_tx_mail_box      
+0     0031ad4f  _load_scib_tx_mail_box     
+0     0031ad2a  _load_scib_tx_mail_box_char
+0     0031a26e  _load_scic_tx_mail_box     
+0     0031a249  _load_scic_tx_mail_box_char
+1     0000c5e6  _lpfI_out                  
+0     0031d909  _ltoa                      
+0     0031c578  _main                      
+0     0031c7d6  _malloc                    
+0     0031c8f3  _max_free                  
+0     0031dbbe  _memccpy                   
+0     0031da98  _memcpy                    
+0     0031dbcc  _memset                    
+0     0031c7b1  _minit                     
+0     00319e47  _mode3Current_P_I_LoopCtrl 
+0     00319f6e  _mode8LoopCtrl             
+0     0031db0b  _modf                      
+1     0000c176  _monitor                   
+0     0031d077  _monitorPrint              
+0     0031d111  _monitor_proc              
+1     0000c114  _nativeI2nd                
+1     0000c118  _nativeI3rd                
+1     0000c0fe  _nativeI_out               
+1     0000c116  _nativeI_pri               
+1     0000c02e  _over_volt_set             
+1     0000c110  _ovpTimer                  
+0     0031ba74  _periodic_check            
+1     0000c10a  _phaseShiftRatio           
+1     0000c0e6  _phaseVref                 
+1     0000c536  _phase_ratio               
+1     0000c10c  _preIntegral               
+1     0000c014  _protect_reg               
+0     00319e38  _pwmPulseTest              
+0     0031a155  _pwmPulseTestLoopCtrl      
+1     0000c064  _rDeadTime                 
+0     0031d3df  _ramp_proc                 
+0     0031be56  _read_eprom_data           
+0     0031c837  _realloc                   
+1     0000c11e  _ref_time                  
+1     0000c140  _refer_in0                 
+1     0000c12a  _reference_in              
+1     0000c128  _reference_out             
+1     0000c020  _relay_flag                
+0     0031c336  _rsvd_ISR                  
+0     0031b2b4  _save_backup_data          
+0     0031d28b  _scibRxFifoIsr             
+0     0031d22f  _scibTxFifoIsr             
+0     0031ad71  _scib_cmd_proc             
+0     0031acdb  _scib_fifo_init            
+1     0000c541  _scib_rx_end_addr          
+1     0000c55b  _scib_rx_msg_box           
+1     0000c01e  _scib_rx_msg_flag          
+1     0000c540  _scib_rx_start_addr        
+1     0000c544  _scib_tx_end_addr          
+0     0031ad15  _scib_tx_msg               
+1     0000c580  _scib_tx_msg_box           
+1     0000c545  _scib_tx_start_addr        
+0     0031d363  _scicRxFifoIsr             
+0     0031d307  _scicTxFifoIsr             
+0     0031a28a  _scic_cmd_proc             
+0     0031a1fa  _scic_fifo_init            
+1     0000c604  _scic_rx_end_addr          
+1     0000c61b  _scic_rx_msg_box           
+1     0000c01f  _scic_rx_msg_flag          
+1     0000c603  _scic_rx_start_addr        
+1     0000c600  _scic_tx_end_addr          
+0     0031a234  _scic_tx_msg               
+1     0000c640  _scic_tx_msg_box           
+1     0000c605  _scic_tx_start_addr        
+0     0031d180  _sendAllCodeData           
+0     0031d160  _serial_com_proc           
+0     0031b246  _set_code_default_double   
+0     0031b22d  _set_code_default_int      
+0     0031d7c2  _snprintf                  
+0     0031dbd8  _strchr                    
+0     0031dc06  _strcpy                    
+0     0031dbfe  _strlen                    
+0     0031da5b  _strncpy                   
+0     0031cb00  _strtod                    
+1     0000c017  _terminal_input_state      
+0     0031a089  _testFullBridgeLoopCtrl1   
+1     0000c007  _test_pulse_count          
+1     0000c12c  _theta                     
+1     0000c08c  _time_t                    
+1     0000c004  _timer0_count              
+0     0031a9bc  _trip_check                
+0     0031a759  _trip_recording            
+0     0031ba5b  _ulGetNow_mSec             
+0     0031ba44  _ulGetTime_mSec            
+0     0031db9c  _wakeint_isr               
+0     0031be1e  _write_code_2_eeprom       
+1     0000c018  _xcon_data                 
+abs   ffffffff  binit                      
+0     003391db  cinit                      
+0     0033fff6  code_start                 
+0     0031dc0f  etext                      
+abs   ffffffff  pinit                      
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
 
-address    name
---------   ----
-00000000   .bss
-00000000   .data
-00000000   ___bss__
-00000000   ___data__
-00000000   ___edata__
-00000000   ___end__
-00000000   edata
-00000000   end
-00000050   __sys_memory
-00000300   __STACK_SIZE
-00000300   __SYSMEM_SIZE
-00000400   __stack
-00000880   _DevEmuRegs
-00000a80   _FlashRegs
-00000ae0   _CsmRegs
-00000b00   _AdcMirror
-00000b20   _XintfRegs
-00000c00   _CpuTimer0Regs
-00000c08   _CpuTimer1Regs
-00000c10   _CpuTimer2Regs
-00000ce0   _PieCtrlRegs
-00000d00   _PieVectTable
-00001000   _DmaRegs
-00004000   _ZONE0_BUF
-00005000   _McbspaRegs
-00005040   _McbspbRegs
-00006000   _ECanaRegs
-00006040   _ECanaLAMRegs
-00006080   _ECanaMOTSRegs
-000060c0   _ECanaMOTORegs
-00006100   _ECanaMboxes
-00006200   _ECanbRegs
-00006240   _ECanbLAMRegs
-00006280   _ECanbMOTSRegs
-000062c0   _ECanbMOTORegs
-00006300   _ECanbMboxes
-00006800   _EPwm1Regs
-00006840   _EPwm2Regs
-00006880   _EPwm3Regs
-000068c0   _EPwm4Regs
-00006900   _EPwm5Regs
-00006940   _EPwm6Regs
-00006a00   _ECap1Regs
-00006a20   _ECap2Regs
-00006a40   _ECap3Regs
-00006a60   _ECap4Regs
-00006a80   _ECap5Regs
-00006aa0   _ECap6Regs
-00006b00   _EQep1Regs
-00006b40   _EQep2Regs
-00006f80   _GpioCtrlRegs
-00006fc0   _GpioDataRegs
-00006fe0   _GpioIntRegs
-00007010   _SysCtrlRegs
-00007040   _SpiaRegs
-00007050   _SciaRegs
-00007070   _XIntruptRegs
-00007100   _AdcRegs
-00007750   _ScibRegs
-00007770   _ScicRegs
-00007900   _I2caRegs
-00008000   _InitFlash
-00008000   _RamfuncsRunStart
-00008023   _DSP28x_usDelay
-0000c000   _adcI3rd
-0000c001   _adcI2nd
-0000c002   _gSciInFlag
-0000c003   _digital_input
-0000c004   _timer0_count
-0000c005   _igbt_fault_input
-0000c006   _debug_count
-0000c007   _test_pulse_count
-0000c008   _code_run_input_select
-0000c009   _gMachineState
-0000c00a   _giAdcVdc
-0000c00b   _gPWMTripCode
-0000c00c   _adcI_out
-0000c00d   _code_dac_select_ch3
-0000c00e   _code_dac_select_ch4
-0000c00f   _adcI_pri
-0000c010   _code_protect_Iadc_off
-0000c011   _code_protect_over_I_off
-0000c012   _code_protect_uv_off
-0000c013   _code_protect_ov_off
-0000c014   _protect_reg
-0000c015   _code_protect_ex_trip_off
-0000c016   _code_protect_IGBT_off
-0000c017   _terminal_input_state
-0000c018   _xcon_data
-0000c019   _code_dac_select_ch2
-0000c01a   _debug1
-0000c01b   _init_charge_flag
-0000c01c   _code_dac_select_ch1
-0000c01d   _code_protect_inhibit_on
-0000c01e   _scib_rx_msg_flag
-0000c01f   _scic_rx_msg_flag
-0000c020   _relay_flag
-0000c022   _code_ctrl_mode
-0000c023   _codeSetPulseNumber
-0000c024   _code_set_Vdc_on
-0000c025   _gTripFlag
-0000c026   _MAX_PWM_CNT
-0000c027   _gTripSaveFlag
-0000c028   _EepromSaveFlag
-0000c029   _gRunFlag
-0000c02a   _Flag_TripDataBackup
-0000c02c   _code_under_volt_set
-0000c02e   _over_volt_set
-0000c030   _codeOCLevel3rd
-0000c032   _code_rate_hz
-0000c034   _code_rate_current
-0000c036   _code_rate_power
-0000c038   _code_decel_time1
-0000c03a   _code_rate_volt
-0000c03c   _Is_Max_Coeff
-0000c03e   _codeOCLevelOut
-0000c040   _code_accel_time1
-0000c042   _analog_cmd_in_zero2
-0000c044   _codeAnalogSelect2
-0000c046   _analog_cmd_in_span1
-0000c048   _codeAnalogOutZero2
-0000c04a   _codeAnalogOutSpan2
-0000c04c   _codeAnalogOutSpan1
-0000c04e   _codeAnalogOutZero1
-0000c050   _codeAnalogOutOffset1
-0000c052   _codeAnalogSelect1
-0000c054   _analog_cmd_in_span2
-0000c056   _code_accel_time2
-0000c058   _code_decel_time2
-0000c05a   _codeOCLevel2nd
-0000c05c   _codeOCLevel1st
-0000c05e   _code_OC_time
-0000c060   _analog_cmd_in_zero1
-0000c062   _codeAnalogOutOffset2
-0000c064   _rDeadTime
-0000c066   _allDeadTime
-0000c068   _code_speed2
-0000c06a   _code_adc_Vout_high
-0000c06c   _code_Vout_calc_low
-0000c06e   _code_Vdc_calc_high
-0000c070   _code_adcIout1st
-0000c072   _code_adcIout2nd
-0000c074   _code_adc_Vout_low
-0000c076   _codeIValueOut
-0000c078   _code_adc_vdc_low
-0000c07a   _codeIValue2nd
-0000c07c   _code_Vdc_calc_low
-0000c07e   _code_Vout_calc_high
-0000c080   _codeIValue3rd
-0000c082   _code_adc_vdc_high
-0000c084   _Data_Check
-0000c086   _Data_Backup
-0000c088   _code_calIout4th
-0000c08a   _Data_Init
-0000c08c   _time_t
-0000c08e   _code_calIout5th
-0000c090   _code_adcIout5th
-0000c092   _code_calIout1st
-0000c094   _code_adcIout3rd
-0000c096   _code_calIout3rd
-0000c098   _Data_Load
-0000c09a   _code_adcIout4th
-0000c09c   _code_calIout2nd
-0000c09e   _codeVdcOffset
-0000c0a0   _codeVdcSpan
-0000c0a2   _codeIAdcOffset3rd
-0000c0a4   _codeVoutSpan
-0000c0a6   _codeSwitFreq
-0000c0a8   _codeIAdcOffsetOut
-0000c0aa   _codeISpan3rd
-0000c0ac   _codeISpanOut
-0000c0ae   _codeISpan1st
-0000c0b0   _codeIAdcOffset2nd
-0000c0b2   _codeVoutOffset
-0000c0b4   _codeISpan2nd
-0000c0b6   _codeIAdcOffset1st
-0000c0b8   _code_dac_scale_ch3
-0000c0ba   _code_dac_offset_ch3
-0000c0bc   _code_dac_scale_ch2
-0000c0be   _code_dac_offset_ch4
-0000c0c0   _codeIValue1st
-0000c0c2   _code_dac_offset_ch2
-0000c0c4   _code_integLimit
-0000c0c6   _code_phaseMax
-0000c0c8   _code_Ki
-0000c0ca   _code_dac_offset_ch1
-0000c0cc   _code_dac_scale_ch4
-0000c0ce   _code_Kp
-0000c0d0   _analog_ref_b
-0000c0d2   _analog_ref_a
-0000c0d4   _dac_ch0_unit_count_value
-0000c0d6   _dac_ch2_unit_count_value
-0000c0d8   _dac_ch1_unit_count_value
-0000c0da   _I_pri
-0000c0dc   _Vout
-0000c0de   _I_out
-0000c0e0   _I3rd
-0000c0e2   _I2nd
-0000c0e4   _VdcScale
-0000c0e6   _phaseVref
-0000c0e8   _VdcOffset
-0000c0ea   _VoutOffset
-0000c0ec   _VoutScale
-0000c0ee   _inv_code_dac_scale_ch1
-0000c0f0   _dac_ch3_unit_count_value
-0000c0f2   _inv_code_dac_scale_ch2
-0000c0f4   _inv_code_dac_scale_ch4
-0000c0f6   _inv_code_dac_scale_ch3
-0000c0f8   _IoutOffset3rd
-0000c0fa   _IoutScale3rd
-0000c0fc   _IoutScale4th
-0000c0fe   _nativeI_out
-0000c100   _IoutOffset4th
-0000c102   _IoutScale1st
-0000c104   _IoutOffset1st
-0000c106   _IoutOffset2nd
-0000c108   _IoutScale2nd
-0000c10a   _phaseShiftRatio
-0000c10c   _preIntegral
-0000c10e   _Power_out
-0000c110   _ovpTimer
-0000c112   _OC_Timer
-0000c114   _nativeI2nd
-0000c116   _nativeI_pri
-0000c118   _nativeI3rd
-0000c11a   _ctrlIntegral
-0000c11c   _ctrlError
-0000c11e   _ref_time
-0000c120   _CosTheta
-0000c122   _SinTheta
-0000c124   _code_testPwmPhase
-0000c126   _code_Vdc_set_value
-0000c128   _reference_out
-0000c12a   _reference_in
-0000c12c   _theta
-0000c12e   _frequency
-0000c130   _code_I_out_ref
-0000c132   _OverCurLimit
-0000c134   _code_VoutLimit
-0000c136   _code_Vout
-0000c138   _codeInitTime
-0000c13a   _func_flag
-0000c13c   _code_ovpTime
-0000c13e   _codePwmPhaseInit
-0000c140   _refer_in0
-0000c142   _RMS_Ia
-0000c144   _gfRunTime
-0000c146   _Is_mag
-0000c148   _Ts
-0000c14a   _code_dac_scale_ch1
-0000c14c   _RMS_Ib
-0000c14e   _inv_Ts
-0000c150   _Vdc
-0000c152   _Vs_max
-0000c154   _Is_max
-0000c156   _Is_mag_rms
-0000c158   _DutyCount
-0000c15c   _Is_dq
-0000c160   _DutyRatio
-0000c166   _Is_abc
-0000c16c   _gStr2
-0000c176   _monitor
-0000c180   _TimeInput
-0000c18d   _adc_result
-0000c19d   _gSciaRxBuf
-0000c1c0   _gSciaTxBuf
-0000c1d8   _MonitorMsg
-0000c200   _code_inform
-0000c240   _gStr1
-0000c280   _TripInfo
-0000c300   _TripInfoNow
-0000c380   _dac_point
-0000c510   _CpuTimer1
-0000c518   _CpuTimer2
-0000c520   _CpuTimer0
-0000c530   __cleanup_ptr
-0000c532   __dtors_ptr
-0000c534   __unlock
-0000c536   __lock
-0000c53a   _phase_ratio
-0000c53e   _lpfI_out
-0000c540   _scib_rx_start_addr
-0000c541   _scib_tx_end_addr
-0000c542   _scib_tx_start_addr
-0000c545   _scib_rx_end_addr
-0000c55b   _scib_rx_msg_box
-0000c580   _scib_tx_msg_box
-0000c5eb   _errno
-0000c5ec   _PartIdRegs
-0000c600   _scic_rx_start_addr
-0000c601   _scic_tx_end_addr
-0000c602   _scic_tx_start_addr
-0000c605   _scic_rx_end_addr
-0000c61b   _scic_rx_msg_box
-0000c640   _scic_tx_msg_box
-0000c6c0   _LPF_I_uvw_cutoff_freq
-0000c6c2   _LPF_Vdc_cutoff_freq
-0000c6c4   _LPF_I_v_in
-0000c6ca   _LPF_I_w_in
-0000c6d0   _LPF_I_v_out
-0000c6d6   _LPF_I_u_out
-0000c6dc   _LPF_Vdc_out
-0000c6e2   _LPF_Vdc_in
-0000c6e8   _LPF_I_u_in
-0000c6ee   _LPF_I_w_out
-0000c6f4   _LPF_I_v_K
-0000c700   _LPF_I_w_K
-0000c708   _LPF_Vdc_K
-0000c710   _LPF_I_u_K
-00100000   _ZONE6_BUF
-00200000   _ZONE7_BUF
-00318000   .text
-00318000   ___text__
-00318000   _c_int00
-00318046   C$$EXIT
-00318046   _abort
-00318048   _exit
-0031805e   __register_unlock
-00318062   __register_lock
-00318066   __nop
-00318067   __args_main
-0031807c   _InitAdc
-003180c1   _Adc_Isr
-00318282   _analog_out_proc
-00318283   _get_code_group0
-003184ef   _get_code_group1
-00318675   _get_code_group2
-00318842   _get_code_group3
-003188e8   _get_code_group4
-00318aac   _get_code_group5
-00318b7a   _get_code_group6
-00318d4a   _get_code_group7
-00319044   _get_code_group8
-003190a6   _get_code_information
-00319101   _set_code_default_int
-0031911c   _set_code_default_double
-0031913c   _check_backup_data
-00319186   _save_backup_data
-003191bd   _backup_data_load
-0031920e   _CheckSum
-00319210   _CheckSum_bk
-00319247   _SaveDataProc
-003193f3   _init_eprom_data
-0031946d   _linear_eq
-003194a8   _LPF1
-003194c7   _Nop
-003194ca   _PI_Damp_Controller
-00319530   _SetSensorOffset
-00319531   _PowerOnReset
-00319532   _ulGetTime_mSec
-00319549   _ulGetNow_mSec
-0031954d   _delay_msecs
-00319560   _periodic_check
-00319574   _iGetAinCmd
-00319581   _analog_cmd_proc
-00319598   _get_command
-003195fb   _get_adc_offset
-00319707   _get_adc_vdc_low
-0031975f   _get_adc_vdc_high
-003197bb   _digital_input_proc
-003197e0   _DS1307WriteData
-00319809   _DS1307ReadData
-00319835   _GetTimeAndDateStr
-003198a6   _WriteTimeToDS1307
-00319900   _InitCpuTimers
-0031994c   _ConfigCpuTimer
-00319993   _INT13_ISR
-0031999d   _INT14_ISR
-003199a7   _DATALOG_ISR
-003199b1   _RTOSINT_ISR
-003199bb   _EMUINT_ISR
-003199c5   _NMI_ISR
-003199cf   _ILLEGAL_ISR
-003199d9   _USER1_ISR
-003199e3   _USER2_ISR
-003199ed   _USER3_ISR
-003199f7   _USER4_ISR
-00319a01   _USER5_ISR
-00319a0b   _USER6_ISR
-00319a15   _USER7_ISR
-00319a1f   _USER8_ISR
-00319a29   _USER9_ISR
-00319a33   _USER10_ISR
-00319a3d   _USER11_ISR
-00319a47   _USER12_ISR
-00319a51   _SEQ1INT_ISR
-00319a5b   _SEQ2INT_ISR
-00319a65   _XINT1_ISR
-00319a6f   _XINT2_ISR
-00319a79   _ADCINT_ISR
-00319a83   _TINT0_ISR
-00319a8d   _WAKEINT_ISR
-00319a97   _EPWM1_TZINT_ISR
-00319aa1   _EPWM2_TZINT_ISR
-00319aab   _EPWM3_TZINT_ISR
-00319ab5   _EPWM4_TZINT_ISR
-00319abf   _EPWM5_TZINT_ISR
-00319ac9   _EPWM6_TZINT_ISR
-00319ad3   _EPWM1_INT_ISR
-00319add   _EPWM2_INT_ISR
-00319ae7   _EPWM3_INT_ISR
-00319af1   _EPWM4_INT_ISR
-00319afb   _EPWM5_INT_ISR
-00319b05   _EPWM6_INT_ISR
-00319b0f   _ECAP1_INT_ISR
-00319b19   _ECAP2_INT_ISR
-00319b23   _ECAP3_INT_ISR
-00319b2d   _ECAP4_INT_ISR
-00319b37   _ECAP5_INT_ISR
-00319b41   _ECAP6_INT_ISR
-00319b4b   _EQEP1_INT_ISR
-00319b55   _EQEP2_INT_ISR
-00319b5f   _SPIRXINTA_ISR
-00319b69   _SPITXINTA_ISR
-00319b73   _MRINTB_ISR
-00319b7d   _MXINTB_ISR
-00319b87   _MRINTA_ISR
-00319b91   _MXINTA_ISR
-00319b9b   _DINTCH1_ISR
-00319ba5   _DINTCH2_ISR
-00319baf   _DINTCH3_ISR
-00319bb9   _DINTCH4_ISR
-00319bc3   _DINTCH5_ISR
-00319bcd   _DINTCH6_ISR
-00319bd7   _I2CINT1A_ISR
-00319be1   _I2CINT2A_ISR
-00319beb   _SCIRXINTC_ISR
-00319bf5   _SCITXINTC_ISR
-00319bff   _SCIRXINTA_ISR
-00319c09   _SCITXINTA_ISR
-00319c13   _SCIRXINTB_ISR
-00319c1d   _SCITXINTB_ISR
-00319c27   _ECAN0INTA_ISR
-00319c31   _ECAN1INTA_ISR
-00319c3b   _ECAN0INTB_ISR
-00319c45   _ECAN1INTB_ISR
-00319c4f   _XINT3_ISR
-00319c59   _XINT4_ISR
-00319c63   _XINT5_ISR
-00319c6d   _XINT6_ISR
-00319c77   _XINT7_ISR
-00319c81   _LVF_ISR
-00319c8b   _LUF_ISR
-00319c95   _PIE_RESERVED
-00319c9f   _rsvd_ISR
-00319ca9   _MemCopy
-00319cc0   _InitPieCtrl
-00319cdf   _EnableInterrupts
-00319cea   _InitPieVectTable
-00319d0c   _InitSysCtrl
-00319d15   _ServiceDog
-00319d1f   _DisableDog
-00319d27   _InitPll
-00319d7a   _InitPeripheralClocks
-00319e2a   _CsmUnlock
-00319e5b   _trip_recording
-00319e8d   _CheckOverCurrent
-00319f91   _CheckOverVolt
-00319fb5   _CheckOVP
-00319ffa   _CheckUndeVolt
-0031a02f   _CheckIGBTFault
-0031a094   _CheckOverHeat
-0031a0b2   _trip_check
-0031a0d3   _TripProc
-0031a1b9   _GetTripInfo
-0031a272   _WriteTripString
-0031a2a7   _ReadTripString
-0031a2cb   _SaveTripDataToEeprom
-0031a348   _ClearTripDataToEeprom
-0031a3b4   _epwmFullBridgeEnable
-0031a3ca   _epwmFullBridgeDisable
-0031a3f1   _initVariFullbridgeCtrl
-0031a601   _initEpwmFullBridge
-0031a714   _pwmPulseTest
-0031a723   _mode3Current_P_I_LoopCtrl
-0031a847   _mode8LoopCtrl
-0031a95f   _testFullBridgeLoopCtrl1
-0031aa28   _pwmPulseTestLoopCtrl
-0031aab0   _LPF_2nd_INIT
-0031ab40   _LPF_2nd
-0031aba2   _Init_Filters
-0031abd8   _main
-0031adc7   _wakeint_isr
-0031addb   _InitWatchDog
-0031ae0c   _monitorPrint
-0031aea1   _monitor_proc
-0031aed9   _GetInputMark
-0031aee3   _ramp_proc
-0031afa6   _scib_fifo_init
-0031affd   _scib_tx_msg
-0031b013   _load_scib_tx_mail_box_char
-0031b036   _load_scib_tx_mail_box
-0031b05a   _scibTxFifoIsr
-0031b0b6   _scibRxFifoIsr
-0031b135   _scib_cmd_proc
-0031b588   _scic_fifo_init
-0031b5df   _scic_tx_msg
-0031b5f5   _load_scic_tx_mail_box_char
-0031b618   _load_scic_tx_mail_box
-0031b636   _scicTxFifoIsr
-0031b692   _scicRxFifoIsr
-0031b711   _scic_cmd_proc
-0031bba9   _load_sci_tx_mail_box
-0031bbb6   _serial_com_proc
-0031bbdb   _sendAllCodeData
-0031bc7f   _set_dac_point
-0031bc91   _InitGpio
-0031bf8a   _InitXintf
-0031c01e   _MainPWM
-0031c416   _I2CA_Init
-0031c428   _I2CA_WriteData
-0031c485   _I2CA_ReadData
-0031c4ee   _get_eprom_address
-0031c551   _write_code_2_eeprom
-0031c586   _read_eprom_data
-0031c5c8   _data_under_proc
-0031c60c   _data_over_proc
-0031c650   _invalid_address_proc
-0031c679   _check_code_data
-0031c6c8   _load_code2ram
-0031c741   _cpu_timer0_isr
-0031c7c6   FS$$DIV
-0031c84e   I$$DIV
-0031c85f   I$$MOD
-0031c870   ___memcpy_ff
-0031c891   _free
-0031c8da   _minit
-0031c905   _malloc
-0031c960   _realloc
-0031ca28   _max_free
-0031ca4a   _free_memory
-0031ca68   _chkheap
-0031ca6a   _calloc
-0031ca85   _modf
-0031ca9f   _memset
-0031caa6   _snprintf
-0031cafe   _strcpy
-0031cb07   _strlen
-0031cb11   _strncpy
-0031cb31   _strtod
-0031d4f3   __printfi
-0031d5f9   _atoi
-0031d62a   _ltoa
-0031d658   _memccpy
-0031d66a   FD$$CMP
-0031d694   FD$$DIV
-0031d71f   FD$$MPY
-0031d7a2   FD$$NEG
-0031d7ab   FD$$SUB
-0031d7b9   FD$$TOI
-0031d7da   FD$$TOL
-0031d7f9   FS$$TOFD
-0031d815   L$$DIV
-0031d824   L$$MOD
-0031d832   UL$$DIV
-0031d839   UL$$MOD
-0031d83f   L$$TOFD
-0031d85b   LL$$CMP
-0031d86d   ULL$$CMP
-0031d879   LL$$DIV
-0031d8b5   LL$$MOD
-0031d8ef   ULL$$DIV
-0031d91e   ULL$$MOD
-0031d980   LL$$MPY
-0031d994   FD$$ADD
-0031da30   _RamfuncsLoadStart
-0031da30   ___etext__
-0031da30   etext
-0031da57   _RamfuncsLoadEnd
-00338cf4   _PieVectTableInit
-003390d3   __ctypes_
-003391d4   ___cinit__
-003391d4   cinit
-0033fff6   code_start
-0033fff8   _CsmPwl
-00380080   _ADC_cal
-ffffffff   ___TI_pprof_out_hndl
-ffffffff   ___TI_prof_var_size
-ffffffff   ___TI_prof_var_start
-ffffffff   ___binit__
-ffffffff   ___c_args__
-ffffffff   ___pinit__
-ffffffff   binit
-ffffffff   pinit
+page  address   name                       
+----  -------   ----                       
+0     00004000  _ZONE0_BUF                 
+0     00008000  _InitFlash                 
+0     00008000  _RamfuncsRunStart          
+0     0000801b  _DSP28x_usDelay            
+0     00100000  _ZONE6_BUF                 
+0     00200000  _ZONE7_BUF                 
+0     00318000  .text                      
+0     00318000  ___text__                  
+0     00318000  _get_code_group0           
+0     0031828e  _get_code_group1           
+0     0031842b  _get_code_group2           
+0     00318612  _get_code_group3           
+0     003186c2  _get_code_group4           
+0     0031889c  _get_code_group5           
+0     00318976  _get_code_group6           
+0     00318b61  _get_code_group7           
+0     00318e85  _get_code_group8           
+0     003199e8  ___TI_printfi              
+0     00319aed  _epwmFullBridgeEnable      
+0     00319b03  _epwmFullBridgeDisable     
+0     00319b1f  _initVariFullbridgeCtrl    
+0     00319d47  _initEpwmFullBridge        
+0     00319e38  _pwmPulseTest              
+0     00319e47  _mode3Current_P_I_LoopCtrl 
+0     00319f6e  _mode8LoopCtrl             
+0     0031a089  _testFullBridgeLoopCtrl1   
+0     0031a155  _pwmPulseTestLoopCtrl      
+0     0031a1fa  _scic_fifo_init            
+0     0031a234  _scic_tx_msg               
+0     0031a249  _load_scic_tx_mail_box_char
+0     0031a26e  _load_scic_tx_mail_box     
+0     0031a28a  _scic_cmd_proc             
+0     0031a759  _trip_recording            
+0     0031a78e  _CheckOverCurrent          
+0     0031a88d  _CheckOverVolt             
+0     0031a8b6  _CheckOVP                  
+0     0031a900  _CheckUndeVolt             
+0     0031a938  _CheckIGBTFault            
+0     0031a99f  _CheckOverHeat             
+0     0031a9bc  _trip_check                
+0     0031a9de  _TripProc                  
+0     0031aa8b  _GetTripInfo               
+0     0031ab5d  _WriteTripString           
+0     0031ab95  _ReadTripString            
+0     0031abbd  _SaveTripDataToEeprom      
+0     0031ac48  _ClearTripDataToEeprom     
+0     0031acdb  _scib_fifo_init            
+0     0031ad15  _scib_tx_msg               
+0     0031ad2a  _load_scib_tx_mail_box_char
+0     0031ad4f  _load_scib_tx_mail_box     
+0     0031ad71  _scib_cmd_proc             
+0     0031b1dd  _get_code_information      
+0     0031b22d  _set_code_default_int      
+0     0031b246  _set_code_default_double   
+0     0031b266  _check_backup_data         
+0     0031b2b4  _save_backup_data          
+0     0031b2f1  _backup_data_load          
+0     0031b348  _CheckSum                  
+0     0031b34a  _CheckSum_bk               
+0     0031b386  _SaveDataProc              
+0     0031b552  _init_eprom_data           
+0     0031b5ce  _MainPWM                   
+0     0031b981  _linear_eq                 
+0     0031b9c2  _LPF1                      
+0     0031b9df  _Nop                       
+0     0031b9e2  _PI_Damp_Controller        
+0     0031ba42  _SetSensorOffset           
+0     0031ba43  _PowerOnReset              
+0     0031ba44  _ulGetTime_mSec            
+0     0031ba5b  _ulGetNow_mSec             
+0     0031ba5f  _delay_msecs               
+0     0031ba74  _periodic_check            
+0     0031ba89  _iGetAinCmd                
+0     0031ba95  _analog_cmd_proc           
+0     0031baac  _get_command               
+0     0031bb1a  _get_adc_offset            
+0     0031bc30  _get_adc_vdc_low           
+0     0031bc8c  _get_adc_vdc_high          
+0     0031bcec  _I2CA_Init                 
+0     0031bcfe  _I2CA_WriteData            
+0     0031bd54  _I2CA_ReadData             
+0     0031bdb9  _get_eprom_address         
+0     0031be1e  _write_code_2_eeprom       
+0     0031be56  _read_eprom_data           
+0     0031be9e  _data_under_proc           
+0     0031bee8  _data_over_proc            
+0     0031bf32  _invalid_address_proc      
+0     0031bf5b  _check_code_data           
+0     0031bfad  _load_code2ram             
+0     0031c02a  _INT13_ISR                 
+0     0031c034  _INT14_ISR                 
+0     0031c03e  _DATALOG_ISR               
+0     0031c048  _RTOSINT_ISR               
+0     0031c052  _EMUINT_ISR                
+0     0031c05c  _NMI_ISR                   
+0     0031c066  _ILLEGAL_ISR               
+0     0031c070  _USER1_ISR                 
+0     0031c07a  _USER2_ISR                 
+0     0031c084  _USER3_ISR                 
+0     0031c08e  _USER4_ISR                 
+0     0031c098  _USER5_ISR                 
+0     0031c0a2  _USER6_ISR                 
+0     0031c0ac  _USER7_ISR                 
+0     0031c0b6  _USER8_ISR                 
+0     0031c0c0  _USER9_ISR                 
+0     0031c0ca  _USER10_ISR                
+0     0031c0d4  _USER11_ISR                
+0     0031c0de  _USER12_ISR                
+0     0031c0e8  _SEQ1INT_ISR               
+0     0031c0f2  _SEQ2INT_ISR               
+0     0031c0fc  _XINT1_ISR                 
+0     0031c106  _XINT2_ISR                 
+0     0031c110  _ADCINT_ISR                
+0     0031c11a  _TINT0_ISR                 
+0     0031c124  _WAKEINT_ISR               
+0     0031c12e  _EPWM1_TZINT_ISR           
+0     0031c138  _EPWM2_TZINT_ISR           
+0     0031c142  _EPWM3_TZINT_ISR           
+0     0031c14c  _EPWM4_TZINT_ISR           
+0     0031c156  _EPWM5_TZINT_ISR           
+0     0031c160  _EPWM6_TZINT_ISR           
+0     0031c16a  _EPWM1_INT_ISR             
+0     0031c174  _EPWM2_INT_ISR             
+0     0031c17e  _EPWM3_INT_ISR             
+0     0031c188  _EPWM4_INT_ISR             
+0     0031c192  _EPWM5_INT_ISR             
+0     0031c19c  _EPWM6_INT_ISR             
+0     0031c1a6  _ECAP1_INT_ISR             
+0     0031c1b0  _ECAP2_INT_ISR             
+0     0031c1ba  _ECAP3_INT_ISR             
+0     0031c1c4  _ECAP4_INT_ISR             
+0     0031c1ce  _ECAP5_INT_ISR             
+0     0031c1d8  _ECAP6_INT_ISR             
+0     0031c1e2  _EQEP1_INT_ISR             
+0     0031c1ec  _EQEP2_INT_ISR             
+0     0031c1f6  _SPIRXINTA_ISR             
+0     0031c200  _SPITXINTA_ISR             
+0     0031c20a  _MRINTB_ISR                
+0     0031c214  _MXINTB_ISR                
+0     0031c21e  _MRINTA_ISR                
+0     0031c228  _MXINTA_ISR                
+0     0031c232  _DINTCH1_ISR               
+0     0031c23c  _DINTCH2_ISR               
+0     0031c246  _DINTCH3_ISR               
+0     0031c250  _DINTCH4_ISR               
+0     0031c25a  _DINTCH5_ISR               
+0     0031c264  _DINTCH6_ISR               
+0     0031c26e  _I2CINT1A_ISR              
+0     0031c278  _I2CINT2A_ISR              
+0     0031c282  _SCIRXINTC_ISR             
+0     0031c28c  _SCITXINTC_ISR             
+0     0031c296  _SCIRXINTA_ISR             
+0     0031c2a0  _SCITXINTA_ISR             
+0     0031c2aa  _SCIRXINTB_ISR             
+0     0031c2b4  _SCITXINTB_ISR             
+0     0031c2be  _ECAN0INTA_ISR             
+0     0031c2c8  _ECAN1INTA_ISR             
+0     0031c2d2  _ECAN0INTB_ISR             
+0     0031c2dc  _ECAN1INTB_ISR             
+0     0031c2e6  _XINT3_ISR                 
+0     0031c2f0  _XINT4_ISR                 
+0     0031c2fa  _XINT5_ISR                 
+0     0031c304  _XINT6_ISR                 
+0     0031c30e  _XINT7_ISR                 
+0     0031c318  _LVF_ISR                   
+0     0031c322  _LUF_ISR                   
+0     0031c32c  _PIE_RESERVED              
+0     0031c336  _rsvd_ISR                  
+0     0031c340  _InitGpio                  
+0     0031c526  _InitXintf                 
+0     0031c578  _main                      
+0     0031c751  _InitWatchDog              
+0     0031c76b  _free                      
+0     0031c7b1  _minit                     
+0     0031c7d6  _malloc                    
+0     0031c837  _realloc                   
+0     0031c8f3  _max_free                  
+0     0031c916  _free_memory               
+0     0031c934  _chkheap                   
+0     0031c936  _calloc                    
+0     0031c94d  _Adc_Isr                   
+0     0031cb00  _strtod                    
+0     0031cc22  _LPF_2nd_INIT              
+0     0031ccae  _LPF_2nd                   
+0     0031cd0b  _Init_Filters              
+0     0031cd41  _DS1307WriteData           
+0     0031cd65  _DS1307ReadData            
+0     0031cd8f  _GetTimeAndDateStr         
+0     0031ce07  _WriteTimeToDS1307         
+0     0031ce5e  LL$$DIV                    
+0     0031ce9a  LL$$MOD                    
+0     0031ced4  ULL$$DIV                   
+0     0031cf03  ULL$$MOD                   
+0     0031cf65  _InitSysCtrl               
+0     0031cf6e  _ServiceDog                
+0     0031cf78  _DisableDog                
+0     0031cf80  _InitPll                   
+0     0031cfd1  _InitPeripheralClocks      
+0     0031d02c  _CsmUnlock                 
+0     0031d077  _monitorPrint              
+0     0031d111  _monitor_proc              
+0     0031d14b  _GetInputMark              
+0     0031d154  _load_sci_tx_mail_box      
+0     0031d160  _serial_com_proc           
+0     0031d180  _sendAllCodeData           
+0     0031d22f  _scibTxFifoIsr             
+0     0031d28b  _scibRxFifoIsr             
+0     0031d307  _scicTxFifoIsr             
+0     0031d363  _scicRxFifoIsr             
+0     0031d3df  _ramp_proc                 
+0     0031d48f  FD$$ADD                    
+0     0031d52b  FD$$DIV                    
+0     0031d5b6  FS$$DIV                    
+0     0031d63e  _cpu_timer0_isr            
+0     0031d6c4  FD$$MPY                    
+0     0031d747  _InitCpuTimers             
+0     0031d788  _ConfigCpuTimer            
+0     0031d7c2  _snprintf                  
+0     0031d81f  _c_int00                   
+0     0031d865  _InitAdc                   
+0     0031d8a3  _analog_out_proc           
+0     0031d8a4  _ldexp                     
+0     0031d8d8  _atoi                      
+0     0031d909  _ltoa                      
+0     0031d937  FD$$CMP                    
+0     0031d961  L$$DIV                     
+0     0031d970  L$$MOD                     
+0     0031d97e  UL$$DIV                    
+0     0031d985  UL$$MOD                    
+0     0031d98b  _InitPieCtrl               
+0     0031d9aa  _EnableInterrupts          
+0     0031d9b3  _digital_input_proc        
+0     0031d9d6  FD$$TOFS                   
+0     0031d9f9  I$$DIV                     
+0     0031da0a  I$$MOD                     
+0     0031da1b  FD$$TOI                    
+0     0031da3c  FD$$TOL                    
+0     0031da5b  _strncpy                   
+0     0031da7a  LL$$CMP                    
+0     0031da8c  ULL$$CMP                   
+0     0031da98  _memcpy                    
+0     0031dab6  I$$TOFD                    
+0     0031dad3  FS$$TOFD                   
+0     0031daef  L$$TOFD                    
+0     0031db0b  _modf                      
+0     0031db27  __args_main                
+0     0031db40  C$$EXIT                    
+0     0031db40  _abort                     
+0     0031db42  _exit                      
+0     0031db59  LL$$AND                    
+0     0031db61  LL$$OR                     
+0     0031db69  LL$$XOR                    
+0     0031db71  _frexp                     
+0     0031db87  _MemCopy                   
+0     0031db9c  _wakeint_isr               
+0     0031dbb0  FD$$SUB                    
+0     0031dbbe  _memccpy                   
+0     0031dbcc  _memset                    
+0     0031dbd8  _strchr                    
+0     0031dbe4  __register_unlock          
+0     0031dbe8  __register_lock            
+0     0031dbec  __nop                      
+0     0031dbed  FD$$NEG                    
+0     0031dbfe  _strlen                    
+0     0031dc06  _strcpy                    
+0     0031dc0b  _atof                      
+0     0031dc0f  _RamfuncsLoadStart         
+0     0031dc0f  ___etext__                 
+0     0031dc0f  etext                      
+0     0031dc2e  _RamfuncsLoadEnd           
+0     00338cf4  __ctypes_                  
+0     00338df6  _PieVectTableInit          
+0     003391db  ___cinit__                 
+0     003391db  cinit                      
+0     0033fff6  code_start                 
+0     00380080  _ADC_cal                   
+1     00000400  __stack                    
+1     00000700  __STACK_END                
+1     00000880  _DevEmuRegs                
+1     00000a80  _FlashRegs                 
+1     00000ae0  _CsmRegs                   
+1     00000b00  _AdcMirror                 
+1     00000b20  _XintfRegs                 
+1     00000c00  _CpuTimer0Regs             
+1     00000c08  _CpuTimer1Regs             
+1     00000c10  _CpuTimer2Regs             
+1     00000ce0  _PieCtrlRegs               
+1     00000d00  _PieVectTable              
+1     00001000  _DmaRegs                   
+1     00005000  _McbspaRegs                
+1     00005040  _McbspbRegs                
+1     00006000  _ECanaRegs                 
+1     00006040  _ECanaLAMRegs              
+1     00006080  _ECanaMOTSRegs             
+1     000060c0  _ECanaMOTORegs             
+1     00006100  _ECanaMboxes               
+1     00006200  _ECanbRegs                 
+1     00006240  _ECanbLAMRegs              
+1     00006280  _ECanbMOTSRegs             
+1     000062c0  _ECanbMOTORegs             
+1     00006300  _ECanbMboxes               
+1     00006800  _EPwm1Regs                 
+1     00006840  _EPwm2Regs                 
+1     00006880  _EPwm3Regs                 
+1     000068c0  _EPwm4Regs                 
+1     00006900  _EPwm5Regs                 
+1     00006940  _EPwm6Regs                 
+1     00006a00  _ECap1Regs                 
+1     00006a20  _ECap2Regs                 
+1     00006a40  _ECap3Regs                 
+1     00006a60  _ECap4Regs                 
+1     00006a80  _ECap5Regs                 
+1     00006aa0  _ECap6Regs                 
+1     00006b00  _EQep1Regs                 
+1     00006b40  _EQep2Regs                 
+1     00006f80  _GpioCtrlRegs              
+1     00006fc0  _GpioDataRegs              
+1     00006fe0  _GpioIntRegs               
+1     00007010  _SysCtrlRegs               
+1     00007040  _SpiaRegs                  
+1     00007050  _SciaRegs                  
+1     00007070  _XIntruptRegs              
+1     00007100  _AdcRegs                   
+1     00007750  _ScibRegs                  
+1     00007770  _ScicRegs                  
+1     00007900  _I2caRegs                  
+1     0000c000  _adcI3rd                   
+1     0000c001  _adcI2nd                   
+1     0000c002  _gSciInFlag                
+1     0000c003  _digital_input             
+1     0000c004  _timer0_count              
+1     0000c005  _igbt_fault_input          
+1     0000c006  _debug_count               
+1     0000c007  _test_pulse_count          
+1     0000c008  _code_run_input_select     
+1     0000c009  _gMachineState             
+1     0000c00a  _giAdcVdc                  
+1     0000c00b  _gPWMTripCode              
+1     0000c00c  _adcI_out                  
+1     0000c00d  _code_dac_select_ch3       
+1     0000c00e  _code_dac_select_ch4       
+1     0000c00f  _adcI_pri                  
+1     0000c010  _code_protect_Iadc_off     
+1     0000c011  _code_protect_over_I_off   
+1     0000c012  _code_protect_uv_off       
+1     0000c013  _code_protect_ov_off       
+1     0000c014  _protect_reg               
+1     0000c015  _code_protect_ex_trip_off  
+1     0000c016  _code_protect_IGBT_off     
+1     0000c017  _terminal_input_state      
+1     0000c018  _xcon_data                 
+1     0000c019  _code_dac_select_ch2       
+1     0000c01a  _debug1                    
+1     0000c01b  _init_charge_flag          
+1     0000c01c  _code_dac_select_ch1       
+1     0000c01d  _code_protect_inhibit_on   
+1     0000c01e  _scib_rx_msg_flag          
+1     0000c01f  _scic_rx_msg_flag          
+1     0000c020  _relay_flag                
+1     0000c022  _code_ctrl_mode            
+1     0000c023  _codeSetPulseNumber        
+1     0000c024  _code_set_Vdc_on           
+1     0000c025  _gTripFlag                 
+1     0000c026  _MAX_PWM_CNT               
+1     0000c027  _gTripSaveFlag             
+1     0000c028  _EepromSaveFlag            
+1     0000c029  _gRunFlag                  
+1     0000c02a  _Flag_TripDataBackup       
+1     0000c02c  _code_under_volt_set       
+1     0000c02e  _over_volt_set             
+1     0000c030  _codeOCLevel3rd            
+1     0000c032  _code_rate_hz              
+1     0000c034  _code_rate_current         
+1     0000c036  _code_rate_power           
+1     0000c038  _code_decel_time1          
+1     0000c03a  _code_rate_volt            
+1     0000c03c  _Is_Max_Coeff              
+1     0000c03e  _codeOCLevelOut            
+1     0000c040  _code_accel_time1          
+1     0000c042  _analog_cmd_in_zero2       
+1     0000c044  _codeAnalogSelect2         
+1     0000c046  _analog_cmd_in_span1       
+1     0000c048  _codeAnalogOutZero2        
+1     0000c04a  _codeAnalogOutSpan2        
+1     0000c04c  _codeAnalogOutSpan1        
+1     0000c04e  _codeAnalogOutZero1        
+1     0000c050  _codeAnalogOutOffset1      
+1     0000c052  _codeAnalogSelect1         
+1     0000c054  _analog_cmd_in_span2       
+1     0000c056  _code_accel_time2          
+1     0000c058  _code_decel_time2          
+1     0000c05a  _codeOCLevel2nd            
+1     0000c05c  _codeOCLevel1st            
+1     0000c05e  _code_OC_time              
+1     0000c060  _analog_cmd_in_zero1       
+1     0000c062  _codeAnalogOutOffset2      
+1     0000c064  _rDeadTime                 
+1     0000c066  _allDeadTime               
+1     0000c068  _code_speed2               
+1     0000c06a  _code_adc_Vout_high        
+1     0000c06c  _code_Vout_calc_low        
+1     0000c06e  _code_Vdc_calc_high        
+1     0000c070  _code_adcIout1st           
+1     0000c072  _code_adcIout2nd           
+1     0000c074  _code_adc_Vout_low         
+1     0000c076  _codeIValueOut             
+1     0000c078  _code_adc_vdc_low          
+1     0000c07a  _codeIValue2nd             
+1     0000c07c  _code_Vdc_calc_low         
+1     0000c07e  _code_Vout_calc_high       
+1     0000c080  _codeIValue3rd             
+1     0000c082  _code_adc_vdc_high         
+1     0000c084  _Data_Check                
+1     0000c086  _Data_Backup               
+1     0000c088  _code_calIout4th           
+1     0000c08a  _Data_Init                 
+1     0000c08c  _time_t                    
+1     0000c08e  _code_calIout5th           
+1     0000c090  _code_adcIout5th           
+1     0000c092  _code_calIout1st           
+1     0000c094  _code_adcIout3rd           
+1     0000c096  _code_calIout3rd           
+1     0000c098  _Data_Load                 
+1     0000c09a  _code_adcIout4th           
+1     0000c09c  _code_calIout2nd           
+1     0000c09e  _codeVdcOffset             
+1     0000c0a0  _codeVdcSpan               
+1     0000c0a2  _codeIAdcOffset3rd         
+1     0000c0a4  _codeVoutSpan              
+1     0000c0a6  _codeSwitFreq              
+1     0000c0a8  _codeIAdcOffsetOut         
+1     0000c0aa  _codeISpan3rd              
+1     0000c0ac  _codeISpanOut              
+1     0000c0ae  _codeISpan1st              
+1     0000c0b0  _codeIAdcOffset2nd         
+1     0000c0b2  _codeVoutOffset            
+1     0000c0b4  _codeISpan2nd              
+1     0000c0b6  _codeIAdcOffset1st         
+1     0000c0b8  _code_dac_scale_ch3        
+1     0000c0ba  _code_dac_offset_ch3       
+1     0000c0bc  _code_dac_scale_ch2        
+1     0000c0be  _code_dac_offset_ch4       
+1     0000c0c0  _codeIValue1st             
+1     0000c0c2  _code_dac_offset_ch2       
+1     0000c0c4  _code_integLimit           
+1     0000c0c6  _code_phaseMax             
+1     0000c0c8  _code_Ki                   
+1     0000c0ca  _code_dac_offset_ch1       
+1     0000c0cc  _code_dac_scale_ch4        
+1     0000c0ce  _code_Kp                   
+1     0000c0d0  _analog_ref_b              
+1     0000c0d2  _analog_ref_a              
+1     0000c0d4  _dac_ch0_unit_count_value  
+1     0000c0d6  _dac_ch2_unit_count_value  
+1     0000c0d8  _dac_ch1_unit_count_value  
+1     0000c0da  _I_pri                     
+1     0000c0dc  _Vout                      
+1     0000c0de  _I_out                     
+1     0000c0e0  _I3rd                      
+1     0000c0e2  _I2nd                      
+1     0000c0e4  _VdcScale                  
+1     0000c0e6  _phaseVref                 
+1     0000c0e8  _VdcOffset                 
+1     0000c0ea  _VoutOffset                
+1     0000c0ec  _VoutScale                 
+1     0000c0ee  _inv_code_dac_scale_ch1    
+1     0000c0f0  _dac_ch3_unit_count_value  
+1     0000c0f2  _inv_code_dac_scale_ch2    
+1     0000c0f4  _inv_code_dac_scale_ch4    
+1     0000c0f6  _inv_code_dac_scale_ch3    
+1     0000c0f8  _IoutOffset3rd             
+1     0000c0fa  _IoutScale3rd              
+1     0000c0fc  _IoutScale4th              
+1     0000c0fe  _nativeI_out               
+1     0000c100  _IoutOffset4th             
+1     0000c102  _IoutScale1st              
+1     0000c104  _IoutOffset1st             
+1     0000c106  _IoutOffset2nd             
+1     0000c108  _IoutScale2nd              
+1     0000c10a  _phaseShiftRatio           
+1     0000c10c  _preIntegral               
+1     0000c10e  _Power_out                 
+1     0000c110  _ovpTimer                  
+1     0000c112  _OC_Timer                  
+1     0000c114  _nativeI2nd                
+1     0000c116  _nativeI_pri               
+1     0000c118  _nativeI3rd                
+1     0000c11a  _ctrlIntegral              
+1     0000c11c  _ctrlError                 
+1     0000c11e  _ref_time                  
+1     0000c120  _CosTheta                  
+1     0000c122  _SinTheta                  
+1     0000c124  _code_testPwmPhase         
+1     0000c126  _code_Vdc_set_value        
+1     0000c128  _reference_out             
+1     0000c12a  _reference_in              
+1     0000c12c  _theta                     
+1     0000c12e  _frequency                 
+1     0000c130  _code_I_out_ref            
+1     0000c132  _OverCurLimit              
+1     0000c134  _code_VoutLimit            
+1     0000c136  _code_Vout                 
+1     0000c138  _codeInitTime              
+1     0000c13a  _func_flag                 
+1     0000c13c  _code_ovpTime              
+1     0000c13e  _codePwmPhaseInit          
+1     0000c140  _refer_in0                 
+1     0000c142  _RMS_Ia                    
+1     0000c144  _gfRunTime                 
+1     0000c146  _Is_mag                    
+1     0000c148  _Ts                        
+1     0000c14a  _code_dac_scale_ch1        
+1     0000c14c  _RMS_Ib                    
+1     0000c14e  _inv_Ts                    
+1     0000c150  _Vdc                       
+1     0000c152  _Vs_max                    
+1     0000c154  _Is_max                    
+1     0000c156  _Is_mag_rms                
+1     0000c158  _DutyCount                 
+1     0000c15c  _Is_dq                     
+1     0000c160  _DutyRatio                 
+1     0000c166  _Is_abc                    
+1     0000c16c  _gStr2                     
+1     0000c176  _monitor                   
+1     0000c180  _TimeInput                 
+1     0000c18d  _adc_result                
+1     0000c19d  _gSciaRxBuf                
+1     0000c1c0  _gSciaTxBuf                
+1     0000c1d8  _MonitorMsg                
+1     0000c200  _code_inform               
+1     0000c240  _gStr1                     
+1     0000c280  _TripInfo                  
+1     0000c300  _TripInfoNow               
+1     0000c380  _dac_point                 
+1     0000c510  _CpuTimer1                 
+1     0000c518  _CpuTimer2                 
+1     0000c520  _CpuTimer0                 
+1     0000c530  ___TI_cleanup_ptr          
+1     0000c532  ___TI_dtors_ptr            
+1     0000c536  _phase_ratio               
+1     0000c53b  _PartIdRegs                
+1     0000c53e  __lock                     
+1     0000c540  _scib_rx_start_addr        
+1     0000c541  _scib_rx_end_addr          
+1     0000c544  _scib_tx_end_addr          
+1     0000c545  _scib_tx_start_addr        
+1     0000c55b  _scib_rx_msg_box           
+1     0000c580  _scib_tx_msg_box           
+1     0000c5e4  __unlock                   
+1     0000c5e6  _lpfI_out                  
+1     0000c5ec  _errno                     
+1     0000c600  _scic_tx_end_addr          
+1     0000c603  _scic_rx_start_addr        
+1     0000c604  _scic_rx_end_addr          
+1     0000c605  _scic_tx_start_addr        
+1     0000c61b  _scic_rx_msg_box           
+1     0000c640  _scic_tx_msg_box           
+1     0000c6c0  _LPF_I_uvw_cutoff_freq     
+1     0000c6c2  _LPF_Vdc_cutoff_freq       
+1     0000c6c4  _LPF_I_v_in                
+1     0000c6ca  _LPF_I_w_in                
+1     0000c6d0  _LPF_I_v_out               
+1     0000c6d6  _LPF_I_u_out               
+1     0000c6dc  _LPF_Vdc_out               
+1     0000c6e2  _LPF_Vdc_in                
+1     0000c6e8  _LPF_I_u_in                
+1     0000c6ee  _LPF_I_w_out               
+1     0000c6f4  _LPF_I_v_K                 
+1     0000c700  _LPF_I_w_K                 
+1     0000c708  _LPF_Vdc_K                 
+1     0000c710  _LPF_I_u_K                 
+1     0000c718  __sys_memory               
+1     0033fff8  _CsmPwl                    
+abs   00000300  __STACK_SIZE               
+abs   00000300  __SYSMEM_SIZE              
+abs   ffffffff  ___binit__                 
+abs   ffffffff  ___c_args__                
+abs   ffffffff  ___pinit__                 
+abs   ffffffff  binit                      
+abs   ffffffff  pinit                      
 
-[584 symbols]
+[580 symbols]
