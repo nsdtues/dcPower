@@ -8,7 +8,7 @@
 #include	<extern.h>
 
 
-// ¸Å PWM¿¡¼­ È®ÀÎÇÑ´Ù. 
+// ï¿½ï¿½ PWMï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ñ´ï¿½. 
 void trip_recording(int trip_code,double trip_data,char * st)
 {
 	if(gRunFlag)	gTripSaveFlag = 1;
@@ -48,28 +48,6 @@ int CheckOverCurrent( )
 		return ERR_OC_I_OUT_ADC_N;
 	}
 
-//--- OC I2nd check
-	if(( protect_reg.bit.OVER_I_ADC)&&( adcI2nd > 4000)){
-		trip_recording( ERR_OC_I2ND_ADC_P, (double)(adcI2nd),"I2nd adc +over ");
-		return ERR_OC_I2ND_ADC_P;
-	}
-
-	if(( protect_reg.bit.OVER_I_ADC)&&( adcI2nd  < 100)){ 
-		trip_recording( ERR_OC_I2ND_ADC_N, (double)(adcI2nd),"I2nd adc -over");
-		return ERR_OC_I2ND_ADC_N;
-	}
-
-//--- OC I3rd check
-	if(( protect_reg.bit.OVER_I_ADC)&&( adcI3rd > 4000)){
-		trip_recording( ERR_OC_I3RD_ADC_P, (double)(adcI3rd),"I3rd adc +over ");
-		return ERR_OC_I3RD_ADC_P;
-	}
-
-	if(( protect_reg.bit.OVER_I_ADC)&&( adcI3rd  < 100)){ 
-		trip_recording( ERR_OC_I3RD_ADC_N, (double)(adcI2nd),"I3rd adc -over");
-		return ERR_OC_I3RD_ADC_N;
-	}
-
 	if( protect_reg.bit.OVER_I){
 		if(I_out > OverCurLimit )	OC_Timer += Ts;
 		else if(OC_Timer > Ts)		OC_Timer -= Ts;
@@ -83,7 +61,7 @@ int CheckOverCurrent( )
 	return 	0; 
 }
 //-----------------------------------------------
-//  °úÀü¾Ð ÀúÀü¾Ð º¸È£ 
+//  ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ 
 //-----------------------------------------------
 
 int CheckOverVolt( )
@@ -118,7 +96,7 @@ int CheckOVP( )
 }
 
 //-----------------------------------------------
-//  ÀúÀü¾Ð º¸È£ 
+//  ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ 
 //-----------------------------------------------
 
 int CheckUndeVolt( )
@@ -208,8 +186,8 @@ int CheckOverHeat( )
 
 //-----------------------------------------------
 //
-//  º¸È£ ±â´É 
-//		¸Å ½ºÀ§Äª ¸¶´Ù ÀÌ¸¦ °ËÅä ÇÑ´Ù. 
+//  ï¿½ï¿½È£ ï¿½ï¿½ï¿½ 
+//		ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Äª ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½. 
 //----------------------------------------------
 int trip_check()
 {
@@ -218,7 +196,7 @@ int trip_check()
 	TripCode = 0;
 	if( ( TripCode = CheckOverCurrent()) != 0 ) return TripCode ;	// debug
 	if( ( TripCode = CheckOverVolt()   ) != 0 ) return TripCode ;
-	if( ( TripCode = CheckUndeVolt()   ) != 0 ) return TripCode ;	// ÃÖÁ¾ÀûÀ¸·Î Á¡°ËÀ» ÇÑ´Ù. 
+	if( ( TripCode = CheckUndeVolt()   ) != 0 ) return TripCode ;	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½. 
 	if( ( TripCode = CheckOverHeat()   ) != 0 ) return TripCode ;
 	if( ( TripCode = CheckIGBTFault()  ) != 0 ) return TripCode ;
 	if( ( TripCode = CheckOVP( )       ) != 0 ) return TripCode ;
@@ -226,10 +204,10 @@ int trip_check()
 }
 
 //-----------------------------------
-// Æ®¸³ ¹ß»ý ¸±·¹ÀÌ¸¦ On ÇÏ°í 
-// Reset¸¦ ±â´Ù¸°´Ù. 
+// Æ®ï¿½ï¿½ ï¿½ß»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ On ï¿½Ï°ï¿½ 
+// Resetï¿½ï¿½ ï¿½ï¿½Ù¸ï¿½ï¿½ï¿½. 
 //-----------------------------------
-// Trip Message´Â Æ®¸³ÀÌ ¹ß»ýµÈ ¼ø°£¿¡ ÀúÀåÀ» ÇÑ´Ù. 
+// Trip Messageï¿½ï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½. 
 //
 
 void TripProc( )
@@ -304,7 +282,7 @@ void TripProc( )
 	LoopCtrl = CMD_NULL;
 	while( LoopCtrl != CMD_RESET)
 	{
-		get_command( & iCommand, & fReference);	// Command¸¦ ÀÔ·Â ¹ÞÀ½ 				
+		get_command( & iCommand, & fReference);	// Commandï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½ 				
 		if( iCommand == CMD_RESET) LoopCtrl = CMD_RESET;
 		Nop();
 	}
@@ -312,7 +290,7 @@ void TripProc( )
 	delay_msecs(50);
 	while( LoopCtrl == CMD_RESET)
 	{
-		get_command( & iCommand, & fReference);	// Command¸¦ ÀÔ·Â ¹ÞÀ½ 				
+		get_command( & iCommand, & fReference);	// Commandï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½ 				
 		if( iCommand == CMD_STOP) LoopCtrl = CMD_STOP;
 		Nop();
 	}
@@ -357,7 +335,7 @@ void GetTripInfo(int Point,TRIP_INFO * TripData )
 		TripDataPoint = 0;
 	}
 	EepromSaveFlag = 1;
-// ÀúÀåµÈ ¸³ µ¥ÀÌÅÍ¸¦ ±¸ÇÑ´Ù. 
+// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½Ñ´ï¿½. 
 	iTemp = TripDataPoint - Point;		// iPoint = 1~10;
 
 	if( iTemp < 0 ) iTemp += 10;

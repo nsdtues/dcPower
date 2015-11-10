@@ -101,7 +101,7 @@ void main( void )
 	EINT;   // Enable Global interrupt INTM
 	ERTM;	// Enable Global realtime interrupt DBGM
 
-	gPWMTripCode = 0;		// º¯¼öÀÇ ÃÊ±âÈ­ 
+	gPWMTripCode = 0;		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ 
 
 	i = load_code2ram();
 	if( i !=0 ) TripProc();
@@ -123,7 +123,7 @@ void main( void )
  	 
 	if( code_protect_inhibit_on == 1)
 	{
-		protect_reg.bit.UNVER_VOLT = 0;			// udd Ãß°¡ 
+		protect_reg.bit.UNVER_VOLT = 0;			// udd ï¿½ß°ï¿½ 
 		protect_reg.bit.EX_TRIP = 0;
 		protect_reg.bit.OVER_VOLT = 0;
 		protect_reg.bit.OVER_I_ADC = 0;
@@ -131,7 +131,7 @@ void main( void )
 		protect_reg.bit.OVER_I = 0;
 	}
 	else {
-		if(code_protect_uv_off == 0 ) 		protect_reg.bit.UNVER_VOLT = 1;			// udd Ãß°¡ 
+		if(code_protect_uv_off == 0 ) 		protect_reg.bit.UNVER_VOLT = 1;			// udd ï¿½ß°ï¿½ 
 		if(code_protect_ov_off == 0 ) 		protect_reg.bit.OVER_VOLT = 1;
 		if(code_protect_Iadc_off == 0 ) 	protect_reg.bit.OVER_I_ADC = 1;
 		if(code_protect_over_I_off == 0) 	protect_reg.bit.OVER_I = 1;
@@ -161,19 +161,19 @@ void main( void )
 		}
 	}
 	else{
-		MAIN_CHARGE_ON;		// ¸ÞÀÎ Àü¿ø on 
+		MAIN_CHARGE_ON;		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ on 
 		TRIP_OUT_OFF;
 	}
   	
 
 
-	MAIN_CHARGE_ON;		// ¸ÞÀÎ Àü¿ø on 
+	MAIN_CHARGE_ON;		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ on 
 	init_charge_flag=0;
 	gMachineState = STATE_READY; 
 
 	INIT_CHARGE_CLEAR;
 
-//--- Á¤Àü ÀÚµ¿ ¿îÀüÀ» À§ÇÑ ½Ã°£ 
+//--- ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ 
 	gfRunTime = 0.0;
 	while( gfRunTime < 2.0 ){
 		get_command( & cmd, & ref_in0);
@@ -211,6 +211,7 @@ void main( void )
 			trip_code = 0;
 			switch( code_ctrl_mode ) // Control Method
 			{
+			case 2 : trip_code = mode2LoopCtrl();break;				// 11. code_testPwmPhase conti output
 			case 3 : trip_code = mode3Current_P_I_LoopCtrl();break;
 			case 8 : trip_code = mode8LoopCtrl();break;
 			case 9 : pwmPulseTestLoopCtrl( ); break;

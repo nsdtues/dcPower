@@ -137,7 +137,7 @@ extern double analog_ref_a;
 extern double analog_ref_b;
 
 //*******************************************************
-// °øÅë »çÇ× 
+// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
 //*******************************************************
 extern double phaseVref;
 extern double VdcScale;		
@@ -161,7 +161,7 @@ extern union PROTECT_FLAG protect_reg;
 // --- digital_inout.h
 
 extern union DIGITAL_OUT_FUNC relay_flag;
-extern union DIGITAL_FUNCTION func_flag;	// µðÁöÅÐ ÀÔ·ÂÀÇ ±â´ÉÀ» ¼³Á¤ÇÑ´Ù.
+extern union DIGITAL_FUNCTION func_flag;	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 
 
 extern int scic_rx_start_addr;
@@ -178,7 +178,7 @@ extern char TripMessage[25];
 extern double	DutyRatio[3];
 extern Uint16 DutyCount[3];
 
-// ½Ã°£ ¹× ÀÎµ¦½º
+// ï¿½Ã°ï¿½ ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½
 extern double 	gfRunTime;
 extern double	Ts;
 extern double	inv_Ts;
@@ -191,7 +191,7 @@ extern double	reference_in;
 extern double	reference_out;
 
 
-// Àü·ù
+// ï¿½ï¿½ï¿½
 extern double	Is_abc[3];
 extern double	Is_dq[2];
 
@@ -216,12 +216,12 @@ extern double	inv_Is_rat;
 extern double	we_rat;
 extern double	inv_motor_rate_hz;
 
-// ÀÎ¹öÅÍ ÆÄ¶ó¹ÌÅÍ
-extern double	Is_max;					// ÃÖ´ë Çã¿ëÀü·ù
+// ï¿½Î¹ï¿½ï¿½ï¿½ ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½
+extern double	Is_max;					// ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 //====================================
 // F28335 
-// EwInv Á¦¾î º¯¼ö
+// EwInv ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 //====================================
 // Sci.c
 
@@ -302,6 +302,7 @@ extern double analog_cmd_in_zero1;		// 100
 extern double analog_cmd_in_span1;		// 101
 extern double analog_cmd_in_zero2;		// 102
 extern double analog_cmd_in_span2;		// 103
+extern int 	  code_AdcOffsetCh6;		// 104
 
 extern double codeAnalogSelect1;		//	110
 extern double codeAnalogOutZero1;		//	111

@@ -38,31 +38,6 @@ void initVariFullbridgeCtrl( )
 
 	Ts = 1.0 / codeSwitFreq;
 
-// 1. I_out calc 
-	x1 = code_adcIout1st;		y1 = code_calIout1st;
-	x2 = code_adcIout2nd;		y2 = code_calIout2nd;
-	IoutScale1st = ( y2-y1) / ( x2 - x1 );
-	IoutOffset1st = (( y1 * x2 - y2 * x1 )/ (x2- x1));
-
-// 2. I_out calc 
-	x1 = code_adcIout2nd;		y1 = code_calIout2nd;
-	x2 = code_adcIout3rd;		y2 = code_calIout3rd;
-	IoutScale2nd = ( y2-y1) / ( x2 - x1 );
-	IoutOffset2nd = (( y1 * x2 - y2 * x1 )/ (x2- x1));
-
-// 3. I_out calc 
-	x1 = code_adcIout3rd;		y1 = code_calIout3rd;
-	x2 = code_adcIout4th;		y2 = code_calIout4th;
-	IoutScale3rd = ( y2-y1) / ( x2 - x1 );
-	IoutOffset3rd = (( y1 * x2 - y2 * x1 )/ (x2- x1));
-
-// 4. I_out calc 
-	x1 = code_adcIout4th;		y1 = code_calIout4th;
-	x2 = code_adcIout5th;		y2 = code_calIout5th;
-	IoutScale4th = ( y2-y1) / ( x2 - x1 );
-	IoutOffset4th = (( y1 * x2 - y2 * x1 )/ (x2- x1));
-
-
 // for Vdc calc 
 	x1 = code_adc_vdc_low;		y1 = code_Vdc_calc_low;
 	x2 = code_adc_vdc_high;		y2 = code_Vdc_calc_high;
@@ -93,7 +68,7 @@ void initVariFullbridgeCtrl( )
 	inv_code_dac_scale_ch3 = 1.0 / code_dac_scale_ch3;
 	inv_code_dac_scale_ch4 = 1.0 / code_dac_scale_ch4;
 
-	// ½Ã°£ ¹× ÀÎµ¦½º
+	// ï¿½Ã°ï¿½ ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½
 	gfRunTime=0.0;
 
 	// reference
@@ -269,7 +244,7 @@ int mode3Current_P_I_LoopCtrl( )
 
 		case STATE_RUN:
 			
-			reference_in =  code_I_out_ref * 0.001 ;  // 1000Ampere ÀÏ ¶§ 1.0À¸·Î Ã³¸®ÇÑ´Ù. 
+			reference_in =  code_I_out_ref * 0.001 ;  // 1000Ampere ï¿½ï¿½ ï¿½ï¿½ 1.0ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ñ´ï¿½. 
 
 			if( command == CMD_NULL ) ramp_proc(reference_in, &reference_out);
 			else if( command == CMD_STOP ) { 
@@ -293,7 +268,7 @@ int mode3Current_P_I_LoopCtrl( )
 
 		case STATE_GO_STOP:
 			if( command == CMD_START ){
-				reference_in =  code_I_out_ref * 0.001 ;  // 1000Ampere ÀÏ ¶§ 1.0À¸·Î Ã³¸®ÇÑ´Ù. 				ramp_proc(reference_in, &reference_out);
+				reference_in =  code_I_out_ref * 0.001 ;  // 1000Ampere ï¿½ï¿½ ï¿½ï¿½ 1.0ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ñ´ï¿½. 				ramp_proc(reference_in, &reference_out);
 				gMachineState = STATE_RUN; 
 			}
 			else{				
@@ -355,22 +330,26 @@ int mode8LoopCtrl( )
 			break;
 
 		case STATE_INIT_RUN:
-			if( command == CMD_STOP){LoopCtrl= 0;}						
+			if( command == CMD_STOP){
+				gMachineState = STATE_READY;
+				LoopCtrl= 0;
+			}
 			else if( gfRunTime > codeInitTime ){
 				strncpy(MonitorMsg," INVERTER RUN       ",20);
 				gMachineState = STATE_RUN;
-				reference_in = code_testPwmPhase;
+				reference_in = ref_in0;
 				reference_out = codePwmPhaseInit;
 			}
 			break;
 
 		case STATE_RUN:
-			reference_in = code_testPwmPhase;
+			//			reference_in = code_testPwmPhase;
+			reference_in = ref_in0;
 			if( command == CMD_NULL ) ramp_proc(reference_in, &reference_out);
 			else if( command == CMD_STOP ) { 
 				strncpy(MonitorMsg," CMD STOP     ",20);
 				reference_in = 0.0; 
-				gMachineState = STATE_GO_STOP; 
+				gMachineState = STATE_READY;
 			}
 			else if( command == CMD_SPEED_UP ){
 				reference_in += 0.05;
@@ -384,28 +363,17 @@ int mode8LoopCtrl( )
 				ramp_proc(reference_in, &reference_out);
 			}
 			break;
-
-		case STATE_GO_STOP:
-			if( command == CMD_START ){
-				reference_in = code_testPwmPhase;
-				ramp_proc(reference_in, &reference_out);
-				gMachineState = STATE_RUN; 
-			}
-			else{
-				reference_in = 0.0; 
-				ramp_proc(reference_in, &reference_out);
-				if( reference_out < 0.01) {
-					gMachineState = STATE_READY; LoopCtrl = 0;
-				}
-			}
-			break;
+		default:
+			reference_in = 0.0;
+			gMachineState = STATE_READY;
+			LoopCtrl = 0;
 		}
 
 	} // end of while
 	return trip_code;
 }		
 
-int testFullBridgeLoopCtrl1( )
+int mode2LoopCtrl( )
 {
 	int LoopCtrl;
 	int trip_code=0;
@@ -421,92 +389,86 @@ int testFullBridgeLoopCtrl1( )
 
 	gRunFlag =1;
 	strncpy(MonitorMsg,"INIT RUN",20);
-	gfRunTime = 0.0; 
-	LoopCtrl = 1;		
+	gfRunTime = 0.0;
+	LoopCtrl = 1;
 
 	initVariFullbridgeCtrl();
 
 	gMachineState = STATE_INIT_RUN;
-	 
+//	reference_in = code_testPwmPhase;
+//	reference_out = codePwmPhaseInit;
+
 	while(LoopCtrl == 1)
 	{
-		Nop();		
+		Nop();
 		if(gPWMTripCode != 0){
 			trip_code = gPWMTripCode; LoopCtrl = 0;
 			break;
 		}
-		get_command( & command, & ref_in0);					
+		get_command( & command, & ref_in0);
 		analog_out_proc( );
 		monitor_proc();
 
 		switch( gMachineState )
 		{
+		case STATE_READY:
+			LoopCtrl = 0;
+			break;
+
 		case STATE_INIT_RUN:
-			if( command == CMD_STOP){LoopCtrl= 0;}						
-			else if( gfRunTime > 10.0 ){
+			if( command == CMD_STOP){
+				gMachineState = STATE_READY;
+				LoopCtrl= 0;
+			}
+			else if( gfRunTime > codeInitTime ){
 				strncpy(MonitorMsg," INVERTER RUN       ",20);
 				gMachineState = STATE_RUN;
+				reference_in = ref_in0;
+				reference_out = codePwmPhaseInit;
 			}
 			break;
 
 		case STATE_RUN:
-
-			Nop();
-			if( command == CMD_NULL ) Nop();
-			else if( command == CMD_STOP ) { 
-				strncpy(MonitorMsg,"INV GO STOP  ",20);
-				reference_in = 0.0; 
-				gMachineState = STATE_GO_STOP;
-			}
-			else if( command == CMD_SPEED_UP ){
-				reference_in += 0.05;
-				if( reference_in > 1.0 ) reference_in = 1.0;
-			}
-			else if( command == CMD_SPEED_DOWN ){
-				reference_in -= 0.05;
-				if( reference_in < -1.0 ) reference_in = -1.0;
-			}
-			else if( command == CMD_START ){
-				Nop();//ramp_proc(reference_in, &reference_out);
+			//			reference_in = code_testPwmPhase;
+			if( command == CMD_STOP ) {
+				strncpy(MonitorMsg," CMD STOP     ",20);
+				reference_in = 0.0;
+				gMachineState = STATE_READY;
 			}
 			break;
-
-		case STATE_GO_STOP:
-			gMachineState = STATE_READY; LoopCtrl = 0;
-			break;
+		default:
+			reference_in = 0.0;
+			gMachineState = STATE_READY;
+			LoopCtrl = 0;
 		}
 
-		if( command == CMD_STOP ) { 
-			LoopCtrl = 0;	gMachineState = STATE_READY;
-		}
-		else{
-			Nop();
-		}
 	} // end of while
 	return trip_code;
-}		
-	
+}
 
-int pwmPulseTestLoopCtrl( )
+int pwmPulseTestLoopCtrl_temp( )
 {
 	int LoopCtrl;
 	int trip_code=0;
 	int command;
 	double ref_in0;
 
+	snprintf( gStr1,20,"Start[%4d]Pulse",codeSetPulseNumber);	load_sci_tx_mail_box(gStr1);
+	strncpy(MonitorMsg,"INIT RUN",20);
+
 	IER &= ~M_INT3;      // debug for PWM
 	initEpwmFullBridge(); 	// debug
 	EPwm1Regs.ETSEL.bit.INTEN = 1;    		            // Enable INT
 	IER |= M_INT3;      // debug for PWM
-
-	strncpy(MonitorMsg,"INIT_RUN",20);
-
-	LoopCtrl = 1;	gMachineState = STATE_INIT_RUN;		
-
 	test_pulse_count = 0;
+	gRunFlag =1;
 
-	snprintf( gStr1,20,"Start[%4d]Pulse",codeSetPulseNumber);	load_sci_tx_mail_box(gStr1);
-//	epwmFullBridgeEnable();
+	gfRunTime = 0.0;
+	LoopCtrl = 1;
+
+	gMachineState = STATE_INIT_RUN;
+
+	//	epwmFullBridgeEnable();
 	while(LoopCtrl == 1)
 	{
 		trip_code = trip_check();
@@ -514,11 +476,12 @@ int pwmPulseTestLoopCtrl( )
 			LoopCtrl = 0;
 		}
 		else if( test_pulse_count >= codeSetPulseNumber){
+			gMachineState = STATE_READY;
 			LoopCtrl = 0;
 		}
 		else{
 			monitor_proc();
-			get_command( & command, & ref_in0);	// Command¸¦ ÀÔ·Â ¹ÞÀ½ 
+			get_command( & command, & ref_in0);	// Commandï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½ 
 			if( command == CMD_STOP){
 				gMachineState = STATE_READY;
 				LoopCtrl = 0;
@@ -539,7 +502,7 @@ int pwmPulseTestLoopCtrl( )
 		}
 		else{
 			monitor_proc();
-			get_command( & command, & ref_in0);	// Command¸¦ ÀÔ·Â ¹ÞÀ½ 
+			get_command( & command, & ref_in0);	// Commandï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½ 
 			if( command != CMD_START){
 				gMachineState = STATE_READY;
 				LoopCtrl = 0;
@@ -548,6 +511,104 @@ int pwmPulseTestLoopCtrl( )
 	}
 	return trip_code;
 }		
+
+int pwmPulseTestLoopCtrl( )
+{
+	int LoopCtrl;
+	int trip_code=0;
+	int command;
+	double ref_in0;
+
+	if( trip_code !=0 ) return trip_code;
+
+	IER &= ~M_INT3;      			// debug for PWM
+	initEpwmFullBridge();
+	EPwm1Regs.ETSEL.bit.INTEN = 1;	// Enable INT
+	IER |= M_INT3;      			// debug for PWM
+
+	gRunFlag =1;
+	strncpy(MonitorMsg,"INIT RUN",20);
+	gfRunTime = 0.0;
+	LoopCtrl = 1;
+
+	initVariFullbridgeCtrl();
+
+	gMachineState = STATE_INIT_RUN;
+	reference_in = code_testPwmPhase;
+	reference_out = codePwmPhaseInit;
+
+	test_pulse_count = 0;
+
+	while(LoopCtrl == 1)
+	{
+		Nop();
+		if(gPWMTripCode != 0){
+			trip_code = gPWMTripCode; LoopCtrl = 0;
+			break;
+		}
+		get_command( & command, & ref_in0);
+		analog_out_proc( );
+		monitor_proc();
+
+		switch( gMachineState )
+		{
+		case STATE_READY:
+			LoopCtrl = 0;
+			break;
+
+		case STATE_INIT_RUN:
+			if( command == CMD_STOP){
+				gMachineState = STATE_READY;
+				LoopCtrl= 0;
+			}
+			else {
+				reference_in = ref_in0;
+				reference_out = codePwmPhaseInit;
+			}
+			break;
+
+		case STATE_RUN:
+			//			reference_in = code_testPwmPhase;
+			reference_in = ref_in0;
+			if( test_pulse_count >= codeSetPulseNumber){
+				gMachineState = STATE_READY;
+				LoopCtrl = 0;
+			}
+			else if( command == CMD_STOP ) {
+				strncpy(MonitorMsg," CMD STOP     ",20);
+				reference_in = 0.0;
+				gMachineState = STATE_READY;
+			}
+			break;
+		default:
+			reference_in = 0.0;
+			gMachineState = STATE_READY;
+			LoopCtrl = 0;
+		}
+
+	} // end of while
+
+	epwmFullBridgeDisable();
+	snprintf( gStr1,20,"End [%4d]Pulse",codeSetPulseNumber);	load_sci_tx_mail_box(gStr1);
+	LoopCtrl=1;
+	while(LoopCtrl == 1)
+	{
+		trip_code = trip_check();
+		if( trip_code !=0 ){
+			LoopCtrl = 0;
+		}
+		else{
+			monitor_proc();
+			get_command( & command, & ref_in0);	// Commandï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½
+			if( command != CMD_START){
+				gMachineState = STATE_READY;
+				LoopCtrl = 0;
+			}
+		}
+	} // end of while
+
+	return trip_code;
+}
 
 //===========================================================================
 // End of file.

@@ -88,10 +88,6 @@ int iGetAinCmd(int * piCommand, double * pfReference)
 	return iTemp;
 }
 
-void analog_cmd_proc(double * ana_refer)
-{
-	* ana_refer = analog_ref_a * analog_cmd_in_span1 - analog_cmd_in_zero1;
-}
 //------------------------------
 //
 //------------------------------
@@ -106,27 +102,25 @@ void get_command( int * command, double * ref )
 	analog_cmd_proc( & ana_ref);
 //	KeyInputProc(&button_cmd,&button_ref);
 
-// button¿¡ ÀÇÇÑ Á¤Áö´Â ¿É¼Ç°ú »ó°ü¾øÀÌ ¹«Á¶°Ç ½ÇÇàÀÌ µÈ´Ù.
-	code_run_input_select = 1;	// 2014.0827
+// buttonï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½É¼Ç°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½È´ï¿½.
 
 	switch( code_run_input_select )
 	{
-	case 1: // µðÁöÅÐ ÀÔ·Â¿¡ ÀÇÇÑ ½Ãµ¿°ú Á¤Áö 
+	case 1: // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ãµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
 		* command = digital_cmd;
 		* ref = digital_reference;
 		break;
 
-	case 2: //  Åë½Å¿¡ ÀÇÇÑ ½Ãµ¿°ú Á¤
+	case 2: //  ï¿½ï¿½Å¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ãµï¿½ï¿½ï¿½ ï¿½ï¿½
 		* command = sci_cmd;
 		* ref = sci_ref;
 		break;
 
-	case 3: // ¾Æ³¯·Î±× ÀÔ·ÂÁö·É
-	case 8: // 
-	case 9: // 
+	case 3: // ï¿½Æ³ï¿½ï¿½Î±ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½ï¿½
 		* command = digital_cmd;
 		if( digital_cmd == CMD_START ){
-			if( ana_ref < 0.01 )	* command = CMD_STOP;
+			if(( ana_ref < 0.05 ) && ( gMachineState == STATE_READY)) * command = CMD_STOP;
+			else if (( ana_ref < 0.01 ) && ( gMachineState == STATE_RUN )) * command = CMD_STOP;
 			else 					* ref = ana_ref;
 		}
 		break;
@@ -137,7 +131,7 @@ void get_command( int * command, double * ref )
 		break;
 	}
 
-	// Åë½Å¿¡ ÀÇÇÑ Áö·ÉÀ» ÃÖ¿ì¼±À¸·Î Ã³¸®ÇÑ´Ù. 
+	// ï¿½ï¿½Å¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¿ì¼±ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ñ´ï¿½. 
 	if( sci_cmd != CMD_NULL){
 		if( sci_cmd == CMD_SAVE){
 			* command = sci_cmd ;
@@ -229,7 +223,7 @@ void get_adc_vdc_low()
 		RunTimeMsec = ulGetTime_mSec( StartTimeMsec);
 		if(RunTimeMsec > 1){
 			StartTimeMsec = ulGetNow_mSec( );
-			adc_Vdc_in = (double)giAdcVdc;			// VDC ÀúÀå
+			adc_Vdc_in = (double)giAdcVdc;			// VDC ï¿½ï¿½ï¿½ï¿½
 			LPF1(0.002,10.0,adc_Vdc_in, & adc_Vdc_out);
 		}
 	}

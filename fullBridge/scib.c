@@ -113,9 +113,6 @@ void load_scib_tx_mail_box( char * st)
 		loop_count ++;
 	}
 
-	load_scib_tx_mail_box_char('\r');
-	load_scib_tx_mail_box_char('\n');
-
 	ScibRegs.SCIFFTX.bit.TXFFIENA = 1;	// Clear SCI Interrupt flag
 }
 		
@@ -154,7 +151,7 @@ interrupt void scibRxFifoIsr(void)
 	static int scib_rx_count=0;
 	static char msg_box[17]={0};
 
-	// 5msec ÀÌ»ó ÀÌ¸é start·Î Ãë±ÞÇÑ´Ù. 
+	// 5msec ï¿½Ì»ï¿½ ï¿½Ì¸ï¿½ startï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½. 
 	if( ulGetTime_mSec(modebus_start_time) > 10 ){
 		modebus_start_time = ulGetNow_mSec( );
 		msg_box[0] = ScibRegs.SCIRXBUF.all;	 // Read data
@@ -250,7 +247,7 @@ void scib_cmd_proc( int * sci_cmd, double * sci_ref)
 			else if( data == 90 ){
 				* sci_cmd = CMD_NULL;  * sci_ref = 0.0;
 				load_scib_tx_mail_box("EPROM initStart");		
-				check = init_eprom_data();		// 0ÀÌ ¾Æ´Ï¸é address value
+				check = init_eprom_data();		// 0ï¿½ï¿½ ï¿½Æ´Ï¸ï¿½ address value
 				if( check != 0) load_scib_tx_mail_box("EEPROM init Fail");		
 				else		load_scib_tx_mail_box("EPROM init OK");
 			}
@@ -286,7 +283,7 @@ void scib_cmd_proc( int * sci_cmd, double * sci_ref)
 			}
 			return;
 		}
-		else if(addr == 902){	//	³»ºÎ º¯¼ö read
+		else if(addr == 902){	//	ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ read
 			check = (int)data;
 
 			switch( check ){
@@ -313,8 +310,8 @@ void scib_cmd_proc( int * sci_cmd, double * sci_ref)
 				break;
 
 			case 4 :
-				if( onOff ){ onOff = 0;	strncpy(str,"     Power",10);}
-				else{ onOff = 1; 	strncpy(str,"   TechWin",10);}
+				if( onOff ){ onOff = 0;	strncpy(str,"    Power ",10);}
+				else{ onOff = 1; 	strncpy(str,"   Eunwho ",10);}
 				load_scib_tx_mail_box(str);
 				break;
 			case 5 : // Reset;
@@ -327,11 +324,11 @@ void scib_cmd_proc( int * sci_cmd, double * sci_ref)
 				break;
 			}
 			
-			// check ¿¡ µû¸¥ º¯¼ö¸¦ Æ÷ÀÎÅÍ·Î µÎ¾î¼­ Ã³¸® ÇÑ´Ù. 
+			// check ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ ï¿½Î¾î¼­ Ã³ï¿½ï¿½ ï¿½Ñ´ï¿½. 
 		//	snprintf( str,30,"\n Vdc =%10.3e \n",Vdc);	load_scib_tx_mail_box(str); 
 			return;
 		}
-		else if(addr == 903){	//	³»ºÎ º¯¼ö read // EEPROM TRIP DATA
+		else if(addr == 903){	//	ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ read // EEPROM TRIP DATA
 			check = (int)data;
 
 			if( check == 0 ){

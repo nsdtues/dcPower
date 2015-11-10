@@ -66,7 +66,7 @@ double analog_ref_a;
 double analog_ref_b;
 
 //***************************************************
-// °øÅë»çÇ× 
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 //***************************************************
 double * dac_point[200];
 double dac_ch0_unit_count_value;
@@ -101,7 +101,7 @@ int terminal_input_state;
 double	DutyRatio[3];
 Uint16 DutyCount[3];
 
-// ½Ã°£ ¹× ÀÎµ¦½º
+// ï¿½Ã°ï¿½ ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½
 double	Ts;
 double	inv_Ts;
 double 	gfRunTime=0;
@@ -118,7 +118,7 @@ double RMS_Ib = 0.;
 double	Is_mag=0.0;
 double	Is_mag_rms=0.0;
 
-double	Is_max;					// ÃÖ´ë Çã¿ëÀü·ù
+double	Is_max;					// ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 double	Vdc=0.0;	
 double	Vs_max=0.0;	
@@ -126,7 +126,7 @@ double	Vs_max=0.0;
 double refer_in0;
 double	reference_in=0.0;
 double	reference_out=0.0;
-// °¢µµ ¹× ÁÖÆÄ¼ö
+// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ä¼ï¿½
 
 double	frequency=0.0;
 double	theta=0.0;
@@ -135,7 +135,7 @@ double	CosTheta=1.0;
 
 //====================================
 // F28335 
-// EwInv Á¦¾î º¯¼ö
+// EwInv ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 //====================================
 // Sci.c
 
@@ -152,13 +152,13 @@ int gMachineState=0;
 // Ref. Func
 int	gPWMTripCode;
 
-// ÆÄ¶ó¹ÌÅÍ ¹× ¸ð´ÏÅÍ¸µ µ¥ÀÌÅ¸ Æ÷ÀÎÅÍ
+// ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½Å¸ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 int adc_result[16]={0};
 
 
 int	giAdcVdc	;
-union DIGITAL_FUNCTION func_flag;	// µðÁöÅÐ ÀÔ·ÂÀÇ ±â´ÉÀ» ¼³Á¤ÇÑ´Ù.
+union DIGITAL_FUNCTION func_flag;	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 
 union DIGITAL_OUT_FUNC relay_flag;
 
@@ -184,14 +184,16 @@ double OverCurLimit;
 //   CODE variable 
 //============================================
 double code_I_out_ref;			// 0
-int code_ctrl_mode;				// 1
+double code_Vout;				//1
 
-double code_Vout;
 double code_VoutLimit;		// 3
 double code_ovpTime;		// 4
 
 double codePwmPhaseInit;		// 6
 double codeInitTime;			// 7
+
+int code_run_input_select;      // 8
+int code_ctrl_mode;				// 9
 
 int codeSetPulseNumber;			// 10
 double code_testPwmPhase;		// 11
@@ -214,6 +216,7 @@ double analog_cmd_in_zero1;		// 100
 double analog_cmd_in_span1;		// 101
 double analog_cmd_in_zero2;		// 102
 double analog_cmd_in_span2;		// 103
+int 	code_AdcOffsetCh6;		// 104
 
 double codeAnalogSelect1;		//	110
 double codeAnalogOutZero1;		//	111

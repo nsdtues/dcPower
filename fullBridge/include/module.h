@@ -1,6 +1,11 @@
 #ifndef		__FUNCTION_MODULE_DEFINITION_
 #define		__FUNCTION_MODULE_DEFINITION_
 
+
+// fullBridgeCtrl.c
+
+extern int mode2LoopCtrl( );
+
 extern int CheckOVP( );
 extern void monitorPrint( char * strIn , char * charOut, double argIn);
 
@@ -100,6 +105,7 @@ extern void LPF5000(float *LPF_out, float *LPF_feed, float LPF_in);
 extern void analog_input_proc( double * analog_referenc);
 extern void analog_input_proc_b( double * referenc);
 extern void analog_out_proc( );
+extern void analog_cmd_proc(double * ana_refer);
 
 interrupt void Adc_Isr(void);
 interrupt void wakeint_isr(void);

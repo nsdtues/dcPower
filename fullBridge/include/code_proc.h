@@ -32,6 +32,7 @@
 
 #define CODE_PwmPhaseInit				6
 #define CODE_InitTime					7
+#define CODE_run_input_select			8
 #define CODE_ctrl_mode					9
 
 #define CODE_SetPulseNumber				10
@@ -54,6 +55,7 @@
 #define CODE_analog_cmd_in_span1		101
 #define CODE_analog_cmd_in_zero2		102
 #define CODE_analog_cmd_in_span2		103
+#define CODE_AdcOffsetCh6				104
 
 #define CODE_analog_out_select1			110
 #define CODE_analog_out_zero1			111

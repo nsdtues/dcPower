@@ -20,7 +20,7 @@ int get_code_group0(int addr ,int cmd, CODE_INFO * codes)
 	case CODE_VoutLimit:		// code 3	
 		strncpy(codes->disp, "Vout Limit",40);
 		if( cmd == CMD_WRITE_RAM ) code_VoutLimit = (codes->code_value).doubles;
-		set_code_default_double(0.1,30.0,10.0,code_VoutLimit,0,codes);
+		set_code_default_double(0.1,300.0,250.0,code_VoutLimit,0,codes);
 		break;
 
 	case CODE_ovpTime:		// code 4	
@@ -32,7 +32,13 @@ int get_code_group0(int addr ,int cmd, CODE_INFO * codes)
 	case CODE_Vout:		// 	
 		strncpy(codes->disp, "Set Vout",40);
 		if( cmd == CMD_WRITE_RAM ) code_Vout = (codes->code_value).doubles;
-		set_code_default_double(0.1,15.0,7.0,code_Vout,0,codes);
+		set_code_default_double(0.1,300.0,220.0,code_Vout,0,codes);
+		break;
+
+	case CODE_run_input_select:	//
+		strncpy(codes->disp, "RUN input select",40);
+		if( cmd == CMD_WRITE_RAM ) code_run_input_select = (codes->code_value).ints;
+		set_code_default_int(0,9,0,code_run_input_select,1,codes);
 		break;
 
 	case CODE_ctrl_mode:	// 
@@ -50,7 +56,7 @@ int get_code_group0(int addr ,int cmd, CODE_INFO * codes)
 	case CODE_InitTime:	
 		strncpy(codes->disp, "Init Time [sec]",40);
 		if( cmd == CMD_WRITE_RAM ) codeInitTime = (codes->code_value).doubles;
-		set_code_default_double(0.0,60.0,0.01,codeInitTime,0,codes);
+		set_code_default_double(0.0,60.0,3.0,codeInitTime,0,codes);
 		break;
 
 	case CODE_SetPulseNumber:	
@@ -156,6 +162,13 @@ int get_code_group1(int addr ,int cmd, CODE_INFO * codes)
 		if( cmd == CMD_WRITE_RAM ) analog_cmd_in_span2 = (codes->code_value).doubles;
 		set_code_default_double(0.5,2.0,1.0,analog_cmd_in_span2,0,codes);
 		break;
+
+	case CODE_AdcOffsetCh6:	//
+		strncpy(codes->disp, "Adc Offset Ch6",40);
+		if( cmd == CMD_WRITE_RAM ) code_AdcOffsetCh6 = (codes->code_value).ints;
+		set_code_default_int(0,4095,2048,code_AdcOffsetCh6,0,codes);
+		break;
+
 //-- Ch1 Analog Monitor
 	case CODE_analog_out_select1:	
 		strncpy(codes->disp, "Analog Select 1",40);

@@ -9,10 +9,8 @@ void digital_input_proc(int * cmd, double * ref )
 
 	temp = xbus_in;
 
-	if( (temp & 0x0003) == 0 ){
+	if( (temp & 0x0001) == 0 ){
 	 	* cmd = CMD_START; //FWD LOW
-		// if(( temp & 0x002) == 0 ) * ref = code_speed2;
-		// else 					  * ref = code_jog_speed;
 	}
 	else { * cmd = CMD_STOP; * ref = 0.0;}
 
