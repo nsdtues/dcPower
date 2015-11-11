@@ -49,14 +49,14 @@ void main( void )
 #endif
 
 	gfRunTime = 0.0; protect_reg.all = 0;
-	// MAIN_CHARGE_OFF; INIT_CHARGE_CLEAR;
-	MAIN_CHARGE_OFF; RUN_OUT_ON; TRIP_OUT_OFF
+
+	MAIN_CHARGE_OFF; INIT_CHARGE_CLEAR; TRIP_OUT_OFF;
+
 	init_charge_flag = 0;
 
 	RESET_DRIVER_CLEAR;
 
 	gMachineState = STATE_POWER_ON; 
-
 	DINT;	IER = 0x0000; 	IFR = 0x0000;
 
 	InitPieCtrl();
@@ -139,7 +139,9 @@ void main( void )
 		if(code_protect_ex_trip_off == 0 ) 	protect_reg.bit.EX_TRIP = 1;
 	}
 
+	RUN_OUT_ON; // intCharge
 	init_charge_flag = 1;	
+
 	while( gfRunTime < 3.0){
 		get_command( & cmd, & ref_in0);
 		monitor_proc();

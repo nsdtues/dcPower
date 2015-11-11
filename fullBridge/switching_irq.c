@@ -40,14 +40,14 @@ interrupt void MainPWM(void)
 			EPwm1Regs.CMPA.half.CMPA = 0;
 			EPwm2Regs.CMPA.half.CMPA = 0;
 			invt_PWM_Port_Set_flag = 0;
-			EPwm2Regs.TBPHS.half.TBPHS = 0;
+//			EPwm2Regs.TBPHS.half.TBPHS = 0;
 			break;
 
 		case STATE_TRIP:					
 			EPwm1Regs.CMPA.half.CMPA = 0;
 			EPwm2Regs.CMPA.half.CMPA = 0;
 			invt_PWM_Port_Set_flag = 0;
-			EPwm2Regs.TBPHS.half.TBPHS = 0;
+//			EPwm2Regs.TBPHS.half.TBPHS = 0;
 			epwmFullBridgeDisable(); //inverter  PWM gate OFF
 			initCount = 0;
 			break;
@@ -57,24 +57,27 @@ interrupt void MainPWM(void)
 			EPwm2Regs.CMPA.half.CMPA = 0;
 			invt_PWM_Port_Set_flag = 0;
 			initCount = 0;
-			EPwm2Regs.TBPHS.half.TBPHS = 0;
+//			EPwm2Regs.TBPHS.half.TBPHS = 0;
 			break;
 
 		case STATE_INIT_RUN:
 
 			EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1;
 			EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1;
-//			EPwm1Regs.CMPA.half.CMPA = 0;
-//			EPwm2Regs.CMPA.half.CMPA = 0;
-//			invt_PWM_Port_Set_flag == 0
-			EPwm2Regs.TBPHS.half.TBPHS = 0 ;
-		    if(code_ctrl_mode == 9) gMachineState = STATE_RUN;
-		    if(code_ctrl_mode == 2) gMachineState = STATE_RUN;
+			if( code_ctrl_mode == 9 ){
+				if( initCount < codeSetPulseNumber){
+					EPwm2Regs.TBPHS.half.TBPHS = (Uint16)( MAX_PWM_CNT * code_testPwmPhase * 0.5 );
+					initCount++;
+				}
+				else {
+					gMachineState = STATE_READY;
+				}
+			}
 		    break;
 
 		case STATE_RUN:
-			EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT>>1;
-			EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT>>1;
+			EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1;
+			EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1;
 
 			if( code_ctrl_mode == 3 ){ 
 
@@ -97,17 +100,6 @@ interrupt void MainPWM(void)
 			else if( code_ctrl_mode == 8 ){ // mode8LoopCtrl mode
 				EPwm2Regs.TBPHS.half.TBPHS = (Uint16)( MAX_PWM_CNT * reference_out * 0.5 );
 			}
-			else if( code_ctrl_mode == 9 ){
-			    if( test_pulse_count < codeSetPulseNumber){
-//					EPwm2Regs.TBPHS.half.TBPHS = (Uint16)( MAX_PWM_CNT * reference_out * 0.5 );
-					EPwm2Regs.TBPHS.half.TBPHS = (Uint16)( MAX_PWM_CNT * code_testPwmPhase * 0.5 );
-					test_pulse_count++;
-				}
-				else{
-					gMachineState = STATE_READY;
-					EPwm2Regs.TBPHS.half.TBPHS = 0;
-				}
-			}
 			else if( code_ctrl_mode == 2 ){ // mode2LoopCtrl mode
 				EPwm2Regs.TBPHS.half.TBPHS =(Uint16)( MAX_PWM_CNT * code_testPwmPhase * 0.5 );
 			}
@@ -124,7 +116,7 @@ interrupt void MainPWM(void)
 				reference_out = 0.0;
 				EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT;
 				EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT;
-				EPwm2Regs.TBPHS.half.TBPHS = 0 ;
+//				EPwm2Regs.TBPHS.half.TBPHS = 0 ;
 				invt_PWM_Port_Set_flag = 0;
 				gMachineState = STATE_READY;
 			}
@@ -136,9 +128,9 @@ interrupt void MainPWM(void)
 			break;
 
  		default: 
-			EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT;
-			EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT;
-			EPwm2Regs.TBPHS.half.TBPHS = 0;
+			EPwm1Regs.CMPA.half.CMPA = 0;
+			EPwm2Regs.CMPA.half.CMPA = 0;
+//			EPwm2Regs.TBPHS.half.TBPHS = 0;
 			invt_PWM_Port_Set_flag = 0;
 			epwmFullBridgeDisable(); // converter PWM gate OFF
 			break;

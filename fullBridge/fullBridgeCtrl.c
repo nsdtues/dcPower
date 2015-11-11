@@ -138,7 +138,8 @@ void initEpwmFullBridge()
 	EPwm2Regs.TBCTL.bit.HSPCLKDIV = 0;       		// Clock ratio to SYSCLKOUT
 	EPwm2Regs.TBCTL.bit.CLKDIV = 0;          		// Slow just to observe on the scope
 
-	EPwm2Regs.TBPHS.half.TBPHS = 0;		           	// Phase is 0
+	//	EPwm2Regs.TBPHS.half.TBPHS = 0;		           	// Phase is 0
+	EPwm2Regs.TBPHS.half.TBPHS = 1;		           	// debug for gate trigger
 	EPwm2Regs.TBCTL.bit.PHSEN = TB_ENABLE; 
 	EPwm2Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_IN;        	
 	EPwm2Regs.CMPA.half.CMPA = 0;
@@ -479,10 +480,6 @@ int pwmPulseTestLoopCtrl( )
 	initVariFullbridgeCtrl();
 
 	gMachineState = STATE_INIT_RUN;
-	reference_in = code_testPwmPhase;
-	reference_out = codePwmPhaseInit;
-
-	test_pulse_count = 0;
 
 	while(LoopCtrl == 1)
 	{
@@ -506,20 +503,10 @@ int pwmPulseTestLoopCtrl( )
 				gMachineState = STATE_READY;
 				LoopCtrl= 0;
 			}
-			else {
-				reference_in = ref_in0;
-				reference_out = codePwmPhaseInit;
-			}
 			break;
 
 		case STATE_RUN:
-			//			reference_in = code_testPwmPhase;
-			reference_in = ref_in0;
-			if( test_pulse_count >= codeSetPulseNumber){
-				gMachineState = STATE_READY;
-				LoopCtrl = 0;
-			}
-			else if( command == CMD_STOP ) {
+			if( command == CMD_STOP ) {
 				strncpy(MonitorMsg," CMD STOP     ",20);
 				reference_in = 0.0;
 				gMachineState = STATE_READY;
