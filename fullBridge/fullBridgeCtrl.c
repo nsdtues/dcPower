@@ -100,7 +100,7 @@ void initEpwmFullBridge()
 	MAX_PWM_CNT = (Uint16)( ( F_OSC * DSP28_PLLCR / codeSwitFreq ) * 0.5 );
 
 	EPwm1Regs.TBPRD =  MAX_PWM_CNT;			// Set timer period
-	EPwm1Regs.TBPHS.half.TBPHS = 0x0000;           	// Phase is 0
+	EPwm1Regs.TBPHS.half.TBPHS = 0;           	// Phase is 0
 	EPwm1Regs.TBCTR = 0x0000;                      	// Clear counter
 
 	// Setup TBCLK
@@ -116,7 +116,7 @@ void initEpwmFullBridge()
 	EPwm1Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;
 	EPwm1Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;   
 
-	EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT>>1;
+	EPwm1Regs.CMPA.half.CMPA = 0;
    
 	EPwm1Regs.AQCTLA.bit.CAU = AQ_SET;
 	EPwm1Regs.AQCTLA.bit.ZRO = AQ_CLEAR;
@@ -126,22 +126,22 @@ void initEpwmFullBridge()
  
 	EPwm1Regs.DBCTL.bit.IN_MODE 	= DB_FULL_ENABLE;
 	EPwm1Regs.DBCTL.bit.OUT_MODE 	= DB_FULL_ENABLE;
-	EPwm1Regs.DBCTL.bit.POLSEL 	= DB_ACTV_HIC;
+	EPwm1Regs.DBCTL.bit.POLSEL 		= DB_ACTV_HIC;
 
 	EPwm1Regs.DBRED = (Uint16)( DEAD_TIME_COUNT * allDeadTime * 0.25 );
 	EPwm1Regs.DBFED = (Uint16)( DEAD_TIME_COUNT * allDeadTime * 0.25 );
 
 	// Set PWM2   
-	EPwm2Regs.TBPRD =  MAX_PWM_CNT;				// Set timer period
-	EPwm2Regs.TBCTL.bit.PHSDIR = TB_UP;	// Count up
+	EPwm2Regs.TBPRD =  MAX_PWM_CNT;					// Set timer period
+	EPwm2Regs.TBCTL.bit.PHSDIR = TB_UP;				// Count up
 	EPwm2Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP; 		// Count up
-	EPwm2Regs.TBCTL.bit.HSPCLKDIV = 0;       			// Clock ratio to SYSCLKOUT
-	EPwm2Regs.TBCTL.bit.CLKDIV = 0;          			// Slow just to observe on the scope
+	EPwm2Regs.TBCTL.bit.HSPCLKDIV = 0;       		// Clock ratio to SYSCLKOUT
+	EPwm2Regs.TBCTL.bit.CLKDIV = 0;          		// Slow just to observe on the scope
 
-	EPwm2Regs.TBPHS.half.TBPHS = 0x0000;           	// Phase is 0
+	EPwm2Regs.TBPHS.half.TBPHS = 0;		           	// Phase is 0
 	EPwm2Regs.TBCTL.bit.PHSEN = TB_ENABLE; 
 	EPwm2Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_IN;        	
-	EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT>>1;
+	EPwm2Regs.CMPA.half.CMPA = 0;
 
 	EPwm2Regs.AQCTLA.bit.CAU = AQ_SET;             		
 	EPwm2Regs.AQCTLA.bit.ZRO = AQ_CLEAR;
@@ -160,17 +160,17 @@ void initEpwmFullBridge()
 
 //-------------
 
-	EPwm1Regs.ETSEL.bit.INTSEL = ET_CTR_ZERO;	// Select INT on Zero event
-	EPwm1Regs.ETPS.bit.INTPRD = 1;   // Generate interrupt on the 1st event
-	EPwm1Regs.ETCLR.bit.INT = 1;     //  
-/*
+	EPwm1Regs.ETSEL.bit.INTSEL 	= ET_CTR_ZERO;	// Select INT on Zero event
+	EPwm1Regs.ETPS.bit.INTPRD 	= 1;   // Generate interrupt on the 1st event
+	EPwm1Regs.ETCLR.bit.INT 	= 1;     //
+
 	EALLOW;
 	GpioCtrlRegs.GPAMUX1.bit.GPIO0 	= 1;  // GPIO0 = PWM1A
 	GpioCtrlRegs.GPAMUX1.bit.GPIO1 	= 1;  // GPIO1 = PWM1B
 	GpioCtrlRegs.GPAMUX1.bit.GPIO2 	= 1;  // GPIO2 = PWM2A
 	GpioCtrlRegs.GPAMUX1.bit.GPIO3 	= 1;  // GPIO3 = PWM2B
 	EDIS;
-*/
+
 	AdcRegs.ADCTRL2.bit.EPWM_SOCA_SEQ1 = 1;// Enable SOCA from ePWM to start SEQ1
 	AdcRegs.ADCTRL2.bit.INT_ENA_SEQ1 = 1;  // Enable SEQ1 interrupt (every EOS)
 	AdcRegs.ADCTRL3.all = 0x00FE;  // Power up bandgap/reference/ADC circuits
@@ -416,6 +416,7 @@ int mode2LoopCtrl( )
 			break;
 
 		case STATE_INIT_RUN:
+/*
 			if( command == CMD_STOP){
 				gMachineState = STATE_READY;
 				LoopCtrl= 0;
@@ -423,6 +424,16 @@ int mode2LoopCtrl( )
 			else if( gfRunTime > codeInitTime ){
 				strncpy(MonitorMsg," INVERTER RUN       ",20);
 				gMachineState = STATE_RUN;
+				reference_in = ref_in0;
+				reference_out = codePwmPhaseInit;
+			}
+			break;
+*/
+			if( command == CMD_STOP){
+				gMachineState = STATE_READY;
+				LoopCtrl= 0;
+			}
+			else {
 				reference_in = ref_in0;
 				reference_out = codePwmPhaseInit;
 			}
@@ -445,72 +456,6 @@ int mode2LoopCtrl( )
 	} // end of while
 	return trip_code;
 }
-
-int pwmPulseTestLoopCtrl_temp( )
-{
-	int LoopCtrl;
-	int trip_code=0;
-	int command;
-	double ref_in0;
-
-	snprintf( gStr1,20,"Start[%4d]Pulse",codeSetPulseNumber);	load_sci_tx_mail_box(gStr1);
-	strncpy(MonitorMsg,"INIT RUN",20);
-
-	IER &= ~M_INT3;      // debug for PWM
-	initEpwmFullBridge(); 	// debug
-	EPwm1Regs.ETSEL.bit.INTEN = 1;    		            // Enable INT
-	IER |= M_INT3;      // debug for PWM
-	test_pulse_count = 0;
-	gRunFlag =1;
-
-	gfRunTime = 0.0;
-	LoopCtrl = 1;
-
-	gMachineState = STATE_INIT_RUN;
-
-	//	epwmFullBridgeEnable();
-	while(LoopCtrl == 1)
-	{
-		trip_code = trip_check();
-		if( trip_code !=0 ){
-			LoopCtrl = 0;
-		}
-		else if( test_pulse_count >= codeSetPulseNumber){
-			gMachineState = STATE_READY;
-			LoopCtrl = 0;
-		}
-		else{
-			monitor_proc();
-			get_command( & command, & ref_in0);	// Command�� �Է� ���� 
-			if( command == CMD_STOP){
-				gMachineState = STATE_READY;
-				LoopCtrl = 0;
-			}
-		}						
-	}
-
-	epwmFullBridgeDisable();
-
-	snprintf( gStr1,20,"End [%4d]Pulse",codeSetPulseNumber);	load_sci_tx_mail_box(gStr1);
-
-	LoopCtrl=1;
-	while(LoopCtrl == 1)
-	{
-		trip_code = trip_check();
-		if( trip_code !=0 ){
-			LoopCtrl = 0;
-		}
-		else{
-			monitor_proc();
-			get_command( & command, & ref_in0);	// Command�� �Է� ���� 
-			if( command != CMD_START){
-				gMachineState = STATE_READY;
-				LoopCtrl = 0;
-			}
-		}						
-	}
-	return trip_code;
-}		
 
 int pwmPulseTestLoopCtrl( )
 {

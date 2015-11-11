@@ -49,8 +49,8 @@ void main( void )
 #endif
 
 	gfRunTime = 0.0; protect_reg.all = 0;
-	MAIN_CHARGE_OFF; INIT_CHARGE_CLEAR;
-
+	// MAIN_CHARGE_OFF; INIT_CHARGE_CLEAR;
+	MAIN_CHARGE_OFF; RUN_OUT_ON; TRIP_OUT_OFF
 	init_charge_flag = 0;
 
 	RESET_DRIVER_CLEAR;

@@ -37,9 +37,15 @@ interrupt void MainPWM(void)
 	switch(gMachineState)
 	{
 		case STATE_POWER_ON:
+			EPwm1Regs.CMPA.half.CMPA = 0;
+			EPwm2Regs.CMPA.half.CMPA = 0;
+			invt_PWM_Port_Set_flag = 0;
+			EPwm2Regs.TBPHS.half.TBPHS = 0;
+			break;
+
 		case STATE_TRIP:					
-			EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT;
-			EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT;
+			EPwm1Regs.CMPA.half.CMPA = 0;
+			EPwm2Regs.CMPA.half.CMPA = 0;
 			invt_PWM_Port_Set_flag = 0;
 			EPwm2Regs.TBPHS.half.TBPHS = 0;
 			epwmFullBridgeDisable(); //inverter  PWM gate OFF
@@ -47,36 +53,24 @@ interrupt void MainPWM(void)
 			break;
 
 		case STATE_READY:
-			EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT;
-			EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT;
+			EPwm1Regs.CMPA.half.CMPA = 0;
+			EPwm2Regs.CMPA.half.CMPA = 0;
 			invt_PWM_Port_Set_flag = 0;
 			initCount = 0;
 			EPwm2Regs.TBPHS.half.TBPHS = 0;
-//			epwmFullBridgeDisable();
 			break;
 
 		case STATE_INIT_RUN:
 
 			EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1;
 			EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1;
-
-			if( invt_PWM_Port_Set_flag == 0 ){
-
-				if(initCount > 10 ){
-					epwmFullBridgeEnable();
-					EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT;
-					EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT;
-				    EPwm2Regs.TBPHS.half.TBPHS = 0 ;
-					invt_PWM_Port_Set_flag = 1;
-					if( code_ctrl_mode == 9 ) gMachineState = STATE_RUN;
-				}
-				else initCount ++ ;
-			}
-			else{
-//				EPwm2Regs.TBPHS.half.TBPHS = (Uint16)( MAX_PWM_CNT * codePwmPhaseInit * 0.5 );
-				EPwm2Regs.TBPHS.half.TBPHS = 0;
-			}
-			break;
+//			EPwm1Regs.CMPA.half.CMPA = 0;
+//			EPwm2Regs.CMPA.half.CMPA = 0;
+//			invt_PWM_Port_Set_flag == 0
+			EPwm2Regs.TBPHS.half.TBPHS = 0 ;
+		    if(code_ctrl_mode == 9) gMachineState = STATE_RUN;
+		    if(code_ctrl_mode == 2) gMachineState = STATE_RUN;
+		    break;
 
 		case STATE_RUN:
 			EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT>>1;
@@ -128,11 +122,10 @@ interrupt void MainPWM(void)
 
 			if ( reference_out < 0.10){
 				reference_out = 0.0;
-				EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1;
-				EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1 ;
+				EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT;
+				EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT;
 				EPwm2Regs.TBPHS.half.TBPHS = 0 ;
 				invt_PWM_Port_Set_flag = 0;
-				epwmFullBridgeDisable();
 				gMachineState = STATE_READY;
 			}
 			else{ // mode2LoopCtrl mode
@@ -166,8 +159,8 @@ _PWM_OUT_END:
 
 //--- digital out
 /*
-	 MAIN_CHARGE_OFF	--> MC ;
-	 RUN_OUT_OFF		--> init charge
+	 MAIN_CHARGE    	--> MC & pwm_out;
+	 RUN_OUT    		--> init charge
 	 TRIP_OUT_ON;		--> trip Lamp
 */
 	if(      gMachineState == STATE_TRIP     ){ MAIN_CHARGE_OFF; RUN_OUT_OFF; TRIP_OUT_ON;}
