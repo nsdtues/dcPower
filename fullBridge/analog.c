@@ -42,9 +42,11 @@ void InitAdc()
 double lpfI_out;
 interrupt void  Adc_Isr(void)
 {
-//	double ftemp1;
+	double ftemp1;
 	double analog_ref_a0;
-	double Vout0;
+	static double VoutFilter[10]={0.0};
+	static int count;
+	int i;
 
 #if TEST_ADC_CENTER
    J8_1_SET;
@@ -93,10 +95,17 @@ interrupt void  Adc_Isr(void)
 	//Vout = VoutScale * phaseShiftRatio  + VoutOffset ;
 	Vdc = VdcScale * (double) adc_result[14] + VdcOffset ;  
 
-	Vout0 = VoutScale * (double) adc_result[3] + VoutOffset ;
 
-	LPF1( Ts,20.0, Vout0, &Vout);
+	VoutFilter[count] = VoutScale * (double) adc_result[3] + VoutOffset ;
 
+	if( count < 9 ) count++;
+	else count = 0 ;
+
+	ftemp1 =0.0;
+
+	for( i =0 ; i< 10; i++) ftemp1 += VoutFilter[i];
+
+	Vout = ftemp1 * 0.1;
 
 	if( gMachineState == STATE_READY){ I_out = 0.0;	Vout = 0.0;}
 	if( code_set_Vdc_on ) Vdc = code_Vdc_set_value;	// 2012.11.20

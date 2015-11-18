@@ -305,6 +305,7 @@ int mode4Volt_P_I_LoopCtrl( )
 	gfRunTime = 0.0;
 	LoopCtrl = 1;
 
+
 	initVariFullbridgeCtrl();
 
 	gMachineState = STATE_INIT_RUN;
@@ -323,6 +324,7 @@ int mode4Volt_P_I_LoopCtrl( )
 		analog_out_proc( );
 		monitor_proc();
 
+
 		switch( gMachineState )
 		{
 		case STATE_READY:
@@ -330,40 +332,29 @@ int mode4Volt_P_I_LoopCtrl( )
 			break;
 
 		case STATE_INIT_RUN:
-			if( command == CMD_STOP){LoopCtrl= 0;}
-			else if( gfRunTime > codeInitTime ){
+			if( command == CMD_STOP){
+				gMachineState = STATE_READY;
+				LoopCtrl= 0;
+			}
+			else if( reference_out < code_feedforward ){
+				reference_in = code_feedforward;
+				ramp_proc(reference_in, &reference_out);
+			}
+			else{
 				strncpy(MonitorMsg," INVERTER RUN       ",20);
 				gMachineState = STATE_RUN;
-				reference_in = 0.0;
-				reference_out = codePwmPhaseInit;
+				reference_out = 0.7783;
 			}
 			break;
 
 		case STATE_RUN:
-
-			// reference_in =  code_V_out_ref * 0.001 ;  // 1000Ampere �� �� 1.0���� ó���Ѵ�.
-
-			reference_in = ref_in0;
-			if( command == CMD_NULL ) ramp_proc(reference_in, &reference_out);
-			else if( command == CMD_STOP ) {
+			if( command == CMD_STOP ) {
 				strncpy(MonitorMsg," CMD STOP     ",20);
 				reference_in = 0.0;
 				reference_out=0.15;
-				gMachineState = STATE_GO_STOP;
-			}
-			else if( command == CMD_SPEED_UP ){
-				reference_in += 0.05;
-				if( reference_in > 1.0 ) reference_in = 1.0;
-			}
-			else if( command == CMD_SPEED_DOWN ){
-				reference_in -= 0.05;
-				if( reference_in <= 0 ) reference_in = 0.0;
-			}
-			else if( command == CMD_START ){
-				ramp_proc(reference_in, &reference_out);
+				gMachineState = STATE_READY; LoopCtrl = 0;
 			}
 			break;
-
 		case STATE_GO_STOP:
 			if( command == CMD_START ){
 				reference_in =  code_I_out_ref * 0.001 ;  // 1000Ampere �� �� 1.0���� ó���Ѵ�. 				ramp_proc(reference_in, &reference_out);

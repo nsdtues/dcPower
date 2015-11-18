@@ -117,6 +117,7 @@
 #define CODE_V_Ki						505
 #define CODE_V_Kp						506
 #define CODE_V_integLimit				507
+#define CODE_feedforward				508
 
 #define CODE_Ki							510				
 #define CODE_Kp							511				

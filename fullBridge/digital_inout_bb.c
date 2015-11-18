@@ -11,6 +11,7 @@ void digital_input_proc(int * cmd, double * ref )
 
 	if( (temp & 0x0001) == 0 ){
 	 	* cmd = CMD_START; //FWD LOW
+	 	* ref = code_testPwmPhase;
 	}
 	else { * cmd = CMD_STOP; * ref = 0.0;}
 

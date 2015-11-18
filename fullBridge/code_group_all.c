@@ -453,32 +453,38 @@ int get_code_group5(int addr ,int cmd, CODE_INFO * codes)
 	case CODE_V_Ki:
 		strncpy(codes->disp, "V Ki [pu]",40);
 		if( cmd == CMD_WRITE_RAM ) code_V_Ki = (codes->code_value).doubles;
-		set_code_default_double(0.001, 10000.0, 50.0, code_V_Ki,0,codes);
+		set_code_default_double(0.0, 10000.0, 50.0, code_V_Ki,0,codes);
 		break;
 
 	case CODE_V_Kp:
 		strncpy(codes->disp, "V_Kp [pu]",40);
 		if( cmd == CMD_WRITE_RAM ) code_V_Kp = (codes->code_value).doubles;
-		set_code_default_double(0.001, 2.0, 0.1, code_V_Kp,0,codes);
+		set_code_default_double(0.000, 2.0, 0.1, code_V_Kp,0,codes);
 		break;
 
 	case CODE_V_integLimit:
 		strncpy(codes->disp, "codeVintLmt [pu]",40);
 		if( cmd == CMD_WRITE_RAM ) code_V_integLimit = (codes->code_value).doubles;
-		set_code_default_double( 0.0 , 2.0, 1.0, code_V_integLimit,0,codes);
+		set_code_default_double( -2.0, 2.0, 1.0, code_V_integLimit,0,codes);
+		break;
+
+	case CODE_feedforward:
+		strncpy(codes->disp, "CODE_feedforward [pu]",40);
+		if( cmd == CMD_WRITE_RAM ) code_feedforward = (codes->code_value).doubles;
+		set_code_default_double( 0.0, 1.0, 0.7783, code_feedforward,0,codes);
 		break;
 
 //--- I pi control
 	case CODE_Ki:	
 		strncpy(codes->disp, "Ki [pu]",40);
 		if( cmd == CMD_WRITE_RAM ) code_Ki = (codes->code_value).doubles;
-		set_code_default_double(1.0, 10000.0, 2500.0, code_Ki,0,codes);
+		set_code_default_double(0.0, 10000.0, 2500.0, code_Ki,0,codes);
 		break;
 
 	case CODE_Kp:	
 		strncpy(codes->disp, "Kp [pu]",40);
 		if( cmd == CMD_WRITE_RAM ) code_Kp = (codes->code_value).doubles;
-		set_code_default_double(0.001, 2.0, 1.0, code_Kp,0,codes);
+		set_code_default_double(0.000, 2.0, 1.0, code_Kp,0,codes);
 		break;
 
 	case CODE_integLimit:	
