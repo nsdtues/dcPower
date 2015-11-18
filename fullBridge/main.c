@@ -215,6 +215,7 @@ void main( void )
 			{
 			case 2 : trip_code = mode2LoopCtrl();break;				// 11. code_testPwmPhase conti output
 			case 3 : trip_code = mode3Current_P_I_LoopCtrl();break;
+			case 4 : trip_code = mode4Volt_P_I_LoopCtrl();break;
 			case 8 : trip_code = mode8LoopCtrl();break;
 			case 9 : pwmPulseTestLoopCtrl( ); break;
 			}

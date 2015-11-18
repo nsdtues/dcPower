@@ -12,7 +12,7 @@ double phase_ratio=0.0;
 interrupt void MainPWM(void)
 {
 	unsigned int dac_data[4];
-	unsigned int temp; 
+//	unsigned int temp;
 	static int invt_PWM_Port_Set_flag = 0;
 	static int initCount = 0;
 
@@ -91,6 +91,24 @@ interrupt void MainPWM(void)
 
 				if     ( phaseShiftRatio < 0.0 ) 	phaseShiftRatio = 0.0;
 				else if( phaseShiftRatio > phaseVref ) 	phaseShiftRatio = phaseVref; 
+
+				preIntegral = ctrlIntegral;
+
+				EPwm2Regs.TBPHS.half.TBPHS = (Uint16)( MAX_PWM_CNT * phaseShiftRatio * 0.5 );
+
+			}
+			else if( code_ctrl_mode == 4 ){
+
+				// ctrlError =  V_ref0 -  V_out;
+				ctrlError =  reference_out -  Vout * 0.004; 	// 250V Max
+				ctrlIntegral = preIntegral + (Ts * code_V_Ki * ctrlError);
+				ctrlIntegral = (ctrlIntegral > code_V_integLimit) ? code_V_integLimit : ( ctrlIntegral < -code_V_integLimit) ? -code_V_integLimit : ctrlIntegral;
+
+				phaseShiftRatio = (ctrlError * code_V_Kp) + ctrlIntegral;
+
+				if     ( phaseShiftRatio < 0.0 ) 	phaseShiftRatio = 0.0;
+				else if( phaseShiftRatio > code_phaseMax ) 	phaseShiftRatio = code_phaseMax;
+				// else if( phaseShiftRatio > phaseVref ) 	phaseShiftRatio = phaseVref;
 
 				preIntegral = ctrlIntegral;
 

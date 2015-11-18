@@ -286,6 +286,103 @@ int mode3Current_P_I_LoopCtrl( )
 	return trip_code;
 }
 
+int mode4Volt_P_I_LoopCtrl( )
+{
+	int LoopCtrl;
+	int trip_code=0;
+	int command;
+	double ref_in0;
+
+	if( trip_code !=0 ) return trip_code;
+
+	IER &= ~M_INT3;      			// debug for PWM
+	initEpwmFullBridge();
+	EPwm1Regs.ETSEL.bit.INTEN = 1;	// Enable INT
+	IER |= M_INT3;      			// debug for PWM
+
+	gRunFlag =1;
+	strncpy(MonitorMsg,"INIT RUN",20);
+	gfRunTime = 0.0;
+	LoopCtrl = 1;
+
+	initVariFullbridgeCtrl();
+
+	gMachineState = STATE_INIT_RUN;
+
+	reference_in = 0.0;
+	reference_out = codePwmPhaseInit;
+
+	while(LoopCtrl == 1)
+	{
+		Nop();
+		if(gPWMTripCode != 0){
+			trip_code = gPWMTripCode; LoopCtrl = 0;
+			break;
+		}
+		get_command( & command, & ref_in0);
+		analog_out_proc( );
+		monitor_proc();
+
+		switch( gMachineState )
+		{
+		case STATE_READY:
+			LoopCtrl = 0;
+			break;
+
+		case STATE_INIT_RUN:
+			if( command == CMD_STOP){LoopCtrl= 0;}
+			else if( gfRunTime > codeInitTime ){
+				strncpy(MonitorMsg," INVERTER RUN       ",20);
+				gMachineState = STATE_RUN;
+				reference_in = 0.0;
+				reference_out = codePwmPhaseInit;
+			}
+			break;
+
+		case STATE_RUN:
+
+			// reference_in =  code_V_out_ref * 0.001 ;  // 1000Ampere �� �� 1.0���� ó���Ѵ�.
+
+			reference_in = ref_in0;
+			if( command == CMD_NULL ) ramp_proc(reference_in, &reference_out);
+			else if( command == CMD_STOP ) {
+				strncpy(MonitorMsg," CMD STOP     ",20);
+				reference_in = 0.0;
+				reference_out=0.15;
+				gMachineState = STATE_GO_STOP;
+			}
+			else if( command == CMD_SPEED_UP ){
+				reference_in += 0.05;
+				if( reference_in > 1.0 ) reference_in = 1.0;
+			}
+			else if( command == CMD_SPEED_DOWN ){
+				reference_in -= 0.05;
+				if( reference_in <= 0 ) reference_in = 0.0;
+			}
+			else if( command == CMD_START ){
+				ramp_proc(reference_in, &reference_out);
+			}
+			break;
+
+		case STATE_GO_STOP:
+			if( command == CMD_START ){
+				reference_in =  code_I_out_ref * 0.001 ;  // 1000Ampere �� �� 1.0���� ó���Ѵ�. 				ramp_proc(reference_in, &reference_out);
+				gMachineState = STATE_RUN;
+			}
+			else{
+				reference_in = 0.0;
+				ramp_proc(reference_in, &reference_out);
+				if( reference_out < 0.05) {
+					gMachineState = STATE_READY; LoopCtrl = 0;
+				}
+			}
+			break;
+		}
+
+	} // end of while
+	return trip_code;
+}
+
 
 	
 int mode8LoopCtrl( )

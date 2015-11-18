@@ -37,6 +37,7 @@ int CheckOverCurrent( )
 		return ERR_OC_I_PRI_ADC_N;
 	}
 
+/*
 //--- OC I_out check
 	if(( protect_reg.bit.OVER_I_ADC)&&( adcI_out > 4000)){
 		trip_recording( ERR_OC_I_OUT_ADC_P, (double)(adcI_out),"I_out adc +over ");
@@ -47,7 +48,7 @@ int CheckOverCurrent( )
 		trip_recording( ERR_OC_I_OUT_ADC_N, (double)(adcI_pri),"I_out adc -over");
 		return ERR_OC_I_OUT_ADC_N;
 	}
-
+*/
 	if( protect_reg.bit.OVER_I){
 		if(I_out > OverCurLimit )	OC_Timer += Ts;
 		else if(OC_Timer > Ts)		OC_Timer -= Ts;

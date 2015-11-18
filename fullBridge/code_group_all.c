@@ -449,6 +449,26 @@ int get_code_group5(int addr ,int cmd, CODE_INFO * codes)
 		set_code_default_double(500.0,25000.0,20000.0,codeSwitFreq,0,codes);
 		break;
 
+//-- Voltage PI ctrl
+	case CODE_V_Ki:
+		strncpy(codes->disp, "V Ki [pu]",40);
+		if( cmd == CMD_WRITE_RAM ) code_V_Ki = (codes->code_value).doubles;
+		set_code_default_double(0.001, 10000.0, 50.0, code_V_Ki,0,codes);
+		break;
+
+	case CODE_V_Kp:
+		strncpy(codes->disp, "V_Kp [pu]",40);
+		if( cmd == CMD_WRITE_RAM ) code_V_Kp = (codes->code_value).doubles;
+		set_code_default_double(0.001, 2.0, 0.1, code_V_Kp,0,codes);
+		break;
+
+	case CODE_V_integLimit:
+		strncpy(codes->disp, "codeVintLmt [pu]",40);
+		if( cmd == CMD_WRITE_RAM ) code_V_integLimit = (codes->code_value).doubles;
+		set_code_default_double( 0.0 , 2.0, 1.0, code_V_integLimit,0,codes);
+		break;
+
+//--- I pi control
 	case CODE_Ki:	
 		strncpy(codes->disp, "Ki [pu]",40);
 		if( cmd == CMD_WRITE_RAM ) code_Ki = (codes->code_value).doubles;
@@ -628,87 +648,25 @@ int get_code_group7(int addr ,int cmd, CODE_INFO * codes)
 	case CODE_adc_Vout_low:	
 		strncpy(codes->disp, "adc_Vout_low (sec)",40);
 		if( cmd == CMD_WRITE_RAM ) code_adc_Vout_low = (codes->code_value).doubles;
-		set_code_default_double(0.0,4095.0,2048.0,code_adc_Vout_low,0,codes);	// 500.0, 2000.0, 965.0
+		set_code_default_double(0.0,4095.0,655.0,code_adc_Vout_low,0,codes);	// 500.0, 2000.0, 965.0
 		break;
 
 	case CODE_adc_Vout_high:	
 		strncpy(codes->disp, "adc_Vout_high (sec)",40);
 		if( cmd == CMD_WRITE_RAM ) code_adc_Vout_high = (codes->code_value).doubles;
-		set_code_default_double(0.0,4010.0,3000.0,code_adc_Vout_high,0,codes);
+		set_code_default_double(0.0,4010.0,2930.0,code_adc_Vout_high,0,codes);
 		break;
 
 	case CODE_Vout_calc_low:	
 		strncpy(codes->disp, "Vout_calc low (Vdc)",40);
 		if( cmd == CMD_WRITE_RAM ) code_Vout_calc_low = (codes->code_value).doubles;
-		set_code_default_double(0.0,30.0,0.0,code_Vout_calc_low,0,codes);
+		set_code_default_double(0.0,999.0,50.0,code_Vout_calc_low,0,codes);
 		break;
 
 	case CODE_Vout_calc_high:	
 		strncpy(codes->disp, "Vout_calc high (Vdc)",40);
 		if( cmd == CMD_WRITE_RAM ) code_Vout_calc_high = (codes->code_value).doubles;
-		set_code_default_double(2.0,20.0,9.17,code_Vout_calc_high,0,codes);
-		break;
-
-//--- I_out Calc
-	case CODE_adcIout1st:	
-		strncpy(codes->disp, "adc Iout1st",40);
-		if( cmd == CMD_WRITE_RAM ) code_adcIout1st = (codes->code_value).doubles;
-		set_code_default_double(100.0,4096.0,1932,code_adcIout1st,0,codes);
-		break;
-
-	case CODE_adcIout2nd:	
-		strncpy(codes->disp, "adc Iout2nd",40);
-		if( cmd == CMD_WRITE_RAM ) code_adcIout2nd = (codes->code_value).doubles;
-		set_code_default_double(100.0,4096.0,1836,code_adcIout2nd,0,codes);
-		break;
-
-	case CODE_adcIout3rd:	
-		strncpy(codes->disp, "adc Iout3rd",40);
-		if( cmd == CMD_WRITE_RAM ) code_adcIout3rd = (codes->code_value).doubles;
-		set_code_default_double(100.0,4096.0,1586,code_adcIout3rd,0,codes);
-		break;
-
-	case CODE_adcIout4th:	
-		strncpy(codes->disp, "adc Iout4th",40);
-		if( cmd == CMD_WRITE_RAM ) code_adcIout4th = (codes->code_value).doubles;
-		set_code_default_double(100.0,4096.0,1321,code_adcIout4th,0,codes);
-		break;
-
-	case CODE_adcIout5th:	
-		strncpy(codes->disp, "adc Iout5th",40);
-		if( cmd == CMD_WRITE_RAM ) code_adcIout5th = (codes->code_value).doubles;
-		set_code_default_double(100.0,4096.0,1109,code_adcIout5th,0,codes);
-		break;
-
-//--- I_out Calc
-	case CODE_calIout1st:	
-		strncpy(codes->disp, "Calc Iout1st",40);
-		if( cmd == CMD_WRITE_RAM ) code_calIout1st = (codes->code_value).doubles;
-		set_code_default_double(5.0,4096.0,113,code_calIout1st,0,codes);
-		break;
-
-	case CODE_calIout2nd:	
-		strncpy(codes->disp, "Calc Iout2nd",40);
-		if( cmd == CMD_WRITE_RAM ) code_calIout2nd = (codes->code_value).doubles;
-		set_code_default_double(100.0,4096.0,193.0,code_calIout2nd,0,codes);
-		break;
-
-	case CODE_calIout3rd:	
-		strncpy(codes->disp, "Calc Iout3rd",40);
-		if( cmd == CMD_WRITE_RAM ) code_calIout3rd = (codes->code_value).doubles;
-		set_code_default_double(100.0,4096.0,395,code_calIout3rd,0,codes);
-		break;
-
-	case CODE_calIout4th:	
-		strncpy(codes->disp, "Calc Iout4th",40);
-		if( cmd == CMD_WRITE_RAM ) code_calIout4th = (codes->code_value).doubles;
-		set_code_default_double(100.0,4096.0,610,code_calIout4th,0,codes);
-		break;
-
-	case CODE_calIout5th:	
-		strncpy(codes->disp, "Calc Iout5th",40);
-		if( cmd == CMD_WRITE_RAM ) code_calIout5th = (codes->code_value).doubles;
-		set_code_default_double(100.0,4096.0,780,code_calIout5th,0,codes);
+		set_code_default_double(2.0,1000.0,220.0,code_Vout_calc_high,0,codes);
 		break;
 
 	case CODE_GROUP7_END:

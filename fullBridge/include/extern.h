@@ -362,6 +362,10 @@ extern double codeVoutSpan;			// 413
 // group5 Ctrl Code
 extern double codeSwitFreq;				// 500
 
+extern double code_V_Ki;				// 505
+extern double code_V_Kp;				// 506
+extern double code_V_integLimit;		// 507
+
 extern double code_Ki;					// 510
 extern double code_Kp;					// 511		
 extern double code_integLimit;			// 512		

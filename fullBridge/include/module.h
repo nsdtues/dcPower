@@ -16,6 +16,7 @@ extern void initEpwmFullBridge();
 extern void initVariFullbridgeCtrl();
 
 extern int mode3Current_P_I_LoopCtrl( );
+extern int mode4Volt_P_I_LoopCtrl( );
 extern int mode8LoopCtrl();
 extern int pwmPulseTestLoopCtrl( );
 

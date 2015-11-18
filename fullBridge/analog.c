@@ -44,6 +44,8 @@ interrupt void  Adc_Isr(void)
 {
 //	double ftemp1;
 	double analog_ref_a0;
+	double Vout0;
+
 #if TEST_ADC_CENTER
    J8_1_SET;
 #endif
@@ -86,11 +88,15 @@ interrupt void  Adc_Isr(void)
 
 	nativeI_pri =  - codeIValue1st * (double)(  adc_result[0] -codeIAdcOffset1st) * adc_const * codeISpan1st;
 	nativeI_out =  - codeIValueOut * (double)(  adc_result[1] -codeIAdcOffsetOut) * adc_const * codeISpanOut;
+	LPF1( Ts,20.0, nativeI_out, &I_out);
 
-	Vout = VoutScale * phaseShiftRatio  + VoutOffset ;  
+	//Vout = VoutScale * phaseShiftRatio  + VoutOffset ;
 	Vdc = VdcScale * (double) adc_result[14] + VdcOffset ;  
 
-	LPF1( Ts,20.0, nativeI_out, &I_out);
+	Vout0 = VoutScale * (double) adc_result[3] + VoutOffset ;
+
+	LPF1( Ts,20.0, Vout0, &Vout);
+
 
 	if( gMachineState == STATE_READY){ I_out = 0.0;	Vout = 0.0;}
 	if( code_set_Vdc_on ) Vdc = code_Vdc_set_value;	// 2012.11.20
@@ -98,8 +104,8 @@ interrupt void  Adc_Isr(void)
 	Power_out = Vout * I_out ;
 
 
-	analog_ref_a = - adc_const * (adc_result[6] - code_AdcOffsetCh6);
-//	LPF1( Ts,20.0, analog_ref_a0 , &analog_ref_a);
+	analog_ref_a0 = - adc_const * (adc_result[6] - code_AdcOffsetCh6);
+	LPF1( Ts,20.0, analog_ref_a0 , &analog_ref_a);
 
 	AdcRegs.ADCST.bit.INT_SEQ1_CLR = 1;       // Clear INT SEQ1 bit
 	AdcRegs.ADCST.bit.INT_SEQ2_CLR = 1;       // Clear INT SEQ1 bit
