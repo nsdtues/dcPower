@@ -1,50 +1,78 @@
 #include	<header.h>
 #include	<extern.h>
-
-void monitor_proc()		// need_edit
+void monitorPrint( char * strIn , char * charOut, double argIn)
 {
-    static int monitorCount=0;
-    int i;
-	char str[50]= {0};
+    char * str;
+    char str1[20]={0};
 
-	Uint32 RunTimeMsec=0 ;
-	static unsigned long StartTimeMsec = 0 ;
+    double dtemp1;
+    int temp;
 
-	RunTimeMsec = ulGetTime_mSec( StartTimeMsec);
-	if(RunTimeMsec < 2000) return;	// 1500msec
-	StartTimeMsec = ulGetNow_mSec( );
+    str = charOut;
 
-	if( gMachineState == STATE_POWER_ON ){
-        load_scia_tx_mail_box(" \r");
-		snprintf( gStr1,10,"Vdc =%.f : ",Vdc);
-		load_sci_tx_mail_box(gStr1);delay_msecs(10);
-		for( i = 0 ; i < 5 ; i++ ){
-		    snprintf( str,19,"No%d=%4d : ",i,adc_result[monitorCount]);
-	        load_scia_tx_mail_box(str);
-		}
-	}
-	else if( gMachineState == STATE_TRIP ){
-        load_scia_tx_mail_box(" \r");
-        load_scia_tx_mail_box("TRIP");
-        load_scia_tx_mail_box(TripInfoNow.MSG);
-        sprintf( gStr1,"CODE=%d : ",TripInfoNow.CODE)    ; load_scia_tx_mail_box(gStr1);
-        sprintf( gStr1,"DATA=%.2e : ",TripInfoNow.DATA)    ; load_scia_tx_mail_box(gStr1);
-        sprintf( gStr1,"Irms=%.2e : ",TripInfoNow.CURRENT) ; load_scia_tx_mail_box(gStr1);
-        sprintf( gStr1,"RPM =%.2e : ",TripInfoNow.RPM)     ; load_scia_tx_mail_box(gStr1);
-        sprintf( gStr1,"Vdc =%.2e",TripInfoNow.VDC)     ; load_scia_tx_mail_box(gStr1);
+    * str   = * strIn;
+    * (str+1) = * (strIn +1);
+    * (str+2) = * (strIn +2);
+
+    * (str+3) = ' ';
+    * (str+4) = * (str+5) = *(str+6) = '9';
+
+    * (str+7) =  * (strIn + 5);
+    * (str+8) =  * (strIn + 6);
+    * (str+9) =  * (strIn + 7);
+    * (str+10) = 0;
+    * (str+11) = 0;
+
+
+    if( argIn < 0.0) dtemp1 = 0.0;
+    else  dtemp1 = floor(argIn*10 +0.5);
+
+    temp = (int)( dtemp1 );
+
+    if( temp < 10000){
+
+        * (str1+4) = temp % 10 + '0';
+        * (str1+3) = '.';
+        * (str1+2) = ( temp % 100 )  / 10 + '0';
+        * (str1+1) = (( temp % 1000) / 100) + '0';
+        * (str1+0) = ( temp / 1000 ) + '0';
+
+        if( str1[0]== '0' ){
+            * (str+3) = *(str1+1);
+            * (str+4) = *(str1+2);
+            * (str+5) = *(str1+3);
+            * (str+6) = *(str1+4);
+        }
+        else{
+            * (str+3) = *(str1+0);
+            * (str+4) = *(str1+1);
+            * (str+5) = *(str1+2);
+            * (str+6) = ' ';
+        }
     }
-    else {
-        load_scia_tx_mail_box("\r");
-        load_scia_tx_mail_box(MonitorMsg);
-        load_scia_tx_mail_box(" : ");
-        sprintf( gStr1,"Out =%.1f",codeRateHz * reference_out); load_scia_tx_mail_box(gStr1);
-        load_scia_tx_mail_box(" : ");
-        sprintf( gStr1,"Im  =%.1f",rmsIm); load_scia_tx_mail_box(gStr1);
-        load_scia_tx_mail_box(" : ");
-        sprintf( gStr1,"Ia  =%.1f",rmsIa); load_scia_tx_mail_box(gStr1);
-        load_scia_tx_mail_box(" : ");
-        sprintf( gStr1,"Vdc =%.f",lpfVdc); load_scia_tx_mail_box(gStr1);
-	}
+}
+
+void monitor_proc()     // need_edit
+{
+    int temp;
+    Uint32 RunTimeMsec=0 ;
+    static unsigned long StartTimeMsec = 0 ;
+
+    RunTimeMsec = ulGetTime_mSec( StartTimeMsec);
+
+    if(RunTimeMsec < 500) return;   // 500msec ¸¶´Ù ÇÑ¹ø¾¿
+
+    StartTimeMsec = ulGetNow_mSec( );
+
+    if( gMachineState == STATE_POWER_ON ){
+
+//      GetTimeAndDateStr(gStr1);   gStr1[20] =0;
+//      load_sci_tx_mail_box(gStr1); delay_msecs(20);
+
+        temp = (int)(floor(Vdc +0.5));
+        snprintf( gStr1,10," VDC =%4d",temp);
+        load_sci_tx_mail_box(gStr1);delay_msecs(20);
+    }
 }
 
 void GetInputMark(char * str)

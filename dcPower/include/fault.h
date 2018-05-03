@@ -18,10 +18,7 @@ Hardware System : In this software, suported PCB is EwInv-55k-v1 2008.04.05
 #ifndef		_ERROR_CODE_DEFINITION_
 #define		_ERROR_CODE_DEFINITION_
 
-// ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ 	: 1 ~ 799
-#define CODE_under_volt_set             100
-
-
+// ÆÄ¶ó¹ÌÅÍ ¿À·ù ÄÚµå 	: 1 ~ 799
 
 #define ERR_DB_IGBT							1000
 
@@ -42,15 +39,32 @@ Hardware System : In this software, suported PCB is EwInv-55k-v1 2008.04.05
 #define ERR_PWM_IGBT						1017
 #define ERR_IGBT_RESET						1018
 
-#define ERR_OVER_CURRENT_U_PHASE			834 
-#define ERR_OVER_CURRENT_V_PHASE			835 
+#define ERR_OC_I_PRI_ADC_P					810 
+#define ERR_OC_I_PRI_ADC_N					811
+#define ERR_OC_I_OUT_ADC_P					812 
+#define ERR_OC_I_OUT_ADC_N					813 
+#define ERR_OC_I2ND_ADC_P					814 
+#define ERR_OC_I2ND_ADC_N					815 
+#define ERR_OC_I3RD_ADC_P					816 
+#define ERR_OC_I3RD_ADC_N					817 
 
-#define ERR_OVER_CURRENT_R_PHASE			836 
-#define ERR_OVER_CURRENT_S_PHASE			837 
+#define ERR_OC_R_CONVT						839
+#define ERR_OC_S_CONVT						840
+#define ERR_OC_T_CONVT						841
+#define ERR_OV_VDC_CONVT					842
+#define ERR_UV_VDC_CONVT					843
+
 //#define ERR_OVER_CURRENT_T_PHASE			838 
+
+
+
+
 #define ERR_UNKNOWN_ERR						900
 #define ERR_INVALID_CTRL_MODE				901
+
+
 #define	ERR_NAME_PLATE_PAR_MISMATCH			910
+
 #define	ERR_PM_Is							844
 #define	ERR_GM_Is							845
 #define	ERR_K_Damp_Is						846
@@ -72,7 +86,7 @@ Hardware System : In this software, suported PCB is EwInv-55k-v1 2008.04.05
 #define ERR_SCI_CMD_ADDR_2ND_UNDER			865
 #define ERR_SCI_CMD_ADDR_2ND_OVER			867
 
-// ï¿½ï¿½ï¿½ï¿½Æ©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+// ¿ÀÅäÆ©´× ¿À·ù
 #define	ERR_Req_Under						920
 #define	ERR_Req_Over						921
 #define	ERR_Leq_Under0						923
@@ -90,8 +104,8 @@ Hardware System : In this software, suported PCB is EwInv-55k-v1 2008.04.05
 #define	ERR_Jm_Over							945
 #define	ERR_WRONG_INTERRUPT_CMD				950
 
-// ï¿½Ïµï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ (TMS320F240)
-#define	ERR_PRECHARGING_FAIL				960		// ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
+// ÇÏµå¿þ¾î ÇÁ·ÎÅØ¼Ç (TMS320F240)
+#define	ERR_PRECHARGING_FAIL				960		// ÃÊ±â ÃæÀü ½ÇÆÐ 
 #define	ERR_PWM								961
 #define	ERR_HOC								962
 #define	ERR_HOV								963
@@ -101,17 +115,19 @@ Hardware System : In this software, suported PCB is EwInv-55k-v1 2008.04.05
 #define	ERR_EXT_TRIP						966
 #define	TRIP_EXT_A							967
 
-#define	ERR_PWM_CNT							971		// ï¿½ï¿½ï¿½ï¿½Äª ï¿½Ö±ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
+#define	ERR_PWM_CNT							971		// ½ºÀ§Äª ÁÖ±âÀÇ Ä«¿îÅÍ °ª ¿À·ù 
 
-#define	ERR_INV_DISABLE						972		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î¹ï¿½ï¿½ï¿½ ï¿½ð½º¿ï¿½ï¿½Ìºï¿½ 
+#define	ERR_INV_DISABLE						972		// ¿îÀüÁß ÀÎ¹öÅÍ µð½º¿¡ÀÌºí 
 
 struct TRIP_INFO_DEFINE {
 	int		CODE;				// 1
 	float	CURRENT;			// 5
 	float	VDC;				// 6
-	float	RPM;				// 7
+	float	VOUT;				// 7
 	float	DATA;				// 4
-	char 	MSG[41];			// 2
+	char 	MSG[20];			// 2
+	char 	TIME[20];			// 3
+	char 	START_TIME[20];		// 3
 };
 
 typedef struct TRIP_INFO_DEFINE TRIP_INFO;
@@ -122,11 +138,13 @@ struct PROTECT_BITS {      // bits description
 	Uint16  OVER_I  	:1; 
 	Uint16  LOW_I		:1; 
 	Uint16  OVER_I_ADC	:1; 
+	Uint16  CONV_ADC	:1;
 	Uint16  OVER_LOAD	:1; 
 	Uint16  LOW_LOAD	:1;
 	Uint16  OVER_SPEED	:1; 
 	Uint16  LOW_SPEED	:1; 
 	Uint16  IGBT_FAULT	:1;
+	Uint16  IGBT_FAULT2	:1;
 	Uint16  EX_TRIP		:1; 
 	Uint16	OVER_HEAT	:1;
 };

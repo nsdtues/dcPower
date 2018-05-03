@@ -28,9 +28,7 @@ void ADC_SOC_CNF( )
     AdcRegs.ADCSOC0CTL.bit.CHSEL= 0;        // I_u
     AdcRegs.ADCSOC1CTL.bit.CHSEL= 1;        // I_v
     AdcRegs.ADCSOC2CTL.bit.CHSEL= 8;        // Vdc
-    AdcRegs.ADCSOC3CTL.bit.CHSEL= 9;        // IGBT_Temp
-    AdcRegs.ADCSOC4CTL.bit.CHSEL= 3;        // Ex_sensor
-    AdcRegs.ADCSOC5CTL.bit.CHSEL= 5;        // Ex_sensor
+    AdcRegs.ADCSOC3CTL.bit.CHSEL= 9;        // V_out  IGBT_Temp
 
     AdcRegs.ADCSOC0CTL.bit.TRIGSEL = 5;
     AdcRegs.ADCSOC1CTL.bit.TRIGSEL = 5;
@@ -43,8 +41,6 @@ void ADC_SOC_CNF( )
     AdcRegs.ADCSOC1CTL.bit.ACQPS = 6;
     AdcRegs.ADCSOC2CTL.bit.ACQPS = 6;
     AdcRegs.ADCSOC3CTL.bit.ACQPS = 6;
-    AdcRegs.ADCSOC4CTL.bit.ACQPS = 6;
-    AdcRegs.ADCSOC5CTL.bit.ACQPS = 6;
 //    AdcRegs.ADCSAMPLEMODE.all = 0;      // Simultaneous sample mode
     EDIS;
 }
@@ -56,33 +52,24 @@ __interrupt void adcIsr(void)
 {
     int temp;
 
-    adc_result[0] = adcIm   = AdcResult.ADCRESULT0;
-    adc_result[1] = adcIa   = AdcResult.ADCRESULT1;
-    adc_result[2] = adcVdc  = AdcResult.ADCRESULT2;
-    adc_result[3] = adcIgbtTemperature = AdcResult.ADCRESULT3;
-    adc_result[4] = adcExSensor = AdcResult.ADCRESULT4;
-    adc_result[5] = adcCmdAnalog = AdcResult.ADCRESULT5;
-// 전류의 계산 : 66mV / A  :  3.3V -> 50A, 1 count = 50 / 4096 = 0.012207
+    adc_result[0] = adcI_out   = AdcResult.ADCRESULT0;
+    adc_result[1] = adcI_pri   = AdcResult.ADCRESULT1;
+//    adc_result[2] = adcVdc  = AdcResult.ADCRESULT2;
+//    adc_result[3] = adcVout = AdcResult.ADCRESULT3;
 
-    sensIm = ( adcIm - adcIuOffset ) * I_RATIO;
-    sensIa = ( adcIa - adcIvOffset ) * I_RATIO;
+    Vout = VoutScale * phaseShiftRatio  + VoutOffset ;
 
-    sensVdc = Vdc_factor * (double) adcVdc + Vdc_calc_offset ;
+//    nativeI_out =  - codeIValueOut * (double)(  adc_result[0] -codeIAdcOffsetOut) * adc_const * codeISpanOut;
+//    nativeI_pri =  - codeIValue1st * (double)(  adc_result[1] -codeIAdcOffset1st) * adc_const * codeISpan1st;
 
-    lpfVdcIn[0] = sensVdc;
-    lpf2nd( lpfVdcIn, lpfVdcOut, lpfVdcK);
-    Vdc = lpfVdc = lpfVdcOut[0];
+    Vdc = VdcScale * (double) adc_result[14] + VdcOffset ;
 
-    lpfImIn[0] = sensIm * sensIm;
-    lpf2nd( lpfImIn, lpfImOut, lpfIrmsK);
-    rmsIm = lpfImOut[0] * INV_ROOT2;
+//    LPF1( Ts,20.0, (double)(adcI_out), & lpfI_out);
 
-    lpfIaIn[0] = sensIa * sensIa;
-    lpf2nd( lpfIaIn, lpfIaOut, lpfIrmsK);
-    rmsIa = lpfIaOut[0] * INV_ROOT2;
+    if( gMachineState == STATE_READY){ I_out = 0.0; Vout = 0.0;}
+    if( code_set_Vdc_on ) Vdc = code_Vdc_set_value; // 2012.11.20
 
-    temp = (int)(floor(codeSetVdc+0.5));
-    if(temp != 0 ) Vdc =300.0;
+    Power_out = Vout * I_out ;
 
     AdcRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;       //Clear ADCINT1 flag reinitialize for next SOC
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;   // Acknowledge interrupt to PIE
@@ -91,7 +78,7 @@ __interrupt void adcIsr(void)
 
 void analog_input_proc( float * referenc)
 {
-	* referenc = analog_ref_a * analog_cmd_in_span1 - analog_cmd_in_zero1;
+//	* referenc = analog_ref_a * analog_cmd_in_span1 - analog_cmd_in_zero1;
 }
 
 void analog_out_proc( )
@@ -106,7 +93,7 @@ int check_sensor_trip()
 
 	if( ( TripCode = CheckOverCurrent()) != 0 ) return TripCode ;	// debug
 	if( ( TripCode = CheckOverVolt()   ) != 0 ) return TripCode ;
-	if( ( TripCode = CheckUndeVolt()   ) != 0 ) return TripCode ;	// ���������� ������ �Ѵ�. 
+	if( ( TripCode = CheckUndeVolt()   ) != 0 ) return TripCode ;	//
 	return 0;
 }
 	

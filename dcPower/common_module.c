@@ -88,13 +88,13 @@ int iGetAinCmd(int * piCommand, float * pfReference)
 	return iTemp;
 }
 
-void analog_cmd_proc(float * ana_ref)
+void analog_cmd_proc(float * ana_refer)
 {
-    analog_cmd_in_span1 = 1.0;
 
-    * ana_ref = adcCmdAnalog * ADC_CONST * 0.5 * analog_cmd_in_span1;		// debug
 }
-
+//------------------------------
+//
+//------------------------------
 
 void get_command( int * command, float * ref )
 {
@@ -104,14 +104,108 @@ void get_command( int * command, float * ref )
 	digital_input_proc( & digital_cmd, & digital_reference);
 	serial_com_proc( & sci_cmd, & sci_ref );
 	analog_cmd_proc( & ana_ref);
+//	KeyInputProc(&button_cmd,&button_ref);
 
-	* command = digital_cmd;
+// button�� ���� ������ �ɼǰ� ������� ������ ������ �ȴ�.
+	code_run_input_select = 1;	// 2014.0827
 
-    if( digital_cmd == CMD_START ){
-        if( ana_ref < 0.01 )   * command = CMD_STOP;
-        else                   * ref = ana_ref;
-    }
-    if( sci_cmd != CMD_NULL ) * command = sci_cmd;
+	switch( code_run_input_select )
+	{
+	case 1: // ������ �Է¿� ���� �õ��� ���� 
+		* command = digital_cmd;
+		* ref = digital_reference;
+		break;
+
+	case 2: //  ��ſ� ���� �õ��� ��
+		* command = sci_cmd;
+		* ref = sci_ref;
+		break;
+
+	case 3: // �Ƴ��α� �Է�����
+	case 8: // 
+	case 9: // 
+		* command = digital_cmd;
+		if( digital_cmd == CMD_START ){
+			if( ana_ref < 0.01 )	* command = CMD_STOP;
+			else 					* ref = ana_ref;
+		}
+		break;
+
+	default:
+		* command = CMD_STOP;
+		* ref = 0.0; 
+		break;
+	}
+
+	// ��ſ� ���� ������ �ֿ켱���� ó���Ѵ�. 
+	if( sci_cmd != CMD_NULL){
+		if( sci_cmd == CMD_SAVE){
+			* command = sci_cmd ;
+		}
+		else if( sci_cmd == CMD_RESET){
+			* command = sci_cmd ;
+		}
+		else if( sci_cmd == CMD_READ_ALL){
+			* command = sci_cmd ;
+		}
+	}
+}
+
+void get_adc_offset()
+{
+	int LoopCtrl;
+
+	Uint32 RunTimeMsec,StartTimeMsec;
+	float u_offset_in, v_offset_in;
+	float R_offset_in, S_offset_in;
+
+	float u_offset_out, v_offset_out;
+	float R_offset_out, S_offset_out;
+	
+	UNION32 u32data;
+
+	load_sci_tx_mail_box( "\n***********************"); delay_msecs(10);
+	load_sci_tx_mail_box( "\n Start ADC Offset Calc "); delay_msecs(10);
+	load_sci_tx_mail_box( "\n***********************"); delay_msecs(10);
+
+	gfRunTime=0.0;
+	LoopCtrl = 1;
+
+	while(LoopCtrl == 1)
+	{
+		if( gfRunTime >= 5.0 ) LoopCtrl = 0;
+		RunTimeMsec = ulGetTime_mSec( StartTimeMsec);
+		if(RunTimeMsec > 1){
+			StartTimeMsec = ulGetNow_mSec( );
+			u_offset_in = (float)adc_result[0];
+			v_offset_in = (float)adc_result[1];
+			R_offset_in = (float)adc_result[3];
+			S_offset_in = (float)adc_result[4];
+
+			LPF1(0.002,10.0,u_offset_in, & u_offset_out);
+			LPF1(0.002,10.0,v_offset_in, & v_offset_out);
+			LPF1(0.002,10.0,R_offset_in, & R_offset_out);
+			LPF1(0.002,10.0,S_offset_in, & S_offset_out);
+		}
+	}
+
+	if( gfRunTime >= 5.0 ){
+		codeIAdcOffset1st = (int)u_offset_out;
+		codeIAdcOffset2nd = (int)v_offset_out;
+
+		codeIAdcOffset3rd = (int)R_offset_out;
+		codeIAdcOffsetOut = (int)S_offset_out;
+
+		u32data.word.word0 = codeIAdcOffset1st; write_code_2_eeprom(CODE_IAdcOffset1st,u32data);
+		u32data.word.word0 = codeIAdcOffset2nd; write_code_2_eeprom(CODE_IAdcOffset2nd,u32data);
+
+		u32data.word.word0 = codeIAdcOffset3rd; write_code_2_eeprom(CODE_IAdcOffset3rd,u32data);
+		u32data.word.word0 = codeIAdcOffsetOut; write_code_2_eeprom(CODE_IAdcOffsetOut,u32data);
+				
+		load_sci_tx_mail_box("\n*********************");delay_msecs(10);		
+		load_sci_tx_mail_box("\n OK Adc offset Saved ");delay_msecs(10);		
+		load_sci_tx_mail_box("\n*********************");delay_msecs(10);		
+	}
 }
 
 //---------------------------------

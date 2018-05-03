@@ -5,103 +5,91 @@ int get_code_information(int address,int cmd , CODE_INFO *  codes)
 {	
 	switch(address)
 	{
-    case CODE_motor_direction_change:
-        strncpy(codes->disp, "Rotate CW ON",20);
-        if( cmd == CMD_WRITE_RAM ) codeMotorDirection = codes->code_value;
-        set_code_default(0,1,0,codeMotorDirection,0,codes);
+    case CODE_I_out_ref:
+        strncpy(codes->disp, "I Out Set",40);
+        if( cmd == CMD_WRITE_RAM ) code_I_out_ref = codes->code_value;
+        set_code_default(10.0,800.0,600.0,code_I_out_ref,0,codes);
         break;
 
-    case CODE_accel_time1:
-        strncpy(codes->disp, "accel_time1 (sec)",20);
-        if( cmd == CMD_WRITE_RAM ) codeAccelTime1 = codes->code_value;
-        set_code_default(0.0,3000.0,5.0,codeAccelTime1,0,codes);
+    case CODE_VoutLimit:        // code 3
+        strncpy(codes->disp, "Vout Limit",40);
+        if( cmd == CMD_WRITE_RAM ) code_VoutLimit = codes->code_value;
+        set_code_default(0.1,30.0,10.0,code_VoutLimit,0,codes);
         break;
 
-    case CODE_decel_time1:
-        strncpy(codes->disp, "decel_time1 (sec)",20);
-        if( cmd == CMD_WRITE_RAM ) codeDecelTime1 = codes->code_value;
-        set_code_default(0.0,3000.0,5.0,codeDecelTime1,0,codes);
+    case CODE_ovpTime:      // code 4
+        strncpy(codes->disp, "OVP time set",40);
+        if( cmd == CMD_WRITE_RAM ) code_ovpTime = codes->code_value;
+        set_code_default(0.01,9999.0,60.0,code_ovpTime,0,codes);
         break;
 
-    case CODE_motor_ctrl_mode:  //
-        strncpy(codes->disp, "motor_ctrl_mode",20);
-        if( cmd == CMD_WRITE_RAM ) codeMotorCtrlMode = codes->code_value;
-        set_code_default(0,7,0,codeMotorCtrlMode,0,codes);
+    case CODE_Vout:     //
+        strncpy(codes->disp, "Set Vout",40);
+        if( cmd == CMD_WRITE_RAM ) code_Vout = codes->code_value;
+        set_code_default(0.1,15.0,7.0,code_Vout,0,codes);
         break;
 
-    case CODE_speed1:
-		strncpy(codes->disp, "speed1 (p.u)",20);
-		if( cmd == CMD_WRITE_RAM ) codeSpeed1 = codes->code_value;
-		set_code_default(0.0,0.9,0.25,codeSpeed1,0,codes);
-		break;
-
-	case CODE_speed2:		
-		strncpy(codes->disp, "speed2 (p.u)",20);
-		if( cmd == CMD_WRITE_RAM ) codeSpeed2 = codes->code_value;
-		set_code_default(0.0,1.2,0.25,codeSpeed2,0,codes);
-		break;
-
-    case CODE_set_vdc:
-        strncpy(codes->disp, "set Vdc 300.0",20);
-        if( cmd == CMD_WRITE_RAM ) codeSetVdc = codes->code_value;
-        set_code_default(0,1,0,codeSetVdc,0,codes);
+    case CODE_ctrl_mode:    //
+        strncpy(codes->disp, "ctrl_mode",40);
+        if( cmd == CMD_WRITE_RAM ) code_ctrl_mode = codes->code_value;
+        set_code_default(0,10,0,code_ctrl_mode,0,codes);
         break;
 
-    case CODE_protect_off:
-        strncpy(codes->disp, "Protect Off",20);
-        if( cmd == CMD_WRITE_RAM ) codeProtectOff = codes->code_value;
-        set_code_default(0,1,1,codeProtectOff,0,codes);
+    case CODE_PwmPhaseInit:
+        strncpy(codes->disp, "Init Pwm Phase Ratio",40);
+        if( cmd == CMD_WRITE_RAM ) codePwmPhaseInit = codes->code_value;
+        set_code_default(0.0,0.9,0.05,codePwmPhaseInit,0,codes);
         break;
 
-    case CODE_rate_power:
-        strncpy(codes->disp, "Rate_power",20);
-        if( cmd == CMD_WRITE_RAM ) codeRatePower = codes->code_value;
-        set_code_default(100,2.0e+6,400,codeRatePower,0,codes);
+    case CODE_InitTime:
+        strncpy(codes->disp, "Init Time [sec]",40);
+        if( cmd == CMD_WRITE_RAM ) codeInitTime = codes->code_value;
+        set_code_default(0.0,60.0,0.01,codeInitTime,0,codes);
         break;
 
-    case CODE_rate_volt:
-        strncpy(codes->disp, "Rate Volt (Vrms)",20);
-        if( cmd == CMD_WRITE_RAM ) codeRateVolt = codes->code_value;
-        set_code_default(100.0,500.0,220.0,codeRateVolt,0,codes);
+    case CODE_SetPulseNumber:
+        strncpy(codes->disp, "Set Pulse Out Count",40);
+        if( cmd == CMD_WRITE_RAM ) codeSetPulseNumber = codes->code_value;
+        set_code_default(0,30000,1,codeSetPulseNumber,0,codes);
         break;
 
-    case CODE_rate_current:
-        strncpy(codes->disp, "Rate Current(A)",20);
-        if( cmd == CMD_WRITE_RAM ) codeRateCurrent = codes->code_value;
-        set_code_default(1.0,2000.0,2.3,codeRateCurrent,0,codes);
+    case CODE_testPwmPhase:
+        strncpy(codes->disp, "Test Pwm Phase",40);
+        if( cmd == CMD_WRITE_RAM ) code_testPwmPhase = codes->code_value;
+        set_code_default(0.0,1.0,0.1,code_testPwmPhase,0,codes);
         break;
 
-    case CODE_rate_hz:
-        strncpy(codes->disp, "Rate hz",20);
-        if( cmd == CMD_WRITE_RAM ) codeRateHz = codes->code_value;
-        set_code_default(30.0,120.0,60.0,codeRateHz,0,codes);
+    case CODE_set_Vdc_on:
+        strncpy(codes->disp, "Vdc Set On",40);
+        if( cmd == CMD_WRITE_RAM )code_set_Vdc_on = codes->code_value;
+        set_code_default(0,1,1,code_set_Vdc_on,0,codes);
         break;
 
-    case CODE_rate_rpm:
-        strncpy(codes->disp, "Rate RPM",20);
-        if( cmd == CMD_WRITE_RAM ) codeRateRpm = codes->code_value;
-        set_code_default(500,8000.0,1680.0,codeRateRpm,0,codes);
-        break;
-
-    case CODE_motor_pole:
-        strncpy(codes->disp, "Motor Pole ",20);
-        if( cmd == CMD_WRITE_RAM ) codeMotorPole = codes->code_value;
-        set_code_default(2,20,4,codeMotorPole,0,codes);
-        break;
-
-    case CODE_rate_effiency:
-        strncpy(codes->disp, "Motor Effiency",20);
-        if( cmd == CMD_WRITE_RAM ) codeRateEffiency = codes->code_value;
-        set_code_default(0.2,0.99,0.65,codeRateEffiency,0,codes);
+    case CODE_Vdc_set_value:
+        strncpy(codes->disp, "Vdc set value(Vdc)",40);
+        if( cmd == CMD_WRITE_RAM ) code_Vdc_set_value = codes->code_value;
+        set_code_default(0.0,999.0,520.0,code_Vdc_set_value,0,codes);
         break;
 /*
+    case CODE_rDeadTime:
+        strncpy(codes->disp, "rDeadTime(uSec)",40);
+        if( cmd == CMD_WRITE_RAM ) rDeadTime = (codes->code_value).doubles;
+        set_code_default_double(3.0,6.3,4.0,rDeadTime,0,codes);
+        break;
+
+    case CODE_allDeadTime:
+        strncpy(codes->disp, "allDeadTime(uSec)",40);
+        if( cmd == CMD_WRITE_RAM ) allDeadTime = (codes->code_value).doubles;
+        set_code_default_double(3.0,6.3,4.0,allDeadTime,0,codes);
+        break;
+
     case CODE_pwm_freq:
         strncpy(codes->disp, "PWM Freq",20);
         if( cmd == CMD_WRITE_RAM ) codePwmFreq = codes->code_value;
         set_code_default(500.0,10000.0,8000.0,codePwmFreq,0,codes);
         break;
 */
-	case CODE_END:
+    case CODE_END:
 		return -2;
 			
 	default:
@@ -122,24 +110,23 @@ void set_code_default(float min, float max, float defaults, float value,int open
 
 int check_backup_data()
 {
-	UNION32	data;
-	int check,address,cmd;
-	
-	data.dword  = 0.0;
-	cmd = CMD_READ_DATA;
-    for( address = 0 ; address <= CODE_END; address++){	 // code group �� 6��
+    UNION32 data;
+    int check,address,cmd;
+
+    data.dword  = 0.0;
+    cmd = CMD_READ_DATA;
+    for( address = 0 ; address <= CODE_END; address++){  // code group �� 6��
         check = get_code_information( address, cmd , & code_inform);
         if( !check ){
             Flag_TripDataBackup = 1;
             read_eprom_data( address, & data);
             Flag_TripDataBackup = 0;
-            check = check_code_data(address, data );	// check min and max boundary
+            check = check_code_data(address, data );    // check min and max boundary
             if(check)  return -1;
         }
     }
-	return 0;
+    return 0;
 }
-
 
 void save_backup_data()
 {

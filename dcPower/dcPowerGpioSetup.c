@@ -97,17 +97,17 @@ void InitGpio(void)
     GpioCtrlRegs.GPADIR.bit.GPIO13  = 1;  // GPIO13 = output
 
     GpioCtrlRegs.GPAPUD.bit.GPIO14  = 0;   // Enable pullup
-    GpioCtrlRegs.GPACLEAR.bit.GPIO14= 1;   // output clear
+    GpioDataRegs.GPACLEAR.bit.GPIO14= 1; // output clear
     GpioCtrlRegs.GPAMUX1.bit.GPIO14 = 0;   // gpio
     GpioCtrlRegs.GPADIR.bit.GPIO14  = 1;   // output
 
     GpioCtrlRegs.GPAPUD.bit.GPIO15  = 0; // Enable pullup
-    GpioCtrlRegs.GPACLEAR.bit.GPIO15= 1; // output low
+    GpioDataRegs.GPACLEAR.bit.GPIO15= 1; // output clear
     GpioCtrlRegs.GPAMUX1.bit.GPIO15 = 0; // gpio
     GpioCtrlRegs.GPADIR.bit.GPIO15  = 1; // output
 
     GpioCtrlRegs.GPAPUD.bit.GPIO16  = 0; // Enable pullup
-    GpioCtrlRegs.GPACLEAR.bit.GPIO16= 1; // output low
+    GpioDataRegs.GPACLEAR.bit.GPIO16= 1; // output clear
     GpioCtrlRegs.GPAMUX2.bit.GPIO16 = 0; // gpio
     GpioCtrlRegs.GPADIR.bit.GPIO16  = 1; // output
 
@@ -116,65 +116,78 @@ void InitGpio(void)
     GpioDataRegs.GPASET.bit.GPIO17  = 1;  // write protected, output high
     GpioCtrlRegs.GPAMUX2.bit.GPIO17 = 0;  //
     GpioCtrlRegs.GPADIR.bit.GPIO17  = 1;  // output
-//--- button1
+
+//--- gpio18 high side IGBT fault pwm0, button1
     GpioCtrlRegs.GPAPUD.bit.GPIO18 = 0;   // Enable pullup
     GpioCtrlRegs.GPAQSEL2.bit.GPIO18 = 3; //
     GpioCtrlRegs.GPAMUX2.bit.GPIO18 = 0;  //
     GpioCtrlRegs.GPADIR.bit.GPIO18 = 0;   // Input
-//--- button2
+//--- gpio19 low side IGBT fault pwm1 button2
     GpioCtrlRegs.GPAPUD.bit.GPIO19 = 0;   // Enable pullup
     GpioCtrlRegs.GPAQSEL2.bit.GPIO19 = 3; //
     GpioCtrlRegs.GPAMUX2.bit.GPIO19 = 0;  //
     GpioCtrlRegs.GPADIR.bit.GPIO19 = 0;   // Input
-//--- button3
+//--- gpio26 button3 high side IGBT fault pwm2
     GpioCtrlRegs.GPAPUD.bit.GPIO26 = 0;   // Enable pullup
     GpioCtrlRegs.GPAQSEL2.bit.GPIO26 = 3; //
     GpioCtrlRegs.GPAMUX2.bit.GPIO26 = 0;  //
     GpioCtrlRegs.GPADIR.bit.GPIO26 = 0;   // Input
-//--- button4
+//--- gpio27 button4 low side IGBT fault pwm3
     GpioCtrlRegs.GPAPUD.bit.GPIO27 = 0;   // Enable pullup
     GpioCtrlRegs.GPAQSEL2.bit.GPIO27 = 3; //
     GpioCtrlRegs.GPAMUX2.bit.GPIO27 = 0;  //
     GpioCtrlRegs.GPADIR.bit.GPIO27 = 0;   // Input
-//--- Enable EQEP1 on GPIO20 - GPIO23
-    GpioCtrlRegs.GPAPUD.bit.GPIO20 = 0;   // Enable pullup on GPIO20
-    GpioCtrlRegs.GPAPUD.bit.GPIO21 = 0;   // Enable pullup on GPIO21
-    GpioCtrlRegs.GPAPUD.bit.GPIO22 = 0;   // Enable pullup on GPIO22
-    GpioCtrlRegs.GPAPUD.bit.GPIO23 = 0;   // Enable pullup on GPIO23
-    GpioCtrlRegs.GPAQSEL2.bit.GPIO20 = 0; // Synch to SYSCLKOUT
-    GpioCtrlRegs.GPAQSEL2.bit.GPIO21 = 0; // Synch to SYSCLKOUT
-    GpioCtrlRegs.GPAQSEL2.bit.GPIO22 = 0; // Synch to SYSCLKOUT
-    GpioCtrlRegs.GPAQSEL2.bit.GPIO23 = 0; // Synch to SYSCLKOUT
-    GpioCtrlRegs.GPAMUX2.bit.GPIO20 = 1;  // GPIO20 = EQEP1A
-    GpioCtrlRegs.GPAMUX2.bit.GPIO21 = 1;  // GPIO21 = EQEP1B
-    GpioCtrlRegs.GPAMUX2.bit.GPIO22 = 1;  // GPIO22 = EQEP1S
-    GpioCtrlRegs.GPAMUX2.bit.GPIO23 = 1;  // GPIO23 = EQEP1I
-//--- Enable EQEP1 on GPIO24 - GPIO25
-    GpioCtrlRegs.GPAPUD.bit.GPIO24 = 0;   // pullup
-    GpioCtrlRegs.GPAPUD.bit.GPIO25 = 0;   // pullup
-    GpioCtrlRegs.GPAQSEL2.bit.GPIO24 = 0; // Synch SYSCLKOUT
-    GpioCtrlRegs.GPAQSEL2.bit.GPIO25 = 0; // Synch SYSCLKOUT
-    GpioCtrlRegs.GPAMUX2.bit.GPIO24 = 1;  // EQEP2A
-    GpioCtrlRegs.GPAMUX2.bit.GPIO25 = 1;  // EQEP2B
 
-//--- Enable SCI-A on GPIO28 - GPIO29
-    GpioCtrlRegs.GPAPUD.bit.GPIO28 = 0;   // Enable pullup on GPIO28
-    GpioCtrlRegs.GPAQSEL2.bit.GPIO28 = 3; // Asynch input
-    GpioCtrlRegs.GPAMUX2.bit.GPIO28 = 1;  // GPIO28 = SCIRXDA
-    GpioCtrlRegs.GPAPUD.bit.GPIO29 = 0;   // Enable pullup on GPIO29
-    GpioCtrlRegs.GPAMUX2.bit.GPIO29 = 1;  // GPIO29 = SCITXDA
+//--- gpio 20,21,22,23,24,25, (-26,-27),28,29,30,31
+    GpioCtrlRegs.GPAPUD.bit.GPIO20  = 0;  // Enable pullup on GPIO20
+    GpioDataRegs.GPACLEAR.bit.GPIO20= 1;  // output clear
+    GpioCtrlRegs.GPAMUX2.bit.GPIO20 = 0;  // GPIO20
+    GpioCtrlRegs.GPADIR.bit.GPIO20  = 1;  // output
 
+    GpioCtrlRegs.GPAPUD.bit.GPIO21  = 0;  // Enable pullup on GPIO21
+    GpioDataRegs.GPACLEAR.bit.GPIO21= 1;  // output clear
+    GpioCtrlRegs.GPAMUX2.bit.GPIO21 = 0;  // GPIO21
+    GpioCtrlRegs.GPADIR.bit.GPIO21  = 1;  // output
+
+    GpioCtrlRegs.GPAPUD.bit.GPIO22  = 0;  // Enable pullup on GPIO22
+    GpioDataRegs.GPACLEAR.bit.GPIO22= 1;  // output clear
+    GpioCtrlRegs.GPAMUX2.bit.GPIO22 = 0;  // GPIO22
+    GpioCtrlRegs.GPADIR.bit.GPIO22  = 1;  // output
+
+    GpioCtrlRegs.GPAPUD.bit.GPIO23  = 0;  // Enable pullup on GPIO23
+    GpioDataRegs.GPACLEAR.bit.GPIO23= 1;  // output clear
+    GpioCtrlRegs.GPAMUX2.bit.GPIO23 = 0;  // GPIO23
+    GpioCtrlRegs.GPADIR.bit.GPIO23  = 1;  // output
+
+    GpioCtrlRegs.GPAPUD.bit.GPIO24  = 0;  // Enable pullup on GPIO24
+    GpioDataRegs.GPACLEAR.bit.GPIO24= 1;  // output clear
+    GpioCtrlRegs.GPAMUX2.bit.GPIO24 = 0;  // GPIO24
+    GpioCtrlRegs.GPADIR.bit.GPIO24  = 1;  // output
+
+    GpioCtrlRegs.GPAPUD.bit.GPIO25  = 0;  // Enable pullup on GPIO25
+    GpioDataRegs.GPACLEAR.bit.GPIO25= 1;  // output clear
+    GpioCtrlRegs.GPAMUX2.bit.GPIO25 = 0;  // GPIO25
+    GpioCtrlRegs.GPADIR.bit.GPIO25  = 1;  // output
+//--- 26,27 igbt fault
+    GpioCtrlRegs.GPAPUD.bit.GPIO28  = 0;  // Enable pullup on GPIO28
+    GpioDataRegs.GPACLEAR.bit.GPIO28= 1;  // output clear
+    GpioCtrlRegs.GPAMUX2.bit.GPIO28 = 0;  // GPIO28
+    GpioCtrlRegs.GPADIR.bit.GPIO28  = 1;  // output
+
+    GpioCtrlRegs.GPAPUD.bit.GPIO29  = 0;  // Enable pullup on GPIO29
+    GpioDataRegs.GPACLEAR.bit.GPIO29= 1;  // output clear
+    GpioCtrlRegs.GPAMUX2.bit.GPIO29 = 0;  // GPIO29
+    GpioCtrlRegs.GPADIR.bit.GPIO29  = 1;  // output
 //--- pin 30 reserved
     GpioCtrlRegs.GPAPUD.bit.GPIO30 = 0;  // Enable pullup
     GpioDataRegs.GPACLEAR.bit.GPIO30= 1; // output clear
-    GpioCtrlRegs.GPAMUX2.bit.GPIO30 = 0; //
-    GpioCtrlRegs.GPADIR.bit.GPIO30 = 1;  //
-
+    GpioCtrlRegs.GPAMUX2.bit.GPIO30 = 0; // gpio
+    GpioCtrlRegs.GPADIR.bit.GPIO30 = 1;  // output
 //--- pin 31 reserved
     GpioCtrlRegs.GPAPUD.bit.GPIO31 = 0;  // Enable pullup
     GpioDataRegs.GPACLEAR.bit.GPIO31= 1; // output clear
-    GpioCtrlRegs.GPAMUX2.bit.GPIO31 = 0; //
-    GpioCtrlRegs.GPADIR.bit.GPIO31 = 1;  //
+    GpioCtrlRegs.GPAMUX2.bit.GPIO31 = 0; // gpio
+    GpioCtrlRegs.GPADIR.bit.GPIO31 = 1;  // output
 
 //--- Enable I2C-A on GPIO32 - GPIO33
     GpioCtrlRegs.GPBPUD.bit.GPIO32 = 0;   // Enable pullup on GPIO32
@@ -190,91 +203,77 @@ void InitGpio(void)
     GpioCtrlRegs.GPBMUX1.bit.GPIO34 = 0; // GPIO34 = GPIO34
     GpioCtrlRegs.GPBDIR.bit.GPIO34 = 1;  // GPIO34 = input
 
-//--- gpio39 reserved
+//--- gpio39~58 open output reserved
     GpioCtrlRegs.GPBPUD.bit.GPIO39 = 0;  // pullup
     GpioDataRegs.GPBCLEAR.bit.GPIO39= 1; // output clear
     GpioCtrlRegs.GPBMUX1.bit.GPIO39 = 0; // GPIO34 = GPIO34
     GpioCtrlRegs.GPBDIR.bit.GPIO39 = 1;  // GPIO34 = input
 
-//--- gpio40 digit1
-    GpioCtrlRegs.GPBPUD.bit.GPIO40 = 0;  // Enable pullup on GPIO34
-    GpioDataRegs.GPBCLEAR.bit.GPIO40= 1; // output clear
-    GpioCtrlRegs.GPBMUX1.bit.GPIO40 = 0; // GPIO34 = GPIO34
-    GpioCtrlRegs.GPBDIR.bit.GPIO40 = 1;  // GPIO34 = input
+    GpioCtrlRegs.GPBPUD.bit.GPIO40 = 0;  // enable pullup
+    GpioDataRegs.GPBCLEAR.bit.GPIO40= 1; // output low
+    GpioCtrlRegs.GPBMUX1.bit.GPIO40 = 0; // gpio
+    GpioCtrlRegs.GPBDIR.bit.GPIO40 = 1;  // output
 
-//--- gpio41 digit2
-    GpioCtrlRegs.GPBPUD.bit.GPIO41 = 0;  // Enable pullup on GPIO34
-    GpioDataRegs.GPBCLEAR.bit.GPIO41= 1; // output clear
-    GpioCtrlRegs.GPBMUX1.bit.GPIO41 = 0; // GPIO34 = GPIO34
-    GpioCtrlRegs.GPBDIR.bit.GPIO41 = 1;  // GPIO34 = input
+    GpioCtrlRegs.GPBPUD.bit.GPIO41 = 0;  // enable pullup
+    GpioDataRegs.GPBCLEAR.bit.GPIO41= 1; // output low
+    GpioCtrlRegs.GPBMUX1.bit.GPIO41 = 0; // gpio
+    GpioCtrlRegs.GPBDIR.bit.GPIO41 = 1;  // output
 
-//--- gpio42 digit3
-    GpioCtrlRegs.GPBPUD.bit.GPIO42 = 0;  // Enable pullup on GPIO34
-    GpioDataRegs.GPBCLEAR.bit.GPIO42= 1; // output clear
-    GpioCtrlRegs.GPBMUX1.bit.GPIO42 = 0; // GPIO34 = GPIO34
-    GpioCtrlRegs.GPBDIR.bit.GPIO42 = 1;  // GPIO34 = input
+    GpioCtrlRegs.GPBPUD.bit.GPIO42 = 0;  // enable pullup
+    GpioDataRegs.GPBCLEAR.bit.GPIO42= 1; // output low
+    GpioCtrlRegs.GPBMUX1.bit.GPIO42 = 0; // gpio
+    GpioCtrlRegs.GPBDIR.bit.GPIO42 = 1;  // output
 
-//--- gpio43 reserved
-    GpioCtrlRegs.GPBPUD.bit.GPIO43 = 0;  // Enable pullup on GPIO34
-    GpioDataRegs.GPBCLEAR.bit.GPIO43= 1; // output clear
-    GpioCtrlRegs.GPBMUX1.bit.GPIO43 = 0; // GPIO34 = GPIO34
-    GpioCtrlRegs.GPBDIR.bit.GPIO43 = 1;  // GPIO34 = input
+    GpioCtrlRegs.GPBPUD.bit.GPIO43 = 0;  // enable pullup
+    GpioDataRegs.GPBCLEAR.bit.GPIO43= 1; // output low
+    GpioCtrlRegs.GPBMUX1.bit.GPIO43 = 0; // gpio
+    GpioCtrlRegs.GPBDIR.bit.GPIO43 = 1;  // output
 
-//--- gpio44 reserved
-    GpioCtrlRegs.GPBPUD.bit.GPIO44 = 0;  // Enable pullup on GPIO34
-    GpioDataRegs.GPBCLEAR.bit.GPIO44= 1; // output clear
-    GpioCtrlRegs.GPBMUX1.bit.GPIO44 = 0; // GPIO34 = GPIO34
-    GpioCtrlRegs.GPBDIR.bit.GPIO44 = 1;  // GPIO34 = input
+    GpioCtrlRegs.GPBPUD.bit.GPIO44 = 0;  // enable pullup
+    GpioDataRegs.GPBCLEAR.bit.GPIO44= 1; // output low
+    GpioCtrlRegs.GPBMUX1.bit.GPIO44 = 0; // gpio
+    GpioCtrlRegs.GPBDIR.bit.GPIO44 = 1;  // output
 
-//--- fndA gpio50
-    GpioCtrlRegs.GPBPUD.bit.GPIO50 = 0;  // pullup
-    GpioDataRegs.GPBCLEAR.bit.GPIO50= 1; // output clear
-    GpioCtrlRegs.GPBMUX2.bit.GPIO50 = 0; //
+    GpioCtrlRegs.GPBPUD.bit.GPIO50 = 0;  // enable pullup
+    GpioDataRegs.GPBCLEAR.bit.GPIO50= 1; // output low
+    GpioCtrlRegs.GPBMUX2.bit.GPIO50 = 0; // gpio
     GpioCtrlRegs.GPBDIR.bit.GPIO50 = 1;  // output
 
-//--- fndB gpio51
-    GpioCtrlRegs.GPBPUD.bit.GPIO51 = 0;  // pullup
-    GpioDataRegs.GPBCLEAR.bit.GPIO51= 1; // output clear
-    GpioCtrlRegs.GPBMUX2.bit.GPIO51 = 0; //
+    GpioCtrlRegs.GPBPUD.bit.GPIO51 = 0;  // enable pullup
+    GpioDataRegs.GPBCLEAR.bit.GPIO51= 1; // output low
+    GpioCtrlRegs.GPBMUX2.bit.GPIO51 = 0; // gpio
     GpioCtrlRegs.GPBDIR.bit.GPIO51 = 1;  // output
 
-//--- fndC gpio52
-    GpioCtrlRegs.GPBPUD.bit.GPIO52 = 0;  // pullup
-    GpioDataRegs.GPBCLEAR.bit.GPIO52= 1; // output clear
-    GpioCtrlRegs.GPBMUX2.bit.GPIO52 = 0; //
+    GpioCtrlRegs.GPBPUD.bit.GPIO52 = 0;  // enable pullup
+    GpioDataRegs.GPBCLEAR.bit.GPIO52= 1; // output low
+    GpioCtrlRegs.GPBMUX2.bit.GPIO52 = 0; // gpio
     GpioCtrlRegs.GPBDIR.bit.GPIO52 = 1;  // output
 
-//--- fndD gpio53
-    GpioCtrlRegs.GPBPUD.bit.GPIO53 = 0;  // pullup
-    GpioDataRegs.GPBCLEAR.bit.GPIO53= 1; // output clear
-    GpioCtrlRegs.GPBMUX2.bit.GPIO53 = 0; //
+    GpioCtrlRegs.GPBPUD.bit.GPIO53 = 0;  // enable pullup
+    GpioDataRegs.GPBCLEAR.bit.GPIO53= 1; // output low
+    GpioCtrlRegs.GPBMUX2.bit.GPIO53 = 0; // gpio
     GpioCtrlRegs.GPBDIR.bit.GPIO53 = 1;  // output
 
-//--- fndE gpio54
-    GpioCtrlRegs.GPBPUD.bit.GPIO54 = 0;  // pullup
-    GpioDataRegs.GPBCLEAR.bit.GPIO54= 1; // output clear
-    GpioCtrlRegs.GPBMUX2.bit.GPIO54 = 0; //
+    GpioCtrlRegs.GPBPUD.bit.GPIO54 = 0;  // enable pullup
+    GpioDataRegs.GPBCLEAR.bit.GPIO54= 1; // output low
+    GpioCtrlRegs.GPBMUX2.bit.GPIO54 = 0; // gpio
     GpioCtrlRegs.GPBDIR.bit.GPIO54 = 1;  // output
 
-//--- fndF gpio55
     GpioCtrlRegs.GPBPUD.bit.GPIO55 = 0;  // pullup
     GpioDataRegs.GPBCLEAR.bit.GPIO55= 1; // output clear
     GpioCtrlRegs.GPBMUX2.bit.GPIO55 = 0; //
     GpioCtrlRegs.GPBDIR.bit.GPIO55 = 1;  // output
 
-//--- fndG gpio56
     GpioCtrlRegs.GPBPUD.bit.GPIO56 = 0;  // pullup
     GpioDataRegs.GPBCLEAR.bit.GPIO56= 1; // output clear
     GpioCtrlRegs.GPBMUX2.bit.GPIO56 = 0; //
     GpioCtrlRegs.GPBDIR.bit.GPIO56 = 1;  // output
 
-//--- fndDP gpio57
     GpioCtrlRegs.GPBPUD.bit.GPIO57 = 0;  // pullup
     GpioDataRegs.GPBCLEAR.bit.GPIO57= 1; // output clear
     GpioCtrlRegs.GPBMUX2.bit.GPIO57 = 0; //
     GpioCtrlRegs.GPBDIR.bit.GPIO57 = 1;  // output
 
-//--- reserved gpio58
     GpioCtrlRegs.GPBPUD.bit.GPIO58 = 0;  // pullup
     GpioDataRegs.GPBCLEAR.bit.GPIO58= 1; // output clear
     GpioCtrlRegs.GPBMUX2.bit.GPIO58 = 0; //

@@ -119,6 +119,10 @@ typedef union
 #define I2C_EEPROM_LOW_ADDR   	0x30
 
 //-- uart 
+
+#define SCIA_RX_BUF_MAX     30
+#define SCIA_TX_BUF_MAX     50
+
 #define CMD_NULL			  	0
 #define CMD_START				0x0041	//'A'
 #define CMD_STOP				0x0042	//'B'

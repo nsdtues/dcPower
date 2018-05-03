@@ -1,99 +1,155 @@
 // Company 	: Eunwho Power Electonics  
 // FILE		: switching_irq.c
-// Project 	: KERI back2back inverter
+// Project 	: back2back inverter
 // PCB		: regen_dsp_110513 & regen_sen_110513
-// date		: 2011-0105	by Cheoung Soon-Gil
-// rev data : 2011.1013  cheoung soon gil
+// rev data : 2013.0111  cheoung soon gil
 
 #include        <header.h>
 #include        <extern.h>
 
-int dacCount = 0;
+double phase_ratio=0.0;
 
 interrupt void MainPWM(void)
 {
+//	unsigned int temp;
 	static int invt_PWM_Port_Set_flag = 0;
-	float modulationRatio;
 
-#if TEST_ADC_CENTER
-	J8_2_SET;
-#endif
+	if ( EX_TRIP_INPUT == 0 ){
+	    gPWMTripCode = TRIP_EXT_A;
+		trip_recording( TRIP_EXT_A, TRIP_EXT_A ,"TRIP EXT A");
+	}
+
+	if(gPWMTripCode == 0){ 
+		gPWMTripCode = trip_check();		// debug_soonkil
+		if(gPWMTripCode != 0 ){
+			gMachineState = STATE_TRIP;
+			epwmFullBridgeDisable(); // converter PWM gate OFF
+			goto _PWM_OUT_END;
+		}
+	}
+	else{ 
+		gMachineState = STATE_TRIP; // trip_check�ÿ� ����� 
+		epwmFullBridgeDisable(); // converter PWM gate OFF
+		goto _PWM_OUT_END;
+	}
 
 	switch(gMachineState)
 	{
-    case STATE_TRIP:
-        invt_PWM_Port_Set_flag = 0;
-//      ePwmPortOff(); // converter PWM gate OFF
-        break;
+		case STATE_POWER_ON:
+		case STATE_TRIP:					
+			EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT;
+			EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT;
+			invt_PWM_Port_Set_flag = 0;
+			EPwm2Regs.TBPHS.half.TBPHS = 0;
+			epwmFullBridgeDisable(); //inverter  PWM gate OFF
+			break;
 
-    case STATE_READY:
-	case STATE_POWER_ON:
-        EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT>>1;
-        EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT>>1;
-        EPwm3Regs.CMPA.half.CMPA = MAX_PWM_CNT>>1;
-		break;
+		case STATE_READY:
+			EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1;
+			EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1;
+			invt_PWM_Port_Set_flag = 0;
+			EPwm2Regs.TBPHS.half.TBPHS = 0;
+			break;
 
-	case STATE_INIT_RUN:
-		if( invt_PWM_Port_Set_flag == 0 ){
-			ePwmEnable();
-			invt_PWM_Port_Set_flag = 1;
-		}
-		else{
+		case STATE_INIT_RUN:
 			EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT>>1;
 			EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT>>1;
-			EPwm3Regs.CMPA.half.CMPA = MAX_PWM_CNT>>1;
-		}
-		break;
 
-	case STATE_RUN:
-	case STATE_GO_STOP:
-	case STATE_WAIT_BREAK_OFF:		
+			if( invt_PWM_Port_Set_flag == 0 ){
+				epwmFullBridgeEnable();
+				EPwm2Regs.TBPHS.half.TBPHS = (Uint16)(MAX_PWM_CNT * codePwmPhaseInit * 0.5)  ;
+				invt_PWM_Port_Set_flag = 1;
+			}
+			else if( code_ctrl_mode == 9 ){
+			    if( test_pulse_count < codeSetPulseNumber){
+					EPwm2Regs.TBPHS.half.TBPHS = (Uint16)( MAX_PWM_CNT * codePwmPhaseInit * 0.5 );
+					test_pulse_count++;
+				}
+				else{ 
+					EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1;
+					EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1;
+					gMachineState = STATE_READY;
+					epwmFullBridgeDisable();
+				}
+			}
+			else{
+				EPwm2Regs.TBPHS.half.TBPHS = (Uint16)( MAX_PWM_CNT * codePwmPhaseInit * 0.5 );
+			}
+			break;
 
-	    we = codeRateHz * reference_out;
-	    theta += we * Ts;
-        while (theta >= PI_2 ){ theta -= PI_2;}
-        if (theta < 0.0 ) theta = 0.0;
+		case STATE_RUN:
+//		case STATE_BREAK_OFF:
+			EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT>>1;
+			EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT>>1;
 
-        modulationRatio = reference_out;
-        singlePhaseModulation(modulationRatio, theta, DutyRatio);
+			if( code_ctrl_mode == 3 ){ 
 
-        DutyCount[0] = MAX_PWM_CNT * DutyRatio[0];
-        DutyCount[1] = MAX_PWM_CNT * DutyRatio[1];
-        DutyCount[2] = MAX_PWM_CNT * DutyRatio[2];
+				ctrlError =  reference_out -  I_out * 0.001; // 1000 Amp Max�� ����� 
+				ctrlIntegral = preIntegral + (Ts * code_Ki * ctrlError);
+				ctrlIntegral = (ctrlIntegral > code_integLimit) ? code_integLimit : ( ctrlIntegral < -code_integLimit) ? -code_integLimit : ctrlIntegral;
 
-        EPwm1Regs.CMPA.half.CMPA = DutyCount[0];
-        EPwm2Regs.CMPA.half.CMPA = DutyCount[1];
-        EPwm3Regs.CMPA.half.CMPA = DutyCount[2];
-        break;
+				phaseShiftRatio = (ctrlError * code_Kp) + ctrlIntegral;
 
-	default: 
-		invt_PWM_Port_Set_flag = 0;
-		ePwmPortOff(); // converter PWM gate OFF
-		break;
+				// Vout = VoutScale * reference_out  + VoutOffset ;  
+
+				if     ( phaseShiftRatio < 0.0 ) 	phaseShiftRatio = 0.0;
+				else if( phaseShiftRatio > phaseVref ) 	phaseShiftRatio = phaseVref; 
+
+				preIntegral = ctrlIntegral;
+
+				EPwm2Regs.TBPHS.half.TBPHS = (Uint16)( MAX_PWM_CNT * phaseShiftRatio * 0.5 );
+
+			}
+			else if( code_ctrl_mode == 8 ){ // mode8LoopCtrl mode
+				EPwm2Regs.TBPHS.half.TBPHS = (Uint16)( MAX_PWM_CNT * reference_out * 0.5 );
+			}
+			else if( code_ctrl_mode == 2 ){ // mode2LoopCtrl mode
+				EPwm2Regs.TBPHS.half.TBPHS =(Uint16)( MAX_PWM_CNT * code_testPwmPhase * 0.5 );
+			}
+			else{
+				EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1;
+				EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1;
+				EPwm2Regs.TBPHS.half.TBPHS = 0;
+			}
+			break;
+
+		case STATE_GO_STOP:
+
+			if ( reference_out < 0.10){
+				reference_out = 0.0;
+				EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1;
+				EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT >> 1 ;
+				EPwm2Regs.TBPHS.half.TBPHS = 0 ;
+				invt_PWM_Port_Set_flag = 0;
+				epwmFullBridgeDisable();
+				gMachineState = STATE_READY;
+			}
+			else{ // mode2LoopCtrl mode
+				EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT>>1;
+				EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT>>1;
+				EPwm2Regs.TBPHS.half.TBPHS = (Uint16)( MAX_PWM_CNT * reference_out * 0.5 );
+			}
+			break;
+
+ 		default: 
+			EPwm1Regs.CMPA.half.CMPA = MAX_PWM_CNT;
+			EPwm2Regs.CMPA.half.CMPA = MAX_PWM_CNT;
+			EPwm2Regs.TBPHS.half.TBPHS = 0;
+			invt_PWM_Port_Set_flag = 0;
+			epwmFullBridgeDisable(); // converter PWM gate OFF
+			break;
 	}
 
-	digital_out_proc();
-//---
+_PWM_OUT_END:
 
-	if(dacCount<300){
-	    y1_data[dacCount] = DutyRatio[1];
-	    y2_data[dacCount] = DutyRatio[2];
-        //y1_data[dacCount] = adcIuPhase /4096.0 ;
-        //y2_data[dacCount] = adcIvPhase /4096.0 ;
-        //y1_data[dacCount] = adcExSensor /4096.0 ;
-        //y2_data[dacCount] = adcCmdAnalog /4096.0 ;
-	    dacCount ++;
-	}
-	else dacCount = 0;
+
+//--- digital out
+    digital_out_proc();
 
 	EPwm1Regs.ETCLR.bit.INT = 1;	
 	PieCtrlRegs.PIEACK.all = PIEACK_GROUP3;
-
-#if TEST_ADC_CENTER
-	J8_2_CLEAR;	// debug
-#endif
-
 }
 
- // end of switching_irq.c 
+// end of switching_irq.c 
+
 

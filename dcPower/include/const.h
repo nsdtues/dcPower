@@ -55,8 +55,5 @@
 // Control Constant
 #define AT_SUCCESS	10
 
-
-
-
 #endif
 
