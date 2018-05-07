@@ -225,24 +225,24 @@ void scia_cmd_proc( int * sci_cmd, float * sci_ref)
              case 0 :
                  monitor[0] = I_out;
                  monitorPrint("Io=%d[A]",str,monitor[0]);
-                 load_scic_tx_mail_box(str); break;
+                 load_scia_tx_mail_box(str); break;
              case 1 :
                  monitor[1] = Power_out;
                  monitorPrint("Po=%d kW",str,monitor[1]);
-                 load_scic_tx_mail_box(str); break;
+                 load_scia_tx_mail_box(str); break;
              case 2 :
                  monitor[2] = Vout;
                  monitorPrint("Vo=%d[V]",str,monitor[2]);
-                 load_scic_tx_mail_box(str);
+                 load_scia_tx_mail_box(str);
                  break;
              case 3 :
                  monitor[3] = Vdc;
                  monitorPrint("Vp=%d[V]",str,monitor[3]);
-                 load_scic_tx_mail_box(str); break;
+                 load_scia_tx_mail_box(str); break;
              case 4 :
 //                 if( onOff ){ onOff = 0; strncpy(str,"     Power",10);}
 //                 else{ onOff = 1;    strncpy(str,"   TechWin",10);}
-//                 load_scic_tx_mail_box(str);
+//                 load_scia_tx_mail_box(str);
                  break;
              case 5 : // Reset;
                  gMachineState = STATE_POWER_ON;
@@ -260,30 +260,30 @@ void scia_cmd_proc( int * sci_cmd, float * sci_ref)
 
              if( data == 0 ){
                  snprintf( str,4,"%03d:",TripInfoNow.CODE);
-                 load_scic_tx_mail_box(str); delay_msecs(180);
+                 load_scia_tx_mail_box(str); delay_msecs(180);
 
-                 load_scic_tx_mail_box(TripInfoNow.MSG); delay_msecs(220);
-                 load_scic_tx_mail_box(TripInfoNow.TIME); delay_msecs(180);
+                 load_scia_tx_mail_box(TripInfoNow.MSG); delay_msecs(220);
+                 load_scia_tx_mail_box(TripInfoNow.TIME); delay_msecs(180);
 
                  dbtemp = TripInfoNow.VOUT;
                  temp = (int)(floor(dbtemp +0.5));
                  snprintf( str,20,"Vo=%3d[A]",temp);
-                 load_scic_tx_mail_box(str); delay_msecs(180);
+                 load_scia_tx_mail_box(str); delay_msecs(180);
 
                  dbtemp = TripInfoNow.VDC;
                  temp = (int)(floor(dbtemp +0.5));
                  snprintf( str,20," VDC =%4d",temp);
-                 load_scic_tx_mail_box(str); delay_msecs(180);
+                 load_scia_tx_mail_box(str); delay_msecs(180);
 
                  dbtemp = TripInfoNow.CURRENT;
                  temp = (int)(floor(dbtemp +0.5));
                  snprintf( str,10,"I1  =%4d ",temp);
-                 load_scic_tx_mail_box(str); delay_msecs(180);
+                 load_scia_tx_mail_box(str); delay_msecs(180);
 
                  dbtemp = TripInfoNow.DATA;
                  temp = (int)(floor(dbtemp +0.5));
                  snprintf( str,10," DATA=%4d",temp);
-                 load_scic_tx_mail_box(str); delay_msecs(180);
+                 load_scia_tx_mail_box(str); delay_msecs(180);
              }
              else{
 
@@ -293,30 +293,30 @@ void scia_cmd_proc( int * sci_cmd, float * sci_ref)
                  strncpy(gStr1,TripInfoNow.MSG,20);
 
                  snprintf( str,4,"%03d:",TripData->CODE);
-                 load_scic_tx_mail_box(str); delay_msecs(180);
+                 load_scia_tx_mail_box(str); delay_msecs(180);
 
-                 load_scic_tx_mail_box(TripData->MSG); delay_msecs(220);
-                 load_scic_tx_mail_box(TripData->TIME); delay_msecs(180);
+                 load_scia_tx_mail_box(TripData->MSG); delay_msecs(220);
+                 load_scia_tx_mail_box(TripData->TIME); delay_msecs(180);
 
                  dbtemp = TripData->VOUT;
                  temp = (int)(floor(dbtemp +0.5));
                  snprintf( str,10,"Vo=%3d[A]",temp);
-                 load_scic_tx_mail_box(str); delay_msecs(180);
+                 load_scia_tx_mail_box(str); delay_msecs(180);
 
                  dbtemp = TripData->VDC;
                  temp = (int)(floor(dbtemp +0.5));
                  snprintf( str,10," VDC =%4d",temp);
-                 load_scic_tx_mail_box(str); delay_msecs(180);
+                 load_scia_tx_mail_box(str); delay_msecs(180);
 
                  dbtemp = TripData->CURRENT;
                  temp = (int)(floor(dbtemp +0.5));
                  snprintf( str,10,"I1  =%4d ",temp);
-                 load_scic_tx_mail_box(str); delay_msecs(180);
+                 load_scia_tx_mail_box(str); delay_msecs(180);
 
                  dbtemp = TripData->DATA;
                  temp = (int)(floor(dbtemp +0.5));
                  snprintf( str,10," DATA=%4d",temp);
-                 load_scic_tx_mail_box(str); delay_msecs(180);
+                 load_scia_tx_mail_box(str); delay_msecs(180);
 
                  free(TripData);
              }
@@ -349,7 +349,7 @@ void scia_cmd_proc( int * sci_cmd, float * sci_ref)
          else if (( addr > 979) && ( addr < 996)){
              check = addr - 980;
              snprintf( str,19,"adc =%4d",adc_result[check]);
-             load_scic_tx_mail_box(str);
+             load_scia_tx_mail_box(str);
              delay_msecs(10);
              return;
          }

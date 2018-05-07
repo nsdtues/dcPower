@@ -27,33 +27,8 @@
 
 #define		INV_PI		0.318310
 #define 	INV_SQRT2	0.7071067812;
+
 // Array Index
-#define		ds					0
-#define		qs					1
-
-#define		DS					0
-#define		QS					1
-
-#define		as					0
-#define		bs					1
-#define		cs					2
-
-#define		u					0
-#define		v					1
-#define		w					2
-
-#define		R					0
-#define		S					1
-#define		T					2	
-
-#define		A					0
-#define		B					1
-#define		C					2
-
 #define F_OSC					20000000
-
-// Control Constant
-#define AT_SUCCESS	10
-
 #endif
 

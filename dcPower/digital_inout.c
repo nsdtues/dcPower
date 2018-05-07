@@ -27,7 +27,7 @@ void digital_input_proc(int * cmd, float * ref )
 // Digital Out Proc
 //======================
 
-void digital_out_proc()		// debug
+void digitalOutProc()		// debug
 {
 	if( gMachineState == STATE_TRIP ){
 		MAIN_CHARGE_OFF;		// ���� ���� on 

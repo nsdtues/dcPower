@@ -20,7 +20,7 @@ interrupt void MainPWM(void)
 	}
 
 	if(gPWMTripCode == 0){ 
-		gPWMTripCode = trip_check();		// debug_soonkil
+		gPWMTripCode = tripCheck();		// debug_soonkil
 		if(gPWMTripCode != 0 ){
 			gMachineState = STATE_TRIP;
 			epwmFullBridgeDisable(); // converter PWM gate OFF
@@ -144,7 +144,7 @@ _PWM_OUT_END:
 
 
 //--- digital out
-    digital_out_proc();
+    digitalOutProc();
 
 	EPwm1Regs.ETCLR.bit.INT = 1;	
 	PieCtrlRegs.PIEACK.all = PIEACK_GROUP3;

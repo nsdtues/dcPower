@@ -1,11 +1,6 @@
-/////////////////////////////////////////////////////////////////////////
-//
-//	Project Name 	: Inverter for 
-//	Fiele Name	 	: Timer_Irq_Proc.c
-//
-//  Start 			: 2009.07.09 sunday
-//
-///////////////////////////////////////////////////////////////////////////
+//	Project Name 	: dcPower
+//	File Name	 	: timerIrq.c
+//  Start 			: 2018.0504
 #include	<header.h>
 #include	<extern.h>
 

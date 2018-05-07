@@ -35,10 +35,8 @@ void main( void )
 	InitGpio();
 
 	gfRunTime = 0.0; 
-	protect_reg.all = gDeChargeFlag = 0;
+	protect_reg.all = 0;
 	MAIN_CHARGE_OFF;
-
-	INIT_CHARGE_CLEAR;
 
 	init_charge_flag = 0;
 //	RESET_DRIVER_CLEAR;
@@ -102,15 +100,13 @@ void main( void )
     gPWMTripCode = 0;		//
 
     if( load_code2ram() != 0 ) tripProc();
-	if(HardwareParameterVerification() !=0 ) tripProc();
 
-    VariInit();
-    lpf2ndCoeffInit( 1000.0, Ts, lpfVdcIn, lpfVdcOut, lpfVdcK);
-    lpf2ndCoeffInit( 1.0, Ts, lpfImIn, lpfImOut, lpfIrmsK);
-    lpf2ndCoeffInit( 1.0, Ts, lpfIaIn, lpfIaOut, lpfIrmsK);
+    initVariFullbridgeCtrl();
+    lpf2ndCoeffInit( 1000.0,Ts, lpfVdcIn, lpfVdcOut, lpfVdcK);
+    lpf2ndCoeffInit( 100.0, Ts, lpfIoutIn, lpfIoutOut, lpfIoutK);
 
 	IER &= ~M_INT3;      // debug for PWM
-	InitEPwm_ACIM_Inverter(); 	// debug
+    initEpwmFullBridge();   // debug
 	EPwm1Regs.ETSEL.bit.INTEN = 1;    		            // Enable INT
 	IER |= M_INT3;      // debug for PWM
 
@@ -149,7 +145,7 @@ void main( void )
 			if( gfRunTime > 5.0) loop_ctrl = 0;
 		}
 		if( Vdc < under_volt_set ){
-			trip_recording( CODE_under_volt_set,Vdc,"Trip Under Volt");
+			trip_recording( ERR_UV_VDC,Vdc,"Trip Under Volt");
 			tripProc();
 		}
 	}
@@ -160,7 +156,7 @@ void main( void )
 
 	MAIN_CHARGE_ON;
 	init_charge_flag=0;
-	gMachineState = STATE_READY;	INIT_CHARGE_CLEAR;
+	gMachineState = STATE_READY;
 
 	if( gPWMTripCode !=0 )	tripProc();
 	strncpy(MonitorMsg,"READY",20);delay_msecs(20);
@@ -171,7 +167,7 @@ void main( void )
 	for( ; ; )
 	{
 		if( gPWMTripCode !=0 )	tripProc();
-		gPWMTripCode = trip_check();
+		gPWMTripCode = tripCheck();
 		if( gPWMTripCode !=0 )	tripProc();
 		get_command( & cmd, & ref_in0);
 //		analog_out_proc( );
@@ -181,7 +177,8 @@ void main( void )
 		monitor_proc();
 		if(cmd == CMD_START){	// if( cmd == CMD_START )
 		    trip_code = 0;
-		    switch(code_ctrl_mode)
+		    temp = (int)(floor(code_ctrl_mode+0.5));
+		    switch(temp)
 		    {
 		    case 3: trip_code = mode3Current_P_I_LoopCtrl();break;
 		    case 8: trip_code = mode8LoopCtrl();break;

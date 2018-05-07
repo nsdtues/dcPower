@@ -11,6 +11,12 @@ int get_code_information(int address,int cmd , CODE_INFO *  codes)
         set_code_default(10.0,800.0,600.0,code_I_out_ref,0,codes);
         break;
 
+    case CODE_Vout:     //
+        strncpy(codes->disp, "Set Vout",40);
+        if( cmd == CMD_WRITE_RAM ) code_Vout = codes->code_value;
+        set_code_default(0.1,15.0,7.0,code_Vout,0,codes);
+        break;
+
     case CODE_VoutLimit:        // code 3
         strncpy(codes->disp, "Vout Limit",40);
         if( cmd == CMD_WRITE_RAM ) code_VoutLimit = codes->code_value;
@@ -23,10 +29,10 @@ int get_code_information(int address,int cmd , CODE_INFO *  codes)
         set_code_default(0.01,9999.0,60.0,code_ovpTime,0,codes);
         break;
 
-    case CODE_Vout:     //
-        strncpy(codes->disp, "Set Vout",40);
-        if( cmd == CMD_WRITE_RAM ) code_Vout = codes->code_value;
-        set_code_default(0.1,15.0,7.0,code_Vout,0,codes);
+    case CODE_OC_Time:     //
+        strncpy(codes->disp, "Over C Time",40);
+        if( cmd == CMD_WRITE_RAM ) codeOcTime = codes->code_value;
+        set_code_default(0.1,60.0,10.0,codeOcTime,0,codes);
         break;
 
     case CODE_ctrl_mode:    //
@@ -70,25 +76,13 @@ int get_code_information(int address,int cmd , CODE_INFO *  codes)
         if( cmd == CMD_WRITE_RAM ) code_Vdc_set_value = codes->code_value;
         set_code_default(0.0,999.0,520.0,code_Vdc_set_value,0,codes);
         break;
-/*
-    case CODE_rDeadTime:
-        strncpy(codes->disp, "rDeadTime(uSec)",40);
-        if( cmd == CMD_WRITE_RAM ) rDeadTime = (codes->code_value).doubles;
-        set_code_default_double(3.0,6.3,4.0,rDeadTime,0,codes);
+
+    case CODE_protect_inhibit_on:
+        strncpy(codes->disp, "Protection Off",40);
+        if( cmd == CMD_WRITE_RAM ) code_protect_inhibit_on = codes->code_value;
+        set_code_default(0,1,0,code_protect_inhibit_on,0,codes);
         break;
 
-    case CODE_allDeadTime:
-        strncpy(codes->disp, "allDeadTime(uSec)",40);
-        if( cmd == CMD_WRITE_RAM ) allDeadTime = (codes->code_value).doubles;
-        set_code_default_double(3.0,6.3,4.0,allDeadTime,0,codes);
-        break;
-
-    case CODE_pwm_freq:
-        strncpy(codes->disp, "PWM Freq",20);
-        if( cmd == CMD_WRITE_RAM ) codePwmFreq = codes->code_value;
-        set_code_default(500.0,10000.0,8000.0,codePwmFreq,0,codes);
-        break;
-*/
     case CODE_END:
 		return -2;
 			

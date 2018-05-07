@@ -4,7 +4,6 @@
 float linear_eq(float x1, float x2, float y1, float y2, float x )
 {
 	float y;
-
 	y = (( y2-y1) / ( x2 - x1 )) * x  + (( y1 * x2 - y2 * x1 )/ (x2- x1));
 	return y;
 }
@@ -104,40 +103,33 @@ void get_command( int * command, float * ref )
 	digital_input_proc( & digital_cmd, & digital_reference);
 	serial_com_proc( & sci_cmd, & sci_ref );
 	analog_cmd_proc( & ana_ref);
-//	KeyInputProc(&button_cmd,&button_ref);
 
-// button�� ���� ������ �ɼǰ� ������� ������ ������ �ȴ�.
 	code_run_input_select = 1;	// 2014.0827
 
 	switch( code_run_input_select )
 	{
-	case 1: // ������ �Է¿� ���� �õ��� ���� 
+	case 1:
 		* command = digital_cmd;
 		* ref = digital_reference;
 		break;
-
-	case 2: //  ��ſ� ���� �õ��� ��
+	case 2:
 		* command = sci_cmd;
 		* ref = sci_ref;
 		break;
-
-	case 3: // �Ƴ��α� �Է�����
-	case 8: // 
-	case 9: // 
+	case 3:
+	case 8:
+	case 9:
 		* command = digital_cmd;
 		if( digital_cmd == CMD_START ){
 			if( ana_ref < 0.01 )	* command = CMD_STOP;
 			else 					* ref = ana_ref;
 		}
 		break;
-
 	default:
 		* command = CMD_STOP;
 		* ref = 0.0; 
 		break;
 	}
-
-	// ��ſ� ���� ������ �ֿ켱���� ó���Ѵ�. 
 	if( sci_cmd != CMD_NULL){
 		if( sci_cmd == CMD_SAVE){
 			* command = sci_cmd ;
@@ -153,7 +145,8 @@ void get_command( int * command, float * ref )
 
 void get_adc_offset()
 {
-	int LoopCtrl;
+/*
+    int LoopCtrl;
 
 	Uint32 RunTimeMsec,StartTimeMsec;
 	float u_offset_in, v_offset_in;
@@ -206,9 +199,6 @@ void get_adc_offset()
 		load_sci_tx_mail_box("\n OK Adc offset Saved ");delay_msecs(10);		
 		load_sci_tx_mail_box("\n*********************");delay_msecs(10);		
 	}
+*/
 }
-
-//---------------------------------
-// end of file
-//----------------------------------
-
+//--- end of file

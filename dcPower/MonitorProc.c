@@ -1,11 +1,11 @@
 #include	<header.h>
 #include	<extern.h>
-void monitorPrint( char * strIn , char * charOut, double argIn)
+void monitorPrint( char * strIn , char * charOut, float argIn)
 {
     char * str;
     char str1[20]={0};
 
-    double dtemp1;
+    float dtemp1;
     int temp;
 
     str = charOut;
@@ -65,9 +65,6 @@ void monitor_proc()     // need_edit
     StartTimeMsec = ulGetNow_mSec( );
 
     if( gMachineState == STATE_POWER_ON ){
-
-//      GetTimeAndDateStr(gStr1);   gStr1[20] =0;
-//      load_sci_tx_mail_box(gStr1); delay_msecs(20);
 
         temp = (int)(floor(Vdc +0.5));
         snprintf( gStr1,10," VDC =%4d",temp);

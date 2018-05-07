@@ -1,20 +1,11 @@
 //
-// analog.c
-// 2012.04.12
-// Eunwho Power Electronics
-// by Cheoung Soon Gil
-// revision :
+// analog.c  project : dcPower
+// Eunwho Power Electronics by Cheoung Soon Gil
 #include	<header.h>
 #include	<extern.h>
 
-
-// included in F2806x_Adc.c
-// InitAdc();
-// AdcOffsetSelfCal();
-
 void ADC_SOC_CNF( )
 {
-
     extern void DSP28x_usDelay(Uint32 Count);
 
     EALLOW;
@@ -50,7 +41,7 @@ void ADC_SOC_CNF( )
 #define I_RATIO         0.012207
 __interrupt void adcIsr(void)
 {
-    int temp;
+//    int temp;
 
     adc_result[0] = adcI_out   = AdcResult.ADCRESULT0;
     adc_result[1] = adcI_pri   = AdcResult.ADCRESULT1;
@@ -62,7 +53,7 @@ __interrupt void adcIsr(void)
 //    nativeI_out =  - codeIValueOut * (double)(  adc_result[0] -codeIAdcOffsetOut) * adc_const * codeISpanOut;
 //    nativeI_pri =  - codeIValue1st * (double)(  adc_result[1] -codeIAdcOffset1st) * adc_const * codeISpan1st;
 
-    Vdc = VdcScale * (double) adc_result[14] + VdcOffset ;
+    Vdc = VdcScale * (float) adc_result[14] + VdcOffset ;
 
 //    LPF1( Ts,20.0, (double)(adcI_out), & lpfI_out);
 
