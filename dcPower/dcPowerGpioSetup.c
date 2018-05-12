@@ -168,16 +168,15 @@ void InitGpio(void)
     GpioDataRegs.GPACLEAR.bit.GPIO25= 1;  // output clear
     GpioCtrlRegs.GPAMUX2.bit.GPIO25 = 0;  // GPIO25
     GpioCtrlRegs.GPADIR.bit.GPIO25  = 1;  // output
-//--- 26,27 igbt fault
+
+//--- 28,29 SCI-A
     GpioCtrlRegs.GPAPUD.bit.GPIO28  = 0;  // Enable pullup on GPIO28
-    GpioDataRegs.GPACLEAR.bit.GPIO28= 1;  // output clear
-    GpioCtrlRegs.GPAMUX2.bit.GPIO28 = 0;  // GPIO28
-    GpioCtrlRegs.GPADIR.bit.GPIO28  = 1;  // output
+    GpioCtrlRegs.GPAQSEL2.bit.GPIO28 = 3; // Asynch input
+    GpioCtrlRegs.GPAMUX2.bit.GPIO28 = 1;  // GPIO28
 
     GpioCtrlRegs.GPAPUD.bit.GPIO29  = 0;  // Enable pullup on GPIO29
-    GpioDataRegs.GPACLEAR.bit.GPIO29= 1;  // output clear
-    GpioCtrlRegs.GPAMUX2.bit.GPIO29 = 0;  // GPIO29
-    GpioCtrlRegs.GPADIR.bit.GPIO29  = 1;  // output
+    GpioCtrlRegs.GPAMUX2.bit.GPIO29 = 1;  // GPIO29
+
 //--- pin 30 reserved
     GpioCtrlRegs.GPAPUD.bit.GPIO30 = 0;  // Enable pullup
     GpioDataRegs.GPACLEAR.bit.GPIO30= 1; // output clear

@@ -185,9 +185,24 @@ void scia_cmd_proc( int * sci_cmd, float * sci_ref)
                  * sci_cmd = CMD_SAVE;  * sci_ref = 0.0;
                  load_scia_tx_mail_box("UART CMD_SAVE");
              }
-             else{
+             else if( data == 50 ){
+                   * sci_cmd = CMD_READ_ALL;  * sci_ref = 0.0;
+                   load_scia_tx_mail_box("UART CMD_READ_ALL");
+            }
+            else if( data == 80 ){
+                   * sci_cmd = CMD_NULL;  * sci_ref = 0.0;
+                   get_adc_offset();
+            }
+            else if( data == 90 ){
+                   * sci_cmd = CMD_NULL;  * sci_ref = 0.0;
+                   load_scia_tx_mail_box("EEPROM init Start");
+                   check = init_eprom_data();      // 0이 아니면 address value
+                   if( check != 0) load_scia_tx_mail_box("EEPROM init Fail");
+                   else        load_scia_tx_mail_box("EEPROM init OK");
+            }
+            else{
                  load_scia_tx_mail_box("Illegal CMD data");
-             }
+            }
          }
          else{
              // registor_write_proc(addr,data);

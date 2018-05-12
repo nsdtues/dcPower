@@ -100,7 +100,6 @@ void main( void )
     gPWMTripCode = 0;		//
 
     if( load_code2ram() != 0 ) tripProc();
-
     initVariFullbridgeCtrl();
     lpf2ndCoeffInit( 1000.0,Ts, lpfVdcIn, lpfVdcOut, lpfVdcK);
     lpf2ndCoeffInit( 100.0, Ts, lpfIoutIn, lpfIoutOut, lpfIoutK);
@@ -113,13 +112,6 @@ void main( void )
 	gfRunTime = 0.0; 
 
     delay_msecs(500);
-    for(;;){
-//        snprintf( gStr1,10," VDC =%4d",temp);
-        strncpy(gStr1,"hello workd. /r/n",20);
-        load_sci_tx_mail_box(gStr1);
-        delay_msecs(1000);
-    }
-
     temp = (int)(floor(codeProtectOff+0.5));
 
     if( temp != 0 )

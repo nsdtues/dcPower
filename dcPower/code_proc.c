@@ -284,9 +284,7 @@ int init_eprom_data()
 {
 	UNION32	data,data2;
 	int check,address,cmd;
-
 	data.dword  = 0.0;
-
 	cmd = CMD_READ_DATA;
 	for( address = 0 ; address < CODE_END ; address++ )
 	{
