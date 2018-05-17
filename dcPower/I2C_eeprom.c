@@ -168,7 +168,9 @@ int load_code2ram()
         if( !check ){
             read_eprom_data( addr, & data);
             check = check_code_data(addr, data);	// check min and max boundary
-            if(check)   return -1;
+            if(check){
+                return -1;
+            }
             else{
                 code_inform.code_value = data.dword;
                 cmd = CMD_WRITE_RAM;
@@ -189,7 +191,7 @@ int code_init()
     for( addr = 0; addr < CODE_END; addr++){
         check = get_code_information( addr, cmd , & code_inform);
         if( !check ){
-            datum.dword = code_inform.code_value;
+            datum.dword = code_inform.code_default;
             write_code_2_eeprom(addr, datum);
         }
     }

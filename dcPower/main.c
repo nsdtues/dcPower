@@ -27,7 +27,8 @@ float Vdc_fnd_data;
 
 void main( void )
 {
-    int trip_code,loop_ctrl,temp;
+    UNION32 data;
+    int i,trip_code,loop_ctrl,temp;
 	int cmd;
 	float ref_in0;
 
@@ -37,7 +38,6 @@ void main( void )
 	gfRunTime = 0.0; 
 	protect_reg.all = 0;
 	MAIN_CHARGE_OFF;
-
 	init_charge_flag = 0;
 //	RESET_DRIVER_CLEAR;
 
@@ -99,7 +99,9 @@ void main( void )
     strncpy(MonitorMsg,"POWER_ON",20);
     gPWMTripCode = 0;		//
 
-    if( load_code2ram() != 0 ) tripProc();
+    temp = load_code2ram();
+    if( temp ) tripProc();
+
     initVariFullbridgeCtrl();
     lpf2ndCoeffInit( 1000.0,Ts, lpfVdcIn, lpfVdcOut, lpfVdcK);
     lpf2ndCoeffInit( 100.0, Ts, lpfIoutIn, lpfIoutOut, lpfIoutK);
@@ -131,7 +133,8 @@ void main( void )
 		if(code_protect_IGBT_off == 0 ) 	protect_reg.bit.IGBT_FAULT = 1;		
 		if(code_protect_ex_trip_off == 0 ) 	protect_reg.bit.EX_TRIP = 1;
 	}
-	init_charge_flag = 1;	
+
+    init_charge_flag = 1;
 	while( gfRunTime < 5.0){
 		get_command( & cmd, & ref_in0);		monitor_proc();
 	}
@@ -160,6 +163,7 @@ void main( void )
 	strncpy(MonitorMsg,"READY",20);delay_msecs(20);
 	strncpy(gStr1,"READY",20);
 	load_sci_tx_mail_box(gStr1); delay_msecs(20);
+	temp = 0;
 
 	GATE_DRIVER_ENABLE;
 	for( ; ; )

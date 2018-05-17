@@ -67,7 +67,7 @@ typedef union
 //-- uart 
 
 #define SCIA_RX_BUF_MAX     30
-#define SCIA_TX_BUF_MAX     50
+#define SCIA_TX_BUF_MAX     80
 
 #define CMD_NULL			  	0
 #define CMD_START				0x0041	//'A'

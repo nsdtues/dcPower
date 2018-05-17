@@ -2,7 +2,7 @@
 #define		__FUNCTION_MODULE_DEFINITION_
 
 extern int CheckOVP( );
-extern void monitorPrint( char * strIn , char * charOut, float argIn);
+extern void monitorPrint( char * charOut, float argIn);
 //--- fullBridgeCtrl.c
 extern void epwmFullBridgeEnable();
 extern void epwmFullBridgeDisable();

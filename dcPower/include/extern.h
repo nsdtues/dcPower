@@ -1,6 +1,8 @@
 #ifndef		__VARIABLES_
 #define		__VARIABLES_
 
+extern char monitOut[61];
+
 extern float nativeI_out;
 extern float nativeI_pri;
 extern float nativeI2nd;

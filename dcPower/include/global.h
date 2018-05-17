@@ -1,6 +1,8 @@
 #ifndef		__GLOBAL_VARIABLES_
 #define		__GLOBAL_VARIABLES_
 
+char monitOut[61];
+
 float under_volt_set;
 float nativeI_out;
 float nativeI_pri;

@@ -279,7 +279,6 @@ _EEPROM_WRITE_ERROR:
 	return -1;
 }
 
-
 int init_eprom_data()
 {
 	UNION32	data,data2;

@@ -6,11 +6,11 @@
 
 #define CPU_FREQ    90E6
 #define LSPCLK_FREQ CPU_FREQ/4
-#define SCI_FREQ    115200
+// #define SCI_FREQ    115200
+#define SCI_FREQ    38400
 #define SCI_PRD     (LSPCLK_FREQ/(SCI_FREQ*8))-1
 
 #define UARTA_BAUD_RATE          SCI_PRD     // 115200
-
 
 int scia_rx_start_addr=0;
 int scia_rx_end_addr=0;
@@ -70,7 +70,7 @@ void load_scia_tx_mail_box( char * st)
 
 	SciaRegs.SCIFFTX.bit.TXFFIENA = 0;	// Clear SCI Interrupt flag
 
-	for( i = 0 ; i < 30 ; i++){
+	for( i = 0 ; i < SCIA_TX_BUF_MAX ; i++){
  		scia_tx_msg_box[scia_tx_end_addr++] = * str++;
  		if(scia_tx_end_addr >= SCIA_TX_BUF_MAX ) scia_tx_end_addr = 0;
 		if(scia_tx_end_addr == scia_tx_start_addr){
@@ -110,7 +110,7 @@ interrupt void sciaRxFifoIsr(void)
     static Uint32 modebus_start_time=0;
     static int scia_rx_count=0;
     Nop();
-    // .
+
     if( ulGetTime_mSec(modebus_start_time) > 10 ){
         modebus_start_time = ulGetNow_mSec( );
         msg_box[0] = SciaRegs.SCIRXBUF.all;  // Read data
@@ -215,50 +215,23 @@ void scia_cmd_proc( int * sci_cmd, float * sci_ref)
  //   read routine
  //====================
      else if(scia_rx_msg_box[2] == '4'){
-
          if(addr == 900){    //  monitor state
-             * sci_cmd = CMD_READ_ALL;  * sci_ref = 0.0;
-             load_scia_tx_mail_box("ok! read code all");
+             check = (int)data;
+             monitor_proc();
+             if(check==0) load_scia_tx_mail_box(monitOut);
              return;
          }
          else if(addr == 901){    //  monitor state
-             switch(gMachineState){
-                 case STATE_POWER_ON:    load_scia_tx_mail_box("[POWE_ON] "); break;
-                 case STATE_READY:       load_scia_tx_mail_box("[READY]   "); break;
-                 case STATE_RUN:         load_scia_tx_mail_box("[RUN ]    "); break;
-                 case STATE_TRIP:        load_scia_tx_mail_box("[TRIP]    "); break;
-                 case STATE_INIT_RUN:    load_scia_tx_mail_box("[INIT]    "); break;
-                 case STATE_GO_STOP:     load_scia_tx_mail_box("[GO_STOP] "); break;
-                 case STATE_WAIT_BREAK_OFF: load_scia_tx_mail_box("STATE_WAIT_BREAK_OFF"); break;
-                 default:                load_scia_tx_mail_box("Unknown State"); break;
+             check = (int)data;
+             if(check==0){
+                 * sci_cmd = CMD_READ_ALL;  * sci_ref = 0.0;
+                 load_scia_tx_mail_box("ok! read code all");
              }
              return;
          }
          else if(addr == 902){   // read inverter status
              check = (int)data;
              switch( check ){
-             case 0 :
-                 monitor[0] = I_out;
-                 monitorPrint("Io=%d[A]",str,monitor[0]);
-                 load_scia_tx_mail_box(str); break;
-             case 1 :
-                 monitor[1] = Power_out;
-                 monitorPrint("Po=%d kW",str,monitor[1]);
-                 load_scia_tx_mail_box(str); break;
-             case 2 :
-                 monitor[2] = Vout;
-                 monitorPrint("Vo=%d[V]",str,monitor[2]);
-                 load_scia_tx_mail_box(str);
-                 break;
-             case 3 :
-                 monitor[3] = Vdc;
-                 monitorPrint("Vp=%d[V]",str,monitor[3]);
-                 load_scia_tx_mail_box(str); break;
-             case 4 :
-//                 if( onOff ){ onOff = 0; strncpy(str,"     Power",10);}
-//                 else{ onOff = 1;    strncpy(str,"   TechWin",10);}
-//                 load_scia_tx_mail_box(str);
-                 break;
              case 5 : // Reset;
                  gMachineState = STATE_POWER_ON;
                  Nop();
@@ -377,10 +350,10 @@ void scia_cmd_proc( int * sci_cmd, float * sci_ref)
              switch(check)
              {
              case 0:
-                 snprintf( str,19,"CODE=%4d/t",addr); load_scia_tx_mail_box(str);
-                 snprintf( str,20,"Data =%.3e/t",code_inform.code_value);load_scia_tx_mail_box(str);
+                 snprintf( str,10,"CODE=%4d:",addr); load_scia_tx_mail_box(str);
+                 snprintf( str,20,"Data=%.3e:",code_inform.code_value);load_scia_tx_mail_box(str);
                  load_scia_tx_mail_box(code_inform.disp);
-                 load_scia_tx_mail_box(" \r\n");delay_msecs(10);
+                 load_scia_tx_mail_box("\r\n");delay_msecs(10);
                  break;
              case 1:
                  snprintf( str,19,"CODE=%4d",addr);
