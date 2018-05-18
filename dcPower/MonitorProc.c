@@ -69,6 +69,7 @@ void monitor_proc()     // need_edit
         k = 6 * i + 8 ;
         for( j = 0 ; j < 6 ; j++) monitOut[j+k] = str[j];
     }
+    monitOut[56] = 0;
 }
 
 void GetInputMark(char * str)

@@ -71,13 +71,13 @@ void load_scia_tx_mail_box( char * st)
 	SciaRegs.SCIFFTX.bit.TXFFIENA = 0;	// Clear SCI Interrupt flag
 
 	for( i = 0 ; i < SCIA_TX_BUF_MAX ; i++){
- 		scia_tx_msg_box[scia_tx_end_addr++] = * str++;
+        if( *str == '\0')  break;
+ 		scia_tx_msg_box[scia_tx_end_addr ++] = *str ++;
  		if(scia_tx_end_addr >= SCIA_TX_BUF_MAX ) scia_tx_end_addr = 0;
 		if(scia_tx_end_addr == scia_tx_start_addr){
 		    scia_tx_start_addr++;
 			if(scia_tx_start_addr >= (SCIA_TX_BUF_MAX-1)) scia_tx_start_addr = 0;
 		}
-		if( *str == '\0')  break;
 	}
 	SciaRegs.SCIFFTX.bit.TXFFIENA = 1;	// Clear SCI Interrupt flag
 }
@@ -218,7 +218,8 @@ void scia_cmd_proc( int * sci_cmd, float * sci_ref)
          if(addr == 900){    //  monitor state
              check = (int)data;
              monitor_proc();
-             if(check==0) load_scia_tx_mail_box(monitOut);
+             load_scia_tx_mail_box(monitOut);
+             Nop();
              return;
          }
          else if(addr == 901){    //  monitor state
